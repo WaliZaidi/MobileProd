@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const appConnector = require('./connections/routerConnection');
-const dbConnector = require('./connections/databaseConnection');
+const {dbConnector} = require('./connections/databaseConnection');
 
 const PORT = process.env.PORT || 3000;
 
@@ -24,6 +24,10 @@ app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 wss.on('connection', (ws) => {
   console.log('Client connected');
   ws.on('close', () => console.log('Client disconnected'));
+});
+
+wss.on('message', (message) => {
+  console.log('Received message => ', message);
 });
 
 // Include your existing routes

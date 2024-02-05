@@ -1,30 +1,16 @@
 const { MongoClient } = require('mongodb');
 
-const MONGODB_URI = process.env.DATABASE_ACCESS;
+const MONGO_URL = process.env.MONGO_URL;
+let db; // Declare db variable here
 
-
-let dbConnector = () => {
-    MongoClient.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
-        if (err) {
-            console.error('Error connecting to MongoDB:', err);
-            return;
-        }
-        console.log('Connected to MongoDB');
+let dbConnector = async () => {
+    try {
+        const client = await MongoClient.connect(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true });
         db = client.db(); // Use your specific database if needed
-    });
-
+        console.log('Connected to MongoDB');
+    } catch (err) {
+        console.error('Error connecting to MongoDB:', err);
+    }
 }
 
-// let db;
-
-// // Connect to MongoDB
-// MongoClient.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
-//   if (err) {
-//     console.error('Error connecting to MongoDB:', err);
-//     return;
-//   }
-//   console.log('Connected to MongoDB');
-//   db = client.db(); // Use your specific database if needed
-// });
-
-module.exports = dbConnector;
+module.exports = { dbConnector, db };

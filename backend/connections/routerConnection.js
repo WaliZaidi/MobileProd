@@ -7,6 +7,7 @@ const googleRoute = require('../routes/google')
 const oauthRoute = require('../routes/oauth')
 const venueDetail = require('../routes/venueDetail')
 const sentimentAnalysisRoute = require('../routes/sentimentAnalysis');
+const mobileRoute = require('../routes/mobileRoute');
 
 let appConnector = (express) => {
     express.use('/', landingPageRoute);
@@ -18,6 +19,7 @@ let appConnector = (express) => {
     express.use('/oauth', oauthRoute);
     express.use('/venues', venueDetail);
     express.use('/sentiment', sentimentAnalysisRoute);
+    express.use('/mobile', mobileRoute);
 }
 
 module.exports = appConnector;
