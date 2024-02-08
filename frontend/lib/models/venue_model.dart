@@ -108,6 +108,13 @@ class ImageUrl {
   final String? link4;
   final String? link5;
 
+  List<String> toImageList() {
+    return [link1, link2, link3, link4, link5]
+        .where((link) => link != null)
+        .cast<String>()
+        .toList();
+  }
+
   ImageUrl({
     required this.nameOfVenue,
     required this.link1,

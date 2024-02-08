@@ -1,67 +1,10 @@
-// import 'dart:convert';
-
-// import 'package:http/http.dart' as http;
-
-// Future<List<Map<String, dynamic>>> fetchData() async {
-//   final response =
-//       await http.get(Uri.parse('http://localhost:4000/query/search'));
-
-//   if (response.statusCode == 200) {
-//     final List<Map<String, dynamic>> jsonData =
-//         List<Map<String, dynamic>>.from([json.decode(response.body)]);
-//     return jsonData;
-//   } else {
-//     // Handle errors
-//     print('Failed to load data');
-//     throw Exception('Failed to load data');
-//   }
-// }
-
-// import 'dart:convert';
-
-// import 'package:http/http.dart' as http;
-
-// Future<List<Map<String, dynamic>>> fetchData() async {
-//   try {
-//     final response =
-//         await http.get(Uri.parse('http://localhost:4000/query/search'));
-
-//     if (response.statusCode == 200) {
-//       final Map<String, dynamic> jsonData = json.decode(response.body);
-
-//       // Access the 'venues' field
-//       final List<Map<String, dynamic>> venues =
-//           List<Map<String, dynamic>>.from(jsonData['venues']);
-
-//       // Print raw JSON data
-//       print('Raw JSON data: $venues');
-
-//       // Check the structure of the first item
-//       if (venues.isNotEmpty) {
-//         final firstItem = venues[0];
-//         print('Structure of the first item: $firstItem');
-//       }
-
-//       return venues;
-//     } else {
-//       // Handle errors
-//       print('Failed to load data');
-//       throw Exception('Failed to load data');
-//     }
-//   } catch (e) {
-//     // Handle exceptions
-//     print('Exception: $e');
-//     throw Exception('Failed to load data');
-//   }
-// }
-
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/venue_model.dart'; // Import the models.dart file
 
 Future<List<Venue>> fetchData() async {
   final response =
-      await http.get(Uri.parse('http://localhost:4000/query/search'));
+      await http.get(Uri.parse('http://192.168.56.1:4000/query/search'));
 
   if (response.statusCode == 200) {
     final jsonData = json.decode(response.body);
