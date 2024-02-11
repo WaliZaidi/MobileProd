@@ -9,13 +9,13 @@ import '../widgets/property_type_list.dart';
 import '../store/store.dart';
 import '../models/venue_model.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import '../widgets/filter_search.dart';
 import '../theme/theme.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _HomeScreenState createState() => _HomeScreenState();
 }
 
@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Theme(
       // Apply your custom card theme here
-      data: cardTheme,
+      data: theme,
       child: Scaffold(
         bottomNavigationBar: const AppNavBar(),
         body: CustomScrollView(
@@ -81,24 +81,25 @@ class _HomeScreenState extends State<HomeScreen> {
                       right: 8.0,
                       child: IconButton(
                         onPressed: () {
-                          print('Filter button pressed');
-                          showDialog(
+                          showModalBottomSheet(
                             context: context,
+                            isScrollControlled:
+                                true, // Set isScrollControlled to true
                             builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: const Text('Filter Button Pressed'),
-                                content: const Text(
-                                    'This is the text you want to show.'),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('OK'),
-                                  ),
-                                ],
+                              return const Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal:
+                                        0), // Set horizontal padding to zero
+                                child:
+                                    FilterWidget(), // Return the FilterWidget directly
                               );
                             },
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20.0),
+                                topRight: Radius.circular(20.0),
+                              ),
+                            ),
                           );
                         },
                         icon: const Icon(Icons.tune),
@@ -120,7 +121,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               vertical: 8.0,
                             ),
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Colors
+                                  .white, // Set the background color to white
                               border: Border.all(
                                 color: Colors.white,
                                 width: 0.5,
@@ -145,7 +147,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Text(
                                       'Where to?',
                                       style: textTheme.bodyMedium!.copyWith(
-                                          fontWeight: FontWeight.bold),
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                     Text(
                                       'Anywhere • Any week • Add events',
