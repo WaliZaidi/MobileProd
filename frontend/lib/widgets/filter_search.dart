@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import '../theme/theme.dart'; // Import your custom theme here
+import '../store/store.dart'; // Import your store.dart file  
+
 
 class FilterWidget extends StatefulWidget {
   const FilterWidget({Key? key}) : super(key: key);
@@ -14,6 +16,11 @@ class _FilterWidgetState extends State<FilterWidget> {
   late String selectedRating;
   late String selectedTypeOfVenue;
   late String selectedCity;
+  late String selectedPricePerPerson;
+  late String selectedAccessibilityOptions;
+  late String selectedCapacity;
+  late String selectedRefundPolicy;
+
 
   @override
   void initState() {
@@ -21,12 +28,16 @@ class _FilterWidgetState extends State<FilterWidget> {
     selectedRating = '';
     selectedTypeOfVenue = '';
     selectedCity = '';
+    selectedPricePerPerson = '';
+    selectedAccessibilityOptions = '';
+    selectedCapacity = '';
+    selectedRefundPolicy = '';
   }
 
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-    double bottomHalfHeight = screenHeight / 1.5;
+    double bottomHalfHeight = screenHeight;
 
     return Theme(
       data: theme, // Apply your custom theme here
@@ -80,7 +91,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                   widthFactor: 1.0,
                   child: buildFilterOption(
                     title: 'Type of Venue',
-                    options: ['Option 1', 'Option 2', 'Option 3'],
+                    options: ['Banquet Hall', 'Wedding', 'Birthday', 'Corporate Events', 'Birthday'],
                     selectedOption: selectedTypeOfVenue,
                     onSelect: (value) {
                       setState(() {
@@ -94,7 +105,63 @@ class _FilterWidgetState extends State<FilterWidget> {
                   widthFactor: 1.0,
                   child: buildFilterOption(
                     title: 'City',
-                    options: ['City 1', 'City 2', 'City 3'],
+                    options: ['Islamabad', 'Lahore', 'Peshawar'],
+                    selectedOption: selectedCity,
+                    onSelect: (value) {
+                      setState(() {
+                        selectedCity = value;
+                      });
+                    },
+                  ),
+                ),
+                const Divider(),
+                FractionallySizedBox(
+                  widthFactor: 1.0,
+                  child: buildFilterOption(
+                    title: 'Price Per Person',
+                    options: ['0-1500', '1500-2000', '2000-2500', '2500-3000', '3500-4000', '4000-4500', '4500-5000', '5000+'],
+                    selectedOption: selectedPricePerPerson,
+                    onSelect: (value) {
+                      setState(() {
+                        selectedPricePerPerson = value;
+                      });
+                    },
+                  ),
+                ),
+                const Divider(),
+                FractionallySizedBox(
+                  widthFactor: 1.0,
+                  child: buildFilterOption(
+                    title: 'Accessibility Options',
+                    options: ['Wheelchair Access', 'Wheelchair Accessable Parking'],
+                    selectedOption: selectedAccessibilityOptions,
+                    onSelect: (value) {
+                      setState(() {
+                        selectedAccessibilityOptions = value;
+                      });
+                    },
+                  ),
+                ),
+                const Divider(),
+                FractionallySizedBox(
+                  widthFactor: 1.0,
+                  child: buildFilterOption(
+                    title: 'Capacity',
+                    options: ['0-50', '50-100', '100-200', '200-400', '400-600', '600-1000', '1000+' ],
+                    selectedOption: selectedCapacity,
+                    onSelect: (value) {
+                      setState(() {
+                        selectedCapacity = value;
+                      });
+                    },
+                  ),
+                ),
+                const Divider(),
+                FractionallySizedBox(
+                  widthFactor: 1.0,
+                  child: buildFilterOption(
+                    title: 'Refund Policy',
+                    options: ['Yes', 'No', 'Partial Refund'],
                     selectedOption: selectedCity,
                     onSelect: (value) {
                       setState(() {
@@ -117,13 +184,28 @@ class _FilterWidgetState extends State<FilterWidget> {
                       selectedRating = '';
                       selectedTypeOfVenue = '';
                       selectedCity = '';
+                      selectedPricePerPerson = '';
+                      selectedAccessibilityOptions = '';
+                      selectedCapacity = '';  
+                      selectedRefundPolicy = '';
+                      
                     });
                   },
                   child: const Text('Clear'),
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    // Handle search action
+                    // Filter the venues based on the selected filters
+                    AppDataStore.filterVenues(
+                      selectedRating: selectedRating,
+                      selectedTypeOfVenue: selectedTypeOfVenue,
+                      selectedCity: selectedCity,
+                      selectedPricePerPerson: selectedPricePerPerson,
+                      selectedAccessibilityOptions: selectedAccessibilityOptions,
+                      selectedCapacity: selectedCapacity,
+                      selectedRefundPolicy: selectedRefundPolicy,
+                    );
+                    Navigator.of(context).pop();
                   },
                   child: const Text('Search'),
                 ),

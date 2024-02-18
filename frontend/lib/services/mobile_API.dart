@@ -4,7 +4,7 @@ import '../models/venue_model.dart'; // Import the models.dart file
 
 Future<List<Venue>> fetchData() async {
   final response =
-      await http.get(Uri.parse('http://192.168.18.16:4000/query/search'));
+      await http.get(Uri.parse('http://192.168.56.1:4000/query/search'));
 
   if (response.statusCode == 200) {
     final jsonData = json.decode(response.body);

@@ -254,7 +254,8 @@ import 'package:flutter/material.dart';
 import '../widgets/property_type_list.dart';
 import '../widgets/filter_search.dart';
 import 'package:go_router/go_router.dart';
-import '../theme/theme.dart';
+import '../theme/theme.dart'; 
+// import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class TopNavBar extends StatelessWidget {
   const TopNavBar({Key? key}) : super(key: key);
@@ -330,33 +331,28 @@ class TopNavBar extends StatelessWidget {
                           ),
                         ),
                       ),
+                      // IconButton(
+                      //   onPressed: () {
+                      //     showMaterialModalBottomSheet (
+                      //       expand: true,
+                      //       context: context,
+                      //       backgroundColor: Colors.transparent,
+                      //       builder: (context) => const FilterWidget()
+                      //     );
+                      //   },
+                      //   icon: const Icon(Icons.tune),
+                      // ),
                       IconButton(
                         onPressed: () {
                           showModalBottomSheet(
                             context: context,
-                            isScrollControlled: true,
-                            builder: (BuildContext context) {
-                              // return Container(
-                              //   decoration: const BoxDecoration(
-                              //     borderRadius: BorderRadius.only(
-                              //       topLeft: Radius.circular(20.0),
-                              //       topRight: Radius.circular(20.0),
-                              //     ),
-                              //   ),
-                              //   child: const Align(
-                              //     alignment: Alignment.centerLeft,
-                              //     child: FilterWidget(),
-                              //   ),
-                              // );
-                              return const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 0),
-                                child: FilterWidget(),
-                              );
-                            },
+                            backgroundColor: Colors.transparent,
+                            builder: (context) => const FilterWidget(),
                           );
                         },
                         icon: const Icon(Icons.tune),
                       ),
+
                     ],
                   ),
                   const SizedBox(

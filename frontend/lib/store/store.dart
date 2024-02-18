@@ -5,6 +5,7 @@ import '../services/mobile_API.dart'; // Import your api.dart file
 class AppDataStore {
   static List<Venue> dataList = [];
   static Venue? currentVenue;
+  static List<Venue> filteredVenues = [];
 
   static Future<void> fetchDataAtAppLaunch() async {
     try {
@@ -81,5 +82,34 @@ class AppDataStore {
     } else {
       print('Venue not found');
     }
+  }
+
+  static void filterVenues({
+    String selectedRating = '',
+    String selectedTypeOfVenue = '',
+    String selectedCity = '',
+    String selectedPricePerPerson = '',
+    String selectedAccessibilityOptions = '',
+    String selectedCapacity = '',
+    String selectedRefundPolicy = '',
+  }) {
+    // Filter the venues based on the selected filters
+    filteredVenues = dataList.where((venue) {
+      final ratingMatches = venue.rating == selectedRating;
+      final typeOfVenueMatches = venue.typeOfVenue.contains(selectedTypeOfVenue);
+      final cityMatches = venue.city == selectedCity;
+      final pricePerPersonMatches = venue.pricePerPerson == int.parse(selectedPricePerPerson);
+      final accessibilityOptionsMatches = venue.accessabilityOptions.contains(selectedAccessibilityOptions);
+      final capacityMatches = venue.totalHallsCapacity == selectedCapacity;
+      final refundPolicyMatches = venue.refundPolicy.contains(selectedRefundPolicy);
+
+      return ratingMatches &&
+          typeOfVenueMatches &&
+          cityMatches &&
+          pricePerPersonMatches &&
+          accessibilityOptionsMatches &&
+          capacityMatches &&
+          refundPolicyMatches;
+    }).toList();
   }
 }
