@@ -254,7 +254,7 @@ import 'package:flutter/material.dart';
 import '../widgets/property_type_list.dart';
 import '../widgets/filter_search.dart';
 import 'package:go_router/go_router.dart';
-import '../theme/theme.dart'; 
+import '../theme/theme.dart';
 // import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class TopNavBar extends StatelessWidget {
@@ -267,7 +267,7 @@ class TopNavBar extends StatelessWidget {
         padding: const EdgeInsets.only(
             top: 8.0), // Add padding to the top of the screen
         child: AppBar(
-          toolbarHeight: 160, // Increased height
+          toolbarHeight: 200, // Increased height
           flexibleSpace: Container(
             decoration: BoxDecoration(
               color: Colors.white,
@@ -347,16 +347,21 @@ class TopNavBar extends StatelessWidget {
                           showModalBottomSheet(
                             context: context,
                             backgroundColor: Colors.transparent,
-                            builder: (context) => const FilterWidget(),
+                            isScrollControlled: true,
+                            builder: (context) => SizedBox(
+                              height: MediaQuery.of(context).size.height *
+                                  0.8, // Adjust the fraction as needed
+                              width: MediaQuery.of(context).size.width,
+                              child: const FilterWidget(),
+                            ),
                           );
                         },
                         icon: const Icon(Icons.tune),
                       ),
-
                     ],
                   ),
                   const SizedBox(
-                      height: 16.0), // Add vertical spacing between rows
+                      height: 6.0), // Add vertical spacing between rows
                   const PropertyTypeList(),
                 ],
               ),

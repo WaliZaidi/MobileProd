@@ -123,7 +123,7 @@ class _PropertyTypeListState extends State<PropertyTypeList> {
     ];
 
     final screenWidth = MediaQuery.of(context).size.width;
-    final itemWidth = screenWidth / propertyTypes.length + 5.0;
+    final itemWidth = screenWidth / 5;
 
     return SizedBox(
       height: 60.0,
@@ -143,7 +143,7 @@ class _PropertyTypeListState extends State<PropertyTypeList> {
                 width: itemWidth,
                 margin: const EdgeInsets.only(
                   right: 3.0,
-                  left: 4.0,
+                  left: 6.0,
                   top: 4.0,
                 ),
                 child: Column(
