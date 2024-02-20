@@ -489,12 +489,12 @@ class _FilterWidgetState extends State<FilterWidget> {
                   child: buildFilterOption(
                     title: 'Capacity',
                     options: [
-                      '0-50',
-                      '50-100',
-                      '100-200',
-                      '200-400',
-                      '400-600',
-                      '600-1000',
+                      '50',
+                      '100',
+                      '200',
+                      '400',
+                      '600',
+                      '1000',
                       '1000+'
                     ],
                     selectedOptions: [selectedCapacity],

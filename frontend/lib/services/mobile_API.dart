@@ -163,3 +163,45 @@ Future<List<Venue>> fetchData() async {
     throw Exception('Failed to load data');
   }
 }
+
+Future<List<String>> fetchFilteredData(
+    String selectedRating,
+    List<String> selectedTypeOfVenue,
+    String selectedCity,
+    int selectedPricePerPerson,
+    List<String> selectedAccessibilityOptions,
+    int selectedCapacity,
+    List<String> selectedRefundPolicy) async {
+  String refundPolicySender = selectedRefundPolicy.join(',');
+  String accessibilityOptionsSender = selectedAccessibilityOptions.join(',');
+  String typeOfVenueSender = selectedTypeOfVenue.join(',');
+
+  String url = 'http://192.168.18.16:4000/query/search/name?'
+      'rating=$selectedRating'
+      '&typeOfVenue=$typeOfVenueSender'
+      '&city=$selectedCity'
+      '&pricePerPerson=$selectedPricePerPerson'
+      '&totalHallsCapacity=$selectedCapacity'
+      '&refundPolicy=$refundPolicySender'
+      '&accessabilityOptions=$accessibilityOptionsSender';
+
+  final response = await http.get(Uri.parse(url));
+
+  if (response.statusCode == 200) {
+    final jsonData = json.decode(response.body);
+    final List<dynamic> venuesData = jsonData['venues'];
+
+    // print(venuesData); this works, so that means its the conversion to Venue object that is the problem
+    //check the structure of the first item
+
+    print(venuesData[0]['nameOfVenue']);
+
+    final List<String> venueNames = venuesData
+        .map((venueData) => venueData['nameOfVenue'] as String ?? '')
+        .toList();
+
+    return venueNames; // Return the list of venue names here
+  }
+
+  throw Exception('Failed to load data');
+}
