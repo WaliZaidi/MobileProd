@@ -93,52 +93,6 @@ class AppDataStore {
     String selectedCapacity,
     List<String> selectedRefundPolicy,
   ) {
-    // Filter the venues based on the selected filters
-    filteredVenues = dataList.where((venue) {
-      // Check if the selectedRating is not empty and the venue's rating matches the selectedRating
-      final ratingMatches =
-          selectedRating.isNotEmpty ? venue.rating == selectedRating : true;
-
-      // Check if the selectedTypeOfVenue is not empty and the venue's typeOfVenue matches the selectedTypeOfVenue
-      final typeOfVenueMatches = selectedTypeOfVenue.isNotEmpty
-          ? venue.typeOfVenue.any((type) => selectedTypeOfVenue.contains(type))
-          : true;
-
-      // Check if the selectedCity is not empty and the venue's city matches the selectedCity
-      final cityMatches =
-          selectedCity.isNotEmpty ? venue.city == selectedCity : true;
-
-      // Check if the selectedPricePerPerson is not empty and the venue's pricePerPerson is less than or equal to the selectedPricePerPerson
-      final pricePerPersonMatches = selectedPricePerPerson > 0
-          ? venue.pricePerPerson <= selectedPricePerPerson
-          : true;
-
-      // Check if the selectedAccessibilityOptions is not empty and the venue's accessibilityOptions matches the selectedAccessibilityOptions
-      final accessibilityOptionsMatches = selectedAccessibilityOptions
-              .isNotEmpty
-          ? venue.accessabilityOptions
-              .any((option) => selectedAccessibilityOptions.contains(option))
-          : true;
-
-      // Check if the selectedCapacity is not empty and the venue's totalHallsCapacity matches the selectedCapacity
-      final capacityMatches = selectedCapacity.isNotEmpty
-          ? venue.totalHallsCapacity == selectedCapacity
-          : true;
-
-      // Check if the selectedRefundPolicy is not empty and the venue's refundPolicy matches the selectedRefundPolicy
-      final refundPolicyMatches = selectedRefundPolicy.isNotEmpty
-          ? venue.refundPolicy
-              .any((policy) => selectedRefundPolicy.contains(policy))
-          : true;
-
-      // Return true if all the conditions are met
-      return ratingMatches &&
-          typeOfVenueMatches &&
-          cityMatches &&
-          pricePerPersonMatches &&
-          accessibilityOptionsMatches &&
-          capacityMatches &&
-          refundPolicyMatches;
-    }).toList();
+    
   }
 }

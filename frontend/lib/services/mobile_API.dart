@@ -4,7 +4,7 @@ import '../models/venue_model.dart'; // Import the models.dart file
 
 Future<List<Venue>> fetchData() async {
   final response =
-      await http.get(Uri.parse('http://192.168.18.16:4000/query/search'));
+      await http.get(Uri.parse('http://172.16.55.187:4000/query/search'));
 
   if (response.statusCode == 200) {
     final jsonData = json.decode(response.body);
@@ -159,6 +159,45 @@ Future<List<Venue>> fetchData() async {
     return venues;
   } else {
     // Handle errors
+    print('Failed to load data');
+    throw Exception('Failed to load data');
+  }
+}
+
+Future<List<Venue>> searchQuery({
+  required String selectedRating,
+  required List<String> selectedTypeOfVenue,
+  required String selectedCity,
+  required int selectedPricePerPerson,
+  required List<String> selectedAccessibilityOptions,
+  required String selectedCapacity,
+  required List<String> selectedRefundPolicy,
+  required String selectedSearchQuery, 
+}) async {
+  final url = Uri.parse('http://172.16.55.187:4000/query/search')
+      .replace(queryParameters: {
+    'searchQuery' : selectedSearchQuery,
+    'rating': selectedRating,
+    'typeOfVenue': selectedTypeOfVenue.join(','),
+    'city': selectedCity,
+    'pricePerPerson': selectedPricePerPerson.toString(),
+    'accessibilityOptions': selectedAccessibilityOptions.join(','),
+    'totalHallsCapacity': selectedCapacity,
+    'refundPolicy': selectedRefundPolicy.join(','),
+  });
+
+  final response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    final jsonData = json.decode(response.body);
+    final List<dynamic> venuesData = jsonData['venues'];
+
+    final List<Venue> venues = venuesData.map((venueData) => Venue(
+      // your existing conversion logic here
+    )).toList();
+
+    return venues;
+  } else {
     print('Failed to load data');
     throw Exception('Failed to load data');
   }
