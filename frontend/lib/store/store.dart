@@ -83,32 +83,85 @@ class AppDataStore {
     }
   }
 
+  // static void filterVenues(
+  //   String selectedRating,
+  //   List<String> selectedTypeOfVenue,
+  //   String selectedCity,
+  //   int selectedPricePerPerson,
+  //   List<String> selectedAccessibilityOptions,
+  //   int selectedCapacity,
+  //   List<String> selectedRefundPolicy,
+  // ) {
+  //   fetchFilteredData(
+  //     selectedRating,
+  //     selectedTypeOfVenue,
+  //     selectedCity,
+  //     selectedPricePerPerson,
+  //     selectedAccessibilityOptions,
+  //     selectedCapacity,
+  //     selectedRefundPolicy,
+  //   ).then((venueNames) {
+  //     // Filter the venues based on the selected venue names
+  //     filteredVenues = dataList.where((venue) {
+  //       // Check if the venue's name is in the venueNames list
+  //       return venueNames.contains(venue.nameOfVenue);
+  //     }).toList();
+  //   }).catchError((error) {
+  //     print('Failed to fetch filtered data: $error');
+  //     // Handle error
+  //   });
+  // }
+
   static void filterVenues(
+    //we want to apply frontend filtering to the datalist
     String selectedRating,
     String selectedTypeOfVenue,
     String selectedCity,
     int selectedPricePerPerson,
-    List<String> selectedAccessibilityOptions,
+    String selectedAccessibilityOptions,
     int selectedCapacity,
-    List<String> selectedRefundPolicy,
+    String selectedRefundPolicy,
   ) {
-    fetchFilteredData(
-      selectedRating,
-      selectedTypeOfVenue as List<String>,
-      selectedCity,
-      selectedPricePerPerson,
-      selectedAccessibilityOptions,
-      selectedCapacity as String,
-      selectedRefundPolicy,
-    ).then((venueNames) {
-      // Filter the venues based on the selected venue names
-      filteredVenues = dataList.where((venue) {
-        // Check if the venue's name is in the venueNames list
-        return venueNames.contains(venue.nameOfVenue);
-      }).toList();
-    }).catchError((error) {
-      print('Failed to fetch filtered data: $error');
-      // Handle error
-    });
+    // Filter the venues based on the selected filters
+    filteredVenues = dataList.where((venue) {
+      // Check if the venue's rating is equal to the selected rating
+      final ratingCondition =
+          selectedRating == 'All' || venue.rating == selectedRating;
+
+      // Check if the venue's typeOfVenue contains any of the selected typeOfVenue
+      final typeOfVenueCondition = selectedTypeOfVenue.isEmpty ||
+          selectedTypeOfVenue.any((type) => venue.typeOfVenue.contains(type));
+
+      // Check if the venue's city is equal to the selected city
+      final cityCondition = selectedCity == 'All' || venue.city == selectedCity;
+
+      // Check if the venue's pricePerPerson is less than or equal to the selected pricePerPerson
+      final pricePerPersonCondition = selectedPricePerPerson == 0 ||
+          venue.pricePerPerson <= selectedPricePerPerson;
+
+      // Check if the venue's accessabilityOptions contains any of the selected accessabilityOptions
+      final accessabilityOptionsCondition =
+          selectedAccessibilityOptions.isEmpty ||
+              selectedAccessibilityOptions
+                  .any((option) => venue.accessabilityOptions.contains(option));
+
+      // Check if the venue's totalHallsCapacity is greater than or equal to the selected capacity
+      final capacityCondition = selectedCapacity == 0 ||
+          int.parse(venue.totalHallsCapacity) >= selectedCapacity;
+
+      // Check if the venue's refundPolicy contains any of the selected refundPolicy
+      final refundPolicyCondition = selectedRefundPolicy.isEmpty ||
+          selectedRefundPolicy
+              .any((policy) => venue.refundPolicy.contains(policy));
+
+      // Return true if all the conditions are true
+      return ratingCondition &&
+          typeOfVenueCondition &&
+          cityCondition &&
+          pricePerPersonCondition &&
+          accessabilityOptionsCondition &&
+          capacityCondition &&
+          refundPolicyCondition;
+    }).toList();
   }
 }

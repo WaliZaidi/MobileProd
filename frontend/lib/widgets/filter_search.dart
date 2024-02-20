@@ -337,23 +337,23 @@ class FilterWidget extends StatefulWidget {
 
 class _FilterWidgetState extends State<FilterWidget> {
   late String selectedRatings;
-  late List<String> selectedTypeOfVenue;
+  late String selectedTypeOfVenue;
   late String selectedCity;
   late int selectedPricePerPerson;
-  late List<String> selectedAccessibilityOptions;
+  late String selectedAccessibilityOptions;
   late String selectedCapacity;
-  late List<String> selectedRefundPolicy;
+  late String selectedRefundPolicy;
 
   @override
   void initState() {
     super.initState();
     selectedRatings = '';
-    selectedTypeOfVenue = [];
+    selectedTypeOfVenue = '';
     selectedCity = '';
     selectedPricePerPerson = 0;
-    selectedAccessibilityOptions = [];
+    selectedAccessibilityOptions = '';
     selectedCapacity = '';
-    selectedRefundPolicy = [];
+    selectedRefundPolicy = '';
   }
 
   @override
@@ -551,7 +551,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                       selectedCity,
                       selectedPricePerPerson,
                       selectedAccessibilityOptions,
-                      selectedCapacity,
+                      selectedCapacity as int,
                       selectedRefundPolicy,
                     );
                     // Navigator.of(context).pop();
