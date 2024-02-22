@@ -19,9 +19,10 @@ class _SearchResultsState extends State<SearchResults> {
       data: theme,
       child: Scaffold(
         appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(40),
-          child: Positioned(top: 20.0, left: 0, child: BackButton()),
-          // child: TopNavBar(),
+          preferredSize: Size.fromHeight(70),
+          child: Stack(
+            children: [Positioned(top: 20.0, left: 0, child: BackButton())],
+          )          // child: TopNavBar(),
         ),
         // bottomNavigationBar: const AppNavBar(),
         body: CustomScrollView(

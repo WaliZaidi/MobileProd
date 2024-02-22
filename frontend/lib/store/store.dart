@@ -1,6 +1,5 @@
-import 'dart:convert';
 import '../models/venue_model.dart'; // Import the models.dart file
-import '../services/mobile_API.dart'; // Import your api.dart file
+import '../services/mobile_API.dart' as api; // Import your api.dart file
 
 class AppDataStore {
   static List<Venue> dataList = [];
@@ -9,7 +8,7 @@ class AppDataStore {
 
   static Future<void> fetchDataAtAppLaunch() async {
     try {
-      final jsonData = await fetchData();
+      final jsonData = await api.fetchData();
 
       dataList = jsonData;
     } catch (e, stackTrace) {
@@ -84,61 +83,42 @@ class AppDataStore {
     }
   }
 
-  static void filterVenues(
-    String selectedRating,
+  
+
+
+  static Future<List<Venue>> fetchFilteredData(
+    List<String> selectedRating,
     List<String> selectedTypeOfVenue,
-    String selectedCity,
-    int selectedPricePerPerson,
+    List<String> selectedCity,
+    List<String> selectedPricePerPerson,
     List<String> selectedAccessibilityOptions,
-    String selectedCapacity,
+    List<String> selectedCapacity,
     List<String> selectedRefundPolicy,
-  ) {
-    // Filter the venues based on the selected filters
-    filteredVenues = dataList.where((venue) {
-      // Check if the selectedRating is not empty and the venue's rating matches the selectedRating
-      final ratingMatches =
-          selectedRating.isNotEmpty ? venue.rating == selectedRating : true;
+  ) async {
+    List<String> venueNames = [''];
+    venueNames = await api.filteredData(selectedRating, selectedTypeOfVenue, selectedCity, selectedPricePerPerson, selectedAccessibilityOptions, selectedCapacity, selectedRefundPolicy);
+    if (venueNames.isNotEmpty) {
+        List<Venue> filteredDataVenues = dataList.where((venue) => venueNames.contains(venue.nameOfVenue)).toList();
+        filteredVenues = filteredDataVenues;
 
-      // Check if the selectedTypeOfVenue is not empty and the venue's typeOfVenue matches the selectedTypeOfVenue
-      final typeOfVenueMatches = selectedTypeOfVenue.isNotEmpty
-          ? venue.typeOfVenue.any((type) => selectedTypeOfVenue.contains(type))
-          : true;
+      return filteredVenues;
+    }
+    else {
+      List<Venue> filteredData = dataList.where((venue) {
+        bool ratingMatches = selectedRating.isEmpty || selectedRating.contains(venue.rating);
+        bool typeMatches = selectedTypeOfVenue.isEmpty || selectedTypeOfVenue.contains(venue.typeOfVenue.join(', '));
+        bool cityMatches = selectedCity.isEmpty || selectedCity.contains(venue.city);
+        bool priceMatches = selectedPricePerPerson.isEmpty || selectedPricePerPerson.contains(venue.pricePerPerson as int);
+        bool accessibilityMatches = selectedAccessibilityOptions.isEmpty || selectedAccessibilityOptions.any((option) => venue.accessabilityOptions.contains(option));
+        bool capacityMatches = selectedCapacity.isEmpty || selectedCapacity.contains(venue.totalHallsCapacity as int);
+        bool refundPolicyMatches = selectedRefundPolicy.isEmpty || selectedRefundPolicy.contains(venue.refundPolicy.join(', '));
 
-      // Check if the selectedCity is not empty and the venue's city matches the selectedCity
-      final cityMatches =
-          selectedCity.isNotEmpty ? venue.city == selectedCity : true;
+        return ratingMatches && typeMatches && cityMatches && priceMatches && accessibilityMatches && capacityMatches && refundPolicyMatches;
+      }).toList();
 
-      // Check if the selectedPricePerPerson is not empty and the venue's pricePerPerson is less than or equal to the selectedPricePerPerson
-      final pricePerPersonMatches = selectedPricePerPerson > 0
-          ? venue.pricePerPerson <= selectedPricePerPerson
-          : true;
+      filteredVenues = filteredData;
 
-      // Check if the selectedAccessibilityOptions is not empty and the venue's accessibilityOptions matches the selectedAccessibilityOptions
-      final accessibilityOptionsMatches = selectedAccessibilityOptions
-              .isNotEmpty
-          ? venue.accessabilityOptions
-              .any((option) => selectedAccessibilityOptions.contains(option))
-          : true;
-
-      // Check if the selectedCapacity is not empty and the venue's totalHallsCapacity matches the selectedCapacity
-      final capacityMatches = selectedCapacity.isNotEmpty
-          ? venue.totalHallsCapacity == selectedCapacity
-          : true;
-
-      // Check if the selectedRefundPolicy is not empty and the venue's refundPolicy matches the selectedRefundPolicy
-      final refundPolicyMatches = selectedRefundPolicy.isNotEmpty
-          ? venue.refundPolicy
-              .any((policy) => selectedRefundPolicy.contains(policy))
-          : true;
-
-      // Return true if all the conditions are met
-      return ratingMatches &&
-          typeOfVenueMatches &&
-          cityMatches &&
-          pricePerPersonMatches &&
-          accessibilityOptionsMatches &&
-          capacityMatches &&
-          refundPolicyMatches;
-    }).toList();
+      return filteredData;
+    }
   }
 }

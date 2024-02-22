@@ -1,5 +1,3 @@
-// //----------------------------------------------------------------------------
-
 // import 'package:flutter/material.dart';
 // import '../theme/theme.dart'; // Import your custom theme here
 // import '../store/store.dart'; // Import your store.dart file
@@ -13,22 +11,18 @@
 // }
 
 // class _FilterWidgetState extends State<FilterWidget> {
-//   late String selectedRating;
-//   late String venueSelector = '';
+//   late String selectedRatings;
 //   late List<String> selectedTypeOfVenue;
 //   late String selectedCity;
-//   late int priceSelector = 0;
 //   late int selectedPricePerPerson;
-//   late String accessibilitySelector = '';
 //   late List<String> selectedAccessibilityOptions;
 //   late String selectedCapacity;
-//   late String refundPolicySelector = '';
 //   late List<String> selectedRefundPolicy;
 
 //   @override
 //   void initState() {
 //     super.initState();
-//     selectedRating = '';
+//     selectedRatings = '';
 //     selectedTypeOfVenue = [];
 //     selectedCity = '';
 //     selectedPricePerPerson = 0;
@@ -81,10 +75,10 @@
 //                   child: buildFilterOption(
 //                     title: 'Rating',
 //                     options: ['1', '2', '3', '4', '5'],
-//                     selectedOptions: selectedRating,
-//                     onSelect: (value) {
+//                     selectedOptions: [selectedRatings],
+//                     onSelect: (values) {
 //                       setState(() {
-//                         selectedRating = value;
+//                         selectedRatings = values as String;
 //                       });
 //                     },
 //                   ),
@@ -101,10 +95,10 @@
 //                       'Corporate Events',
 //                       'Birthday'
 //                     ],
-//                     selectedOptions: venueSelector,
-//                     onSelect: (value) {
+//                     selectedOptions: selectedTypeOfVenue,
+//                     onSelect: (values) {
 //                       setState(() {
-//                         selectedTypeOfVenue.add(value);
+//                         selectedTypeOfVenue = values;
 //                       });
 //                     },
 //                   ),
@@ -115,10 +109,10 @@
 //                   child: buildFilterOption(
 //                     title: 'City',
 //                     options: ['Islamabad', 'Lahore', 'Peshawar'],
-//                     selectedOptions: selectedCity,
-//                     onSelect: (value) {
+//                     selectedOptions: [selectedCity],
+//                     onSelect: (values) {
 //                       setState(() {
-//                         selectedCity = value;
+//                         selectedCity = values.isNotEmpty ? values.first : '';
 //                       });
 //                     },
 //                   ),
@@ -138,10 +132,11 @@
 //                       '4500-5000',
 //                       '5000+'
 //                     ],
-//                     selectedOptions: priceSelector.toString(),
-//                     onSelect: (value) {
+//                     selectedOptions: [selectedPricePerPerson.toString()],
+//                     onSelect: (values) {
 //                       setState(() {
-//                         selectedPricePerPerson = priceSelector;
+//                         selectedPricePerPerson =
+//                             int.tryParse(values.first) ?? 0;
 //                       });
 //                     },
 //                   ),
@@ -153,12 +148,12 @@
 //                     title: 'Accessibility Options',
 //                     options: [
 //                       'Wheelchair Access',
-//                       'Wheelchair Accessable Parking'
+//                       'Wheelchair Accessible Parking'
 //                     ],
-//                     selectedOptions: accessibilitySelector,
-//                     onSelect: (value) {
+//                     selectedOptions: selectedAccessibilityOptions,
+//                     onSelect: (values) {
 //                       setState(() {
-//                         selectedAccessibilityOptions.add(value);
+//                         selectedAccessibilityOptions = values;
 //                       });
 //                     },
 //                   ),
@@ -177,10 +172,11 @@
 //                       '600-1000',
 //                       '1000+'
 //                     ],
-//                     selectedOptions: selectedCapacity,
-//                     onSelect: (value) {
+//                     selectedOptions: [selectedCapacity],
+//                     onSelect: (values) {
 //                       setState(() {
-//                         selectedCapacity = value;
+//                         selectedCapacity =
+//                             values.isNotEmpty ? values.first : '';
 //                       });
 //                     },
 //                   ),
@@ -191,10 +187,10 @@
 //                   child: buildFilterOption(
 //                     title: 'Refund Policy',
 //                     options: ['Yes', 'No', 'Partial Refund'],
-//                     selectedOptions: refundPolicySelector,
-//                     onSelect: (value) {
+//                     selectedOptions: selectedRefundPolicy,
+//                     onSelect: (values) {
 //                       setState(() {
-//                         selectedRefundPolicy.add(value);
+//                         selectedRefundPolicy = values;
 //                       });
 //                     },
 //                   ),
@@ -210,7 +206,7 @@
 //                 ElevatedButton(
 //                   onPressed: () {
 //                     setState(() {
-//                       selectedRating = '';
+//                       selectedRatings = '';
 //                       selectedTypeOfVenue = [];
 //                       selectedCity = '';
 //                       selectedPricePerPerson = 0;
@@ -224,8 +220,8 @@
 //                 ElevatedButton(
 //                   onPressed: () {
 //                     // Filter the venues based on the selected filters
-//                     AppDataStore.filterVenues(
-//                       selectedRating,
+//                     AppDataStore.fetchFilteredData(
+//                       selectedRatings,
 //                       selectedTypeOfVenue,
 //                       selectedCity,
 //                       selectedPricePerPerson,
@@ -336,23 +332,23 @@ class FilterWidget extends StatefulWidget {
 }
 
 class _FilterWidgetState extends State<FilterWidget> {
-  late String selectedRatings;
+  late List<String> selectedRatings;
   late List<String> selectedTypeOfVenue;
-  late String selectedCity;
-  late int selectedPricePerPerson;
+  late List<String> selectedCity;
+  late List<String> selectedPricePerPerson;
   late List<String> selectedAccessibilityOptions;
-  late String selectedCapacity;
+  late List<String> selectedCapacity;
   late List<String> selectedRefundPolicy;
 
   @override
   void initState() {
     super.initState();
-    selectedRatings = '';
+    selectedRatings = [];
     selectedTypeOfVenue = [];
-    selectedCity = '';
-    selectedPricePerPerson = 0;
+    selectedCity = [];
+    selectedPricePerPerson = [];
     selectedAccessibilityOptions = [];
-    selectedCapacity = '';
+    selectedCapacity = [];
     selectedRefundPolicy = [];
   }
 
@@ -400,10 +396,10 @@ class _FilterWidgetState extends State<FilterWidget> {
                   child: buildFilterOption(
                     title: 'Rating',
                     options: ['1', '2', '3', '4', '5'],
-                    selectedOptions: [selectedRatings],
+                    selectedOptions: selectedRatings,
                     onSelect: (values) {
                       setState(() {
-                        selectedRatings = values as String;
+                        selectedRatings = values;
                       });
                     },
                   ),
@@ -434,10 +430,10 @@ class _FilterWidgetState extends State<FilterWidget> {
                   child: buildFilterOption(
                     title: 'City',
                     options: ['Islamabad', 'Lahore', 'Peshawar'],
-                    selectedOptions: [selectedCity],
+                    selectedOptions: selectedCity,
                     onSelect: (values) {
                       setState(() {
-                        selectedCity = values.isNotEmpty ? values.first : '';
+                        selectedCity = values;
                       });
                     },
                   ),
@@ -446,22 +442,21 @@ class _FilterWidgetState extends State<FilterWidget> {
                 FractionallySizedBox(
                   widthFactor: 1.0,
                   child: buildFilterOption(
-                    title: 'Price Per Person',
+                    title: 'Max Price Per Person',
                     options: [
-                      '0-1500',
-                      '1500-2000',
-                      '2000-2500',
-                      '2500-3000',
-                      '3500-4000',
-                      '4000-4500',
-                      '4500-5000',
-                      '5000+'
+                      '1500',
+                      '2000',
+                      '2500',
+                      '3000',
+                      '4000',
+                      '4500',
+                      '5000',
+                      '6000'
                     ],
-                    selectedOptions: [selectedPricePerPerson.toString()],
+                    selectedOptions: selectedPricePerPerson,
                     onSelect: (values) {
                       setState(() {
-                        selectedPricePerPerson =
-                            int.tryParse(values.first) ?? 0;
+                        selectedPricePerPerson = values;
                       });
                     },
                   ),
@@ -487,21 +482,20 @@ class _FilterWidgetState extends State<FilterWidget> {
                 FractionallySizedBox(
                   widthFactor: 1.0,
                   child: buildFilterOption(
-                    title: 'Capacity',
+                    title: 'Max Capacity',
                     options: [
-                      '0-50',
-                      '50-100',
-                      '100-200',
-                      '200-400',
-                      '400-600',
-                      '600-1000',
-                      '1000+'
+                      '50',
+                      '100',
+                      '200',
+                      '400',
+                      '600',
+                      '1000',
+                      '1500'
                     ],
-                    selectedOptions: [selectedCapacity],
+                    selectedOptions: selectedCapacity,
                     onSelect: (values) {
                       setState(() {
-                        selectedCapacity =
-                            values.isNotEmpty ? values.first : '';
+                        selectedCapacity = values;
                       });
                     },
                   ),
@@ -531,12 +525,12 @@ class _FilterWidgetState extends State<FilterWidget> {
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      selectedRatings = '';
+                      selectedRatings = [];
                       selectedTypeOfVenue = [];
-                      selectedCity = '';
-                      selectedPricePerPerson = 0;
+                      selectedCity = [];
+                      selectedPricePerPerson = [];
                       selectedAccessibilityOptions = [];
-                      selectedCapacity = '';
+                      selectedCapacity = [];
                       selectedRefundPolicy = [];
                     });
                   },
@@ -545,7 +539,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                 ElevatedButton(
                   onPressed: () {
                     // Filter the venues based on the selected filters
-                    AppDataStore.filterVenues(
+                    AppDataStore.fetchFilteredData(
                       selectedRatings,
                       selectedTypeOfVenue,
                       selectedCity,
