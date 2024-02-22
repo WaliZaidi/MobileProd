@@ -1,4 +1,3 @@
-import 'dart:convert';
 import '../models/venue_model.dart'; // Import the models.dart file
 import '../services/mobile_API.dart'; // Import your api.dart file
 
@@ -86,13 +85,32 @@ class AppDataStore {
 
   static void filterVenues(
     String selectedRating,
-    List<String> selectedTypeOfVenue,
+    String selectedTypeOfVenue,
     String selectedCity,
     int selectedPricePerPerson,
-    List<String> selectedAccessibilityOptions,
-    String selectedCapacity,
-    List<String> selectedRefundPolicy,
+    String selectedAccessibilityOptions,
+    int selectedCapacity,
+    String selectedRefundPolicy,
   ) {
-    
+    fetchFilteredData(
+      selectedRating,
+      selectedTypeOfVenue,
+      selectedCity,
+      selectedPricePerPerson,
+      selectedAccessibilityOptions,
+      selectedCapacity,
+      selectedRefundPolicy,
+    ).then((venueNames) {
+      // Map venue names to venue objects
+      List<Venue> venues = dataList.where((venue) {
+        return venueNames.contains(venue.nameOfVenue);
+      }).toList();
+
+      // Add the mapped venues to filteredVenues
+      filteredVenues.addAll(venues);
+    }).catchError((error) {
+      print('Failed to fetch filtered data: $error');
+      // Handle error
+    });
   }
 }
