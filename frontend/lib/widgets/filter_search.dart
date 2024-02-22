@@ -1,5 +1,3 @@
-// //----------------------------------------------------------------------------
-
 // import 'package:flutter/material.dart';
 // import '../theme/theme.dart'; // Import your custom theme here
 // import '../store/store.dart'; // Import your store.dart file
@@ -13,22 +11,18 @@
 // }
 
 // class _FilterWidgetState extends State<FilterWidget> {
-//   late String selectedRating;
-//   late String venueSelector = '';
+//   late String selectedRatings;
 //   late List<String> selectedTypeOfVenue;
 //   late String selectedCity;
-//   late int priceSelector = 0;
 //   late int selectedPricePerPerson;
-//   late String accessibilitySelector = '';
 //   late List<String> selectedAccessibilityOptions;
 //   late String selectedCapacity;
-//   late String refundPolicySelector = '';
 //   late List<String> selectedRefundPolicy;
 
 //   @override
 //   void initState() {
 //     super.initState();
-//     selectedRating = '';
+//     selectedRatings = '';
 //     selectedTypeOfVenue = [];
 //     selectedCity = '';
 //     selectedPricePerPerson = 0;
@@ -81,10 +75,10 @@
 //                   child: buildFilterOption(
 //                     title: 'Rating',
 //                     options: ['1', '2', '3', '4', '5'],
-//                     selectedOptions: selectedRating,
-//                     onSelect: (value) {
+//                     selectedOptions: [selectedRatings],
+//                     onSelect: (values) {
 //                       setState(() {
-//                         selectedRating = value;
+//                         selectedRatings = values.isNotEmpty ? values.first : '';
 //                       });
 //                     },
 //                   ),
@@ -101,10 +95,10 @@
 //                       'Corporate Events',
 //                       'Birthday'
 //                     ],
-//                     selectedOptions: venueSelector,
-//                     onSelect: (value) {
+//                     selectedOptions: selectedTypeOfVenue,
+//                     onSelect: (values) {
 //                       setState(() {
-//                         selectedTypeOfVenue.add(value);
+//                         selectedTypeOfVenue = values;
 //                       });
 //                     },
 //                   ),
@@ -115,10 +109,10 @@
 //                   child: buildFilterOption(
 //                     title: 'City',
 //                     options: ['Islamabad', 'Lahore', 'Peshawar'],
-//                     selectedOptions: selectedCity,
-//                     onSelect: (value) {
+//                     selectedOptions: [selectedCity],
+//                     onSelect: (values) {
 //                       setState(() {
-//                         selectedCity = value;
+//                         selectedCity = values.isNotEmpty ? values.first : '';
 //                       });
 //                     },
 //                   ),
@@ -138,10 +132,11 @@
 //                       '4500-5000',
 //                       '5000+'
 //                     ],
-//                     selectedOptions: priceSelector.toString(),
-//                     onSelect: (value) {
+//                     selectedOptions: [selectedPricePerPerson.toString()],
+//                     onSelect: (values) {
 //                       setState(() {
-//                         selectedPricePerPerson = priceSelector;
+//                         selectedPricePerPerson =
+//                             int.tryParse(values.first) ?? 0;
 //                       });
 //                     },
 //                   ),
@@ -153,12 +148,12 @@
 //                     title: 'Accessibility Options',
 //                     options: [
 //                       'Wheelchair Access',
-//                       'Wheelchair Accessable Parking'
+//                       'Wheelchair Accessible Parking'
 //                     ],
-//                     selectedOptions: accessibilitySelector,
-//                     onSelect: (value) {
+//                     selectedOptions: selectedAccessibilityOptions,
+//                     onSelect: (values) {
 //                       setState(() {
-//                         selectedAccessibilityOptions.add(value);
+//                         selectedAccessibilityOptions = values;
 //                       });
 //                     },
 //                   ),
@@ -177,10 +172,11 @@
 //                       '600-1000',
 //                       '1000+'
 //                     ],
-//                     selectedOptions: selectedCapacity,
-//                     onSelect: (value) {
+//                     selectedOptions: [selectedCapacity],
+//                     onSelect: (values) {
 //                       setState(() {
-//                         selectedCapacity = value;
+//                         selectedCapacity =
+//                             values.isNotEmpty ? values.first : '';
 //                       });
 //                     },
 //                   ),
@@ -191,10 +187,10 @@
 //                   child: buildFilterOption(
 //                     title: 'Refund Policy',
 //                     options: ['Yes', 'No', 'Partial Refund'],
-//                     selectedOptions: refundPolicySelector,
-//                     onSelect: (value) {
+//                     selectedOptions: selectedRefundPolicy,
+//                     onSelect: (values) {
 //                       setState(() {
-//                         selectedRefundPolicy.add(value);
+//                         selectedRefundPolicy = values;
 //                       });
 //                     },
 //                   ),
@@ -210,7 +206,7 @@
 //                 ElevatedButton(
 //                   onPressed: () {
 //                     setState(() {
-//                       selectedRating = '';
+//                       selectedRatings = '';
 //                       selectedTypeOfVenue = [];
 //                       selectedCity = '';
 //                       selectedPricePerPerson = 0;
@@ -225,7 +221,7 @@
 //                   onPressed: () {
 //                     // Filter the venues based on the selected filters
 //                     AppDataStore.filterVenues(
-//                       selectedRating,
+//                       selectedRatings,
 //                       selectedTypeOfVenue,
 //                       selectedCity,
 //                       selectedPricePerPerson,
@@ -337,23 +333,24 @@ class FilterWidget extends StatefulWidget {
 
 class _FilterWidgetState extends State<FilterWidget> {
   late String selectedRatings;
-  late List<String> selectedTypeOfVenue;
+  late String selectedTypeOfVenue;
+  late String venueSelector;
   late String selectedCity;
-  late int selectedPricePerPerson;
-  late List<String> selectedAccessibilityOptions;
+  late String selectedPricePerPerson;
+  late String selectedAccessibilityOptions;
   late String selectedCapacity;
-  late List<String> selectedRefundPolicy;
+  late String selectedRefundPolicy;
 
   @override
   void initState() {
     super.initState();
     selectedRatings = '';
-    selectedTypeOfVenue = [];
+    selectedTypeOfVenue = '';
     selectedCity = '';
-    selectedPricePerPerson = 0;
-    selectedAccessibilityOptions = [];
+    selectedPricePerPerson = '';
+    selectedAccessibilityOptions = '';
     selectedCapacity = '';
-    selectedRefundPolicy = [];
+    selectedRefundPolicy = '';
   }
 
   @override
@@ -395,130 +392,108 @@ class _FilterWidgetState extends State<FilterWidget> {
                   ),
                 ),
                 const Divider(),
-                FractionallySizedBox(
-                  widthFactor: 1.0,
-                  child: buildFilterOption(
-                    title: 'Rating',
-                    options: ['1', '2', '3', '4', '5'],
-                    selectedOptions: [selectedRatings],
-                    onSelect: (values) {
-                      setState(() {
-                        selectedRatings = values as String;
-                      });
-                    },
-                  ),
+                buildFilterOption(
+                  title: 'Rating',
+                  options: ['1', '2', '3', '4', '5'],
+                  selectedOptions: [selectedRatings],
+                  onSelect: (values) {
+                    setState(() {
+                      selectedRatings = values.isNotEmpty ? values.first : '';
+                    });
+                  },
                 ),
                 const Divider(),
-                FractionallySizedBox(
-                  widthFactor: 1.0,
-                  child: buildFilterOption(
-                    title: 'Type of Venue',
-                    options: [
-                      'Banquet Hall',
-                      'Wedding',
-                      'Birthday',
-                      'Corporate Events',
-                      'Birthday'
-                    ],
-                    selectedOptions: selectedTypeOfVenue,
-                    onSelect: (values) {
-                      setState(() {
-                        selectedTypeOfVenue = values;
-                      });
-                    },
-                  ),
+                buildFilterOption(
+                  title: 'Type of Venue',
+                  options: [
+                    'Banquet Hall',
+                    'Wedding',
+                    'Birthday',
+                    'Corporate Events',
+                    'Birthday'
+                  ],
+                  selectedOptions: [selectedTypeOfVenue],
+                  onSelect: (values) {
+                    setState(() {
+                      selectedTypeOfVenue = values as String;
+                    });
+                  },
                 ),
                 const Divider(),
-                FractionallySizedBox(
-                  widthFactor: 1.0,
-                  child: buildFilterOption(
-                    title: 'City',
-                    options: ['Islamabad', 'Lahore', 'Peshawar'],
-                    selectedOptions: [selectedCity],
-                    onSelect: (values) {
-                      setState(() {
-                        selectedCity = values.isNotEmpty ? values.first : '';
-                      });
-                    },
-                  ),
+                buildFilterOption(
+                  title: 'City',
+                  options: ['Islamabad', 'Lahore', 'Peshawar'],
+                  selectedOptions: [selectedCity],
+                  onSelect: (values) {
+                    setState(() {
+                      selectedCity = values.isNotEmpty ? values.first : '';
+                    });
+                  },
                 ),
                 const Divider(),
-                FractionallySizedBox(
-                  widthFactor: 1.0,
-                  child: buildFilterOption(
-                    title: 'Price Per Person',
-                    options: [
-                      '0-1500',
-                      '1500-2000',
-                      '2000-2500',
-                      '2500-3000',
-                      '3500-4000',
-                      '4000-4500',
-                      '4500-5000',
-                      '5000+'
-                    ],
-                    selectedOptions: [selectedPricePerPerson.toString()],
-                    onSelect: (values) {
-                      setState(() {
-                        selectedPricePerPerson =
-                            int.tryParse(values.first) ?? 0;
-                      });
-                    },
-                  ),
+                buildFilterOption(
+                  title: 'Price Per Person',
+                  options: [
+                    '0-1500',
+                    '1500-2000',
+                    '2000-2500',
+                    '2500-3000',
+                    '3500-4000',
+                    '4000-4500',
+                    '4500-5000',
+                    '5000+'
+                  ],
+                  selectedOptions: [selectedPricePerPerson.toString()],
+                  onSelect: (values) {
+                    setState(() {
+                      selectedPricePerPerson =
+                          values.isNotEmpty ? values.first : '';
+                    });
+                  },
                 ),
                 const Divider(),
-                FractionallySizedBox(
-                  widthFactor: 1.0,
-                  child: buildFilterOption(
-                    title: 'Accessibility Options',
-                    options: [
-                      'Wheelchair Access',
-                      'Wheelchair Accessible Parking'
-                    ],
-                    selectedOptions: selectedAccessibilityOptions,
-                    onSelect: (values) {
-                      setState(() {
-                        selectedAccessibilityOptions = values;
-                      });
-                    },
-                  ),
+                buildFilterOption(
+                  title: 'Accessibility Options',
+                  options: [
+                    'Wheelchair Access',
+                    'Wheelchair Accessible Parking'
+                  ],
+                  selectedOptions: [selectedAccessibilityOptions],
+                  onSelect: (values) {
+                    setState(() {
+                      selectedAccessibilityOptions = values as String;
+                    });
+                  },
                 ),
                 const Divider(),
-                FractionallySizedBox(
-                  widthFactor: 1.0,
-                  child: buildFilterOption(
-                    title: 'Capacity',
-                    options: [
-                      '0-50',
-                      '50-100',
-                      '100-200',
-                      '200-400',
-                      '400-600',
-                      '600-1000',
-                      '1000+'
-                    ],
-                    selectedOptions: [selectedCapacity],
-                    onSelect: (values) {
-                      setState(() {
-                        selectedCapacity =
-                            values.isNotEmpty ? values.first : '';
-                      });
-                    },
-                  ),
+                buildFilterOption(
+                  title: 'Capacity',
+                  options: [
+                    '0-50',
+                    '50-100',
+                    '100-200',
+                    '200-400',
+                    '400-600',
+                    '600-1000',
+                    '1000+'
+                  ],
+                  selectedOptions: [selectedCapacity],
+                  onSelect: (values) {
+                    setState(() {
+                      selectedCapacity = values.isNotEmpty ? values.first : '';
+                    });
+                  },
                 ),
                 const Divider(),
-                FractionallySizedBox(
-                  widthFactor: 1.0,
-                  child: buildFilterOption(
-                    title: 'Refund Policy',
-                    options: ['Yes', 'No', 'Partial Refund'],
-                    selectedOptions: selectedRefundPolicy,
-                    onSelect: (values) {
-                      setState(() {
-                        selectedRefundPolicy = values;
-                      });
-                    },
-                  ),
+                buildFilterOption(
+                  title: 'Refund Policy',
+                  options: ['Yes', 'No', 'Partial Refund'],
+                  selectedOptions: [selectedRefundPolicy],
+                  onSelect: (values) {
+                    setState(() {
+                      selectedRefundPolicy = values as String;
+                    });
+                  },
                 ),
                 const Divider(),
               ],
@@ -532,12 +507,12 @@ class _FilterWidgetState extends State<FilterWidget> {
                   onPressed: () {
                     setState(() {
                       selectedRatings = '';
-                      selectedTypeOfVenue = [];
+                      selectedTypeOfVenue = '';
                       selectedCity = '';
-                      selectedPricePerPerson = 0;
-                      selectedAccessibilityOptions = [];
+                      selectedPricePerPerson = '';
+                      selectedAccessibilityOptions = '';
                       selectedCapacity = '';
-                      selectedRefundPolicy = [];
+                      selectedRefundPolicy = '';
                     });
                   },
                   child: const Text('Clear'),
@@ -547,12 +522,12 @@ class _FilterWidgetState extends State<FilterWidget> {
                     // Filter the venues based on the selected filters
                     AppDataStore.filterVenues(
                       selectedRatings,
-                      selectedTypeOfVenue,
+                      selectedTypeOfVenue as List<String>,
                       selectedCity,
-                      selectedPricePerPerson,
-                      selectedAccessibilityOptions,
+                      selectedPricePerPerson as int,
+                      selectedAccessibilityOptions as List<String>,
                       selectedCapacity,
-                      selectedRefundPolicy,
+                      selectedRefundPolicy as List<String>,
                     );
                     // Navigator.of(context).pop();
                     Navigator.push(
@@ -620,7 +595,9 @@ class _FilterWidgetState extends State<FilterWidget> {
                     onSelect(newSelectedOptions);
                   },
                   selectedColor: Colors.black,
-                  backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                  backgroundColor: isSelected
+                      ? Colors.black.withOpacity(0.1)
+                      : const Color.fromARGB(255, 255, 255, 255),
                   checkmarkColor: Colors.white,
                   labelStyle: TextStyle(
                     color: isSelected ? Colors.white : Colors.black,
