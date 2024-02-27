@@ -705,6 +705,7 @@ import 'package:flutter/material.dart';
 import '../theme/theme.dart'; // Import your custom theme here
 import '../store/store.dart'; // Import your store.dart file
 import '../screens/search_results.dart';
+import '../models/venue_model.dart';
 
 class FilterWidget extends StatefulWidget {
   const FilterWidget({Key? key}) : super(key: key);
@@ -717,7 +718,7 @@ class _FilterWidgetState extends State<FilterWidget> {
   late String selectedRatings;
   late String selectedTypeOfVenue;
   late String selectedCity;
-  late int selectedPricePerPerson;
+  late String selectedPricePerPerson;
   late String selectedAccessibilityOptions;
   late String selectedCapacity;
   late String selectedRefundPolicy;
@@ -728,7 +729,7 @@ class _FilterWidgetState extends State<FilterWidget> {
     selectedRatings = '';
     selectedTypeOfVenue = '';
     selectedCity = '';
-    selectedPricePerPerson = 0;
+    selectedPricePerPerson = '';
     selectedAccessibilityOptions = '';
     selectedCapacity = '';
     selectedRefundPolicy = '';
@@ -801,7 +802,11 @@ class _FilterWidgetState extends State<FilterWidget> {
                     selectedOption: selectedTypeOfVenue,
                     onSelect: (value) {
                       setState(() {
-                        selectedTypeOfVenue = value;
+                        if (selectedTypeOfVenue == '') {
+                          selectedTypeOfVenue = value;
+                        } else {
+                          selectedTypeOfVenue += ', $value';
+                        } //i just added this to check if it works
                       });
                     },
                   ),
@@ -824,21 +829,21 @@ class _FilterWidgetState extends State<FilterWidget> {
                 FractionallySizedBox(
                   widthFactor: 1.0,
                   child: buildFilterOption(
-                    title: 'Price Per Person',
+                    title: 'Max Price Per Person',
                     options: [
-                      '0-1500',
-                      '1500-2000',
-                      '2000-2500',
-                      '2500-3000',
-                      '3500-4000',
-                      '4000-4500',
-                      '4500-5000',
+                      '1500',
+                      '2000',
+                      '2500',
+                      '3000',
+                      '4000',
+                      '4500',
+                      '5000',
                       '5000+'
                     ],
                     selectedOption: selectedPricePerPerson.toString(),
                     onSelect: (value) {
                       setState(() {
-                        selectedPricePerPerson = int.tryParse(value) ?? 0;
+                        selectedPricePerPerson = value;
                       });
                     },
                   ),
@@ -864,20 +869,13 @@ class _FilterWidgetState extends State<FilterWidget> {
                 FractionallySizedBox(
                   widthFactor: 1.0,
                   child: buildFilterOption(
-                    title: 'Capacity',
-                    options: [
-                      '50',
-                      '100',
-                      '200',
-                      '400',
-                      '600',
-                      '1000',
-                      '1000+'
-                    ],
+                    title: 'Max Capacity',
+                    options: ['50', '100', '200', '400', '600', '1000', '1500'],
                     selectedOption: selectedCapacity,
                     onSelect: (value) {
                       setState(() {
                         selectedCapacity = value;
+                        print(selectedCapacity);
                       });
                     },
                   ),
@@ -910,11 +908,12 @@ class _FilterWidgetState extends State<FilterWidget> {
                       selectedRatings = '';
                       selectedTypeOfVenue = '';
                       selectedCity = '';
-                      selectedPricePerPerson = 0;
+                      selectedPricePerPerson = '';
                       selectedAccessibilityOptions = '';
                       selectedCapacity = '';
                       selectedRefundPolicy = '';
                     });
+                    AppDataStore.clearFilteredVenues();
                   },
                   child: const Text('Clear'),
                 ),
@@ -923,12 +922,11 @@ class _FilterWidgetState extends State<FilterWidget> {
                     // Filter the venues based on the selected filters
                     AppDataStore.filterVenues(
                       selectedRatings,
-                      selectedTypeOfVenue as List<String>,
+                      selectedTypeOfVenue,
                       selectedCity,
                       selectedPricePerPerson,
                       selectedAccessibilityOptions,
-                      int.tryParse(selectedCapacity) ??
-                          0, // Parse as int or default to 0
+                      selectedCapacity,
                       selectedRefundPolicy,
                     );
                     // Navigator.of(context).pop();

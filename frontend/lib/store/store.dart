@@ -87,12 +87,12 @@ class AppDataStore {
     String selectedRating,
     String selectedTypeOfVenue,
     String selectedCity,
-    int selectedPricePerPerson,
+    String selectedPricePerPerson,
     String selectedAccessibilityOptions,
-    int selectedCapacity,
+    String selectedCapacity,
     String selectedRefundPolicy,
   ) {
-    fetchFilteredData(
+    Future<List<String>> sortedNamedVenues = fetchFilteredData(
       selectedRating,
       selectedTypeOfVenue,
       selectedCity,
@@ -100,17 +100,15 @@ class AppDataStore {
       selectedAccessibilityOptions,
       selectedCapacity,
       selectedRefundPolicy,
-    ).then((venueNames) {
-      // Map venue names to venue objects
-      List<Venue> venues = dataList.where((venue) {
-        return venueNames.contains(venue.nameOfVenue);
-      }).toList();
+    );
 
-      // Add the mapped venues to filteredVenues
-      filteredVenues.addAll(venues);
-    }).catchError((error) {
-      print('Failed to fetch filtered data: $error');
-      // Handle error
+    sortedNamedVenues.then((value) {
+      filteredVenues =
+          dataList.where((venue) => value.contains(venue.nameOfVenue)).toList();
     });
+  }
+
+  static void clearFilteredVenues() {
+    filteredVenues = [];
   }
 }
