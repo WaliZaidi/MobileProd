@@ -2,11 +2,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/venue_model.dart'; // Import the models.dart file
 
-String url = 'http://192.168.56.1:4000';
+const String url = 'http://192.168.18.16:4000';
 
 Future<List<Venue>> fetchData() async {
-  final response =
-      await http.get(Uri.parse('$url/query/search'));
+  final response = await http.get(Uri.parse('$url/query/search'));
 
   if (response.statusCode == 200) {
     final jsonData = json.decode(response.body);
@@ -148,7 +147,7 @@ Future<List<Venue>> fetchData() async {
                             nameOfVenue: reviewData['nameOfVenue'] ?? '',
                             totalScore:
                                 reviewData['totalScore'].toDouble() ?? 0.0,
-                            rating: reviewData['rating'] ?? '',
+                            rating: reviewData['reviewRating'] ?? '',
                             stars: reviewData['stars'] ?? 0,
                             sentiment: reviewData['sentiment'] ?? '',
                             text: reviewData['text'] ?? '',
@@ -166,39 +165,40 @@ Future<List<Venue>> fetchData() async {
   }
 }
 
-Future<List<String>> filteredData(
-    List<String> selectedRating,
-    List<String> selectedTypeOfVenue,
-    List<String> selectedCity,
-    List<String> selectedPricePerPerson,
-    List<String> selectedAccessibilityOptions,
-    List<String> selectedCapacity,
-    List<String> selectedRefundPolicy,
-) {
+Future<List<String>> fetchFilteredData(
+  String selectedRating,
+  String selectedTypeOfVenue,
+  String selectedCity,
+  String selectedPricePerPerson,
+  String selectedAccessibilityOptions,
+  String selectedCapacity,
+  String selectedRefundPolicy,
+) async {
+  String urlSend = Uri.http(
+    url.split('//')[1],
+    '/query/search/name',
+    {
+      'rating': selectedRating,
+      'typeOfVenue': selectedTypeOfVenue,
+      'city': selectedCity,
+      'pricePerPerson': selectedPricePerPerson,
+      'totalHallsCapacity': selectedCapacity,
+      'refundPolicy': selectedRefundPolicy,
+      'accessabilityOptions': selectedAccessibilityOptions,
+    },
+  ).toString();
 
-  String locationOfVenue = selectedCity.join(', ');
-  String typeOfVenue = selectedTypeOfVenue.join(', ');
-  String rating = selectedRating.join(', ');
-  int pricePerPerson = selectedPricePerPerson.join(', ') as int;
-  String accessabilityOptions = selectedAccessibilityOptions.join(', ');
-  String totalHallsCapacity = selectedCapacity.join(', ');
-  String refundPolicy = selectedRefundPolicy.join(', ');
+  final response = await http.get(Uri.parse(urlSend));
+  print(response.body);
 
-  final response = http.get(Uri.parse(
-      '$url/query/search/names?locationOfVenue=$locationOfVenue&typeOfVenue=$typeOfVenue&rating=$rating&pricePerPerson=$pricePerPerson&accessabilityOptions=$accessabilityOptions&totalHallsCapacity=$totalHallsCapacity&refundPolicy=$refundPolicy'));
+  if (response.statusCode == 200) {
+    final jsonData = json.decode(response.body);
+    final List<dynamic> venueNamesDynamic = jsonData['venues'];
+    final List<String> venueNames =
+        venueNamesDynamic.map((e) => e.toString()).toList();
 
-  response.then((value) {
-    if (value.statusCode == 200) {
-      final jsonData = json.decode(value.body);
-      final List<String> venueNames = jsonData['venueNames'].cast<String>();
-      return venueNames;
-    } else {
-      // Handle errors
-      print('Failed to load data');
-      throw Exception('Failed to load data');
-    }
-  });
+    return venueNames;
+  }
 
-  return Future.value([]);
+  throw Exception('Failed to load data');
 }
-

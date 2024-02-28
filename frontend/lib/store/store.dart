@@ -83,42 +83,32 @@ class AppDataStore {
     }
   }
 
-  
+  static void filterVenues(
+    String selectedRating,
+    String selectedTypeOfVenue,
+    String selectedCity,
+    String selectedPricePerPerson,
+    String selectedAccessibilityOptions,
+    String selectedCapacity,
+    String selectedRefundPolicy,
+  ) {
+    Future<List<String>> sortedNamedVenues = fetchFilteredData(
+      selectedRating,
+      selectedTypeOfVenue,
+      selectedCity,
+      selectedPricePerPerson,
+      selectedAccessibilityOptions,
+      selectedCapacity,
+      selectedRefundPolicy,
+    );
 
+    sortedNamedVenues.then((value) {
+      filteredVenues =
+          dataList.where((venue) => value.contains(venue.nameOfVenue)).toList();
+    });
+  }
 
-  static Future<List<Venue>> fetchFilteredData(
-    List<String> selectedRating,
-    List<String> selectedTypeOfVenue,
-    List<String> selectedCity,
-    List<String> selectedPricePerPerson,
-    List<String> selectedAccessibilityOptions,
-    List<String> selectedCapacity,
-    List<String> selectedRefundPolicy,
-  ) async {
-    List<String> venueNames = [''];
-    venueNames = await api.filteredData(selectedRating, selectedTypeOfVenue, selectedCity, selectedPricePerPerson, selectedAccessibilityOptions, selectedCapacity, selectedRefundPolicy);
-    if (venueNames.isNotEmpty) {
-        List<Venue> filteredDataVenues = dataList.where((venue) => venueNames.contains(venue.nameOfVenue)).toList();
-        filteredVenues = filteredDataVenues;
-
-      return filteredVenues;
-    }
-    else {
-      List<Venue> filteredData = dataList.where((venue) {
-        bool ratingMatches = selectedRating.isEmpty || selectedRating.contains(venue.rating);
-        bool typeMatches = selectedTypeOfVenue.isEmpty || selectedTypeOfVenue.contains(venue.typeOfVenue.join(', '));
-        bool cityMatches = selectedCity.isEmpty || selectedCity.contains(venue.city);
-        bool priceMatches = selectedPricePerPerson.isEmpty || selectedPricePerPerson.contains(venue.pricePerPerson as int);
-        bool accessibilityMatches = selectedAccessibilityOptions.isEmpty || selectedAccessibilityOptions.any((option) => venue.accessabilityOptions.contains(option));
-        bool capacityMatches = selectedCapacity.isEmpty || selectedCapacity.contains(venue.totalHallsCapacity as int);
-        bool refundPolicyMatches = selectedRefundPolicy.isEmpty || selectedRefundPolicy.contains(venue.refundPolicy.join(', '));
-
-        return ratingMatches && typeMatches && cityMatches && priceMatches && accessibilityMatches && capacityMatches && refundPolicyMatches;
-      }).toList();
-
-      filteredVenues = filteredData;
-
-      return filteredData;
-    }
+  static void clearFilteredVenues() {
+    filteredVenues = [];
   }
 }

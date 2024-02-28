@@ -1,3 +1,328 @@
+// // //----------------------------------------------------------------------------
+
+// // import 'package:flutter/material.dart';
+// // import '../theme/theme.dart'; // Import your custom theme here
+// // import '../store/store.dart'; // Import your store.dart file
+// // import '../screens/search_results.dart';
+
+// // class FilterWidget extends StatefulWidget {
+// //   const FilterWidget({Key? key}) : super(key: key);
+
+// //   @override
+// //   _FilterWidgetState createState() => _FilterWidgetState();
+// // }
+
+// // class _FilterWidgetState extends State<FilterWidget> {
+// //   late String selectedRating;
+// //   late String venueSelector = '';
+// //   late List<String> selectedTypeOfVenue;
+// //   late String selectedCity;
+// //   late int priceSelector = 0;
+// //   late int selectedPricePerPerson;
+// //   late String accessibilitySelector = '';
+// //   late List<String> selectedAccessibilityOptions;
+// //   late String selectedCapacity;
+// //   late String refundPolicySelector = '';
+// //   late List<String> selectedRefundPolicy;
+
+// //   @override
+// //   void initState() {
+// //     super.initState();
+// //     selectedRating = '';
+// //     selectedTypeOfVenue = [];
+// //     selectedCity = '';
+// //     selectedPricePerPerson = 0;
+// //     selectedAccessibilityOptions = [];
+// //     selectedCapacity = '';
+// //     selectedRefundPolicy = [];
+// //   }
+
+// //   @override
+// //   Widget build(BuildContext context) {
+// //     double screenHeight = MediaQuery.of(context).size.height;
+// //     double bottomHalfHeight = screenHeight;
+
+// //     return Theme(
+// //       data: theme, // Apply your custom theme here
+// //       child: Container(
+// //         height: bottomHalfHeight,
+// //         alignment: Alignment.bottomCenter,
+// //         child: AlertDialog(
+// //           content: SingleChildScrollView(
+// //             child: Column(
+// //               crossAxisAlignment: CrossAxisAlignment.stretch,
+// //               mainAxisSize: MainAxisSize.min,
+// //               children: [
+// //                 Container(
+// //                   padding: const EdgeInsets.all(20.0),
+// //                   color: const Color.fromARGB(255, 255, 255, 255),
+// //                   child: Row(
+// //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+// //                     children: [
+// //                       const Text(
+// //                         'Filter Options',
+// //                         style: TextStyle(
+// //                           fontWeight: FontWeight.bold,
+// //                           fontSize: 20.0,
+// //                         ),
+// //                       ),
+// //                       IconButton(
+// //                         onPressed: () {
+// //                           Navigator.of(context).pop();
+// //                         },
+// //                         icon: const Icon(Icons.close),
+// //                       ),
+// //                     ],
+// //                   ),
+// //                 ),
+// //                 const Divider(),
+// //                 FractionallySizedBox(
+// //                   widthFactor: 1.0,
+// //                   child: buildFilterOption(
+// //                     title: 'Rating',
+// //                     options: ['1', '2', '3', '4', '5'],
+// //                     selectedOptions: selectedRating,
+// //                     onSelect: (value) {
+// //                       setState(() {
+// //                         selectedRating = value;
+// //                       });
+// //                     },
+// //                   ),
+// //                 ),
+// //                 const Divider(),
+// //                 FractionallySizedBox(
+// //                   widthFactor: 1.0,
+// //                   child: buildFilterOption(
+// //                     title: 'Type of Venue',
+// //                     options: [
+// //                       'Banquet Hall',
+// //                       'Wedding',
+// //                       'Birthday',
+// //                       'Corporate Events',
+// //                       'Birthday'
+// //                     ],
+// //                     selectedOptions: venueSelector,
+// //                     onSelect: (value) {
+// //                       setState(() {
+// //                         selectedTypeOfVenue.add(value);
+// //                       });
+// //                     },
+// //                   ),
+// //                 ),
+// //                 const Divider(),
+// //                 FractionallySizedBox(
+// //                   widthFactor: 1.0,
+// //                   child: buildFilterOption(
+// //                     title: 'City',
+// //                     options: ['Islamabad', 'Lahore', 'Peshawar'],
+// //                     selectedOptions: selectedCity,
+// //                     onSelect: (value) {
+// //                       setState(() {
+// //                         selectedCity = value;
+// //                       });
+// //                     },
+// //                   ),
+// //                 ),
+// //                 const Divider(),
+// //                 FractionallySizedBox(
+// //                   widthFactor: 1.0,
+// //                   child: buildFilterOption(
+// //                     title: 'Price Per Person',
+// //                     options: [
+// //                       '0-1500',
+// //                       '1500-2000',
+// //                       '2000-2500',
+// //                       '2500-3000',
+// //                       '3500-4000',
+// //                       '4000-4500',
+// //                       '4500-5000',
+// //                       '5000+'
+// //                     ],
+// //                     selectedOptions: priceSelector.toString(),
+// //                     onSelect: (value) {
+// //                       setState(() {
+// //                         selectedPricePerPerson = priceSelector;
+// //                       });
+// //                     },
+// //                   ),
+// //                 ),
+// //                 const Divider(),
+// //                 FractionallySizedBox(
+// //                   widthFactor: 1.0,
+// //                   child: buildFilterOption(
+// //                     title: 'Accessibility Options',
+// //                     options: [
+// //                       'Wheelchair Access',
+// //                       'Wheelchair Accessable Parking'
+// //                     ],
+// //                     selectedOptions: accessibilitySelector,
+// //                     onSelect: (value) {
+// //                       setState(() {
+// //                         selectedAccessibilityOptions.add(value);
+// //                       });
+// //                     },
+// //                   ),
+// //                 ),
+// //                 const Divider(),
+// //                 FractionallySizedBox(
+// //                   widthFactor: 1.0,
+// //                   child: buildFilterOption(
+// //                     title: 'Capacity',
+// //                     options: [
+// //                       '0-50',
+// //                       '50-100',
+// //                       '100-200',
+// //                       '200-400',
+// //                       '400-600',
+// //                       '600-1000',
+// //                       '1000+'
+// //                     ],
+// //                     selectedOptions: selectedCapacity,
+// //                     onSelect: (value) {
+// //                       setState(() {
+// //                         selectedCapacity = value;
+// //                       });
+// //                     },
+// //                   ),
+// //                 ),
+// //                 const Divider(),
+// //                 FractionallySizedBox(
+// //                   widthFactor: 1.0,
+// //                   child: buildFilterOption(
+// //                     title: 'Refund Policy',
+// //                     options: ['Yes', 'No', 'Partial Refund'],
+// //                     selectedOptions: refundPolicySelector,
+// //                     onSelect: (value) {
+// //                       setState(() {
+// //                         selectedRefundPolicy.add(value);
+// //                       });
+// //                     },
+// //                   ),
+// //                 ),
+// //                 const Divider(),
+// //               ],
+// //             ),
+// //           ),
+// //           actions: [
+// //             Row(
+// //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+// //               children: [
+// //                 ElevatedButton(
+// //                   onPressed: () {
+// //                     setState(() {
+// //                       selectedRating = '';
+// //                       selectedTypeOfVenue = [];
+// //                       selectedCity = '';
+// //                       selectedPricePerPerson = 0;
+// //                       selectedAccessibilityOptions = [];
+// //                       selectedCapacity = '';
+// //                       selectedRefundPolicy = [];
+// //                     });
+// //                   },
+// //                   child: const Text('Clear'),
+// //                 ),
+// //                 ElevatedButton(
+// //                   onPressed: () {
+// //                     // Filter the venues based on the selected filters
+// //                     AppDataStore.filterVenues(
+// //                       selectedRating,
+// //                       selectedTypeOfVenue,
+// //                       selectedCity,
+// //                       selectedPricePerPerson,
+// //                       selectedAccessibilityOptions,
+// //                       selectedCapacity,
+// //                       selectedRefundPolicy,
+// //                     );
+// //                     // Navigator.of(context).pop();
+// //                     Navigator.push(
+// //                       context,
+// //                       MaterialPageRoute(builder: (context) => SearchResults()),
+// //                     );
+// //                   },
+// //                   child: const Text('Search'),
+// //                 ),
+// //               ],
+// //             ),
+// //           ],
+// //           shape: const RoundedRectangleBorder(
+// //             borderRadius: BorderRadius.only(
+// //               topLeft: Radius.circular(8.0),
+// //               topRight: Radius.circular(8.0),
+// //               bottomLeft: Radius.zero,
+// //               bottomRight: Radius.zero,
+// //             ),
+// //           ),
+// //         ),
+// //       ),
+// //     );
+// //   }
+
+// //   Widget buildFilterOption({
+// //     required String title,
+// //     required List<String> options,
+// //     required List<String> selectedOptions,
+// //     required Function(List<String>) onSelect,
+// //   }) {
+// //     return Column(
+// //       crossAxisAlignment: CrossAxisAlignment.start,
+// //       children: [
+// //         Padding(
+// //           padding: const EdgeInsets.symmetric(horizontal: 20.0),
+// //           child: Text(
+// //             title,
+// //             style: const TextStyle(
+// //               fontWeight: FontWeight.bold,
+// //               fontSize: 16.0,
+// //             ),
+// //           ),
+// //         ),
+// //         const SizedBox(height: 15.0),
+// //         SingleChildScrollView(
+// //           scrollDirection: Axis.horizontal,
+// //           padding: const EdgeInsets.symmetric(horizontal: 20.0),
+// //           child: Row(
+// //             children: options.map((option) {
+// //               final isSelected = selectedOptions.contains(option);
+// //               return Padding(
+// //                 padding: const EdgeInsets.only(right: 10.0),
+// //                 child: FilterChip(
+// //                   label: Text(option),
+// //                   selected: isSelected,
+// //                   onSelected: (selected) {
+// //                     List<String> newSelectedOptions =
+// //                         List.from(selectedOptions);
+// //                     if (selected) {
+// //                       newSelectedOptions.add(option);
+// //                     } else {
+// //                       newSelectedOptions.remove(option);
+// //                     }
+// //                     onSelect(newSelectedOptions);
+// //                   },
+// //                   selectedColor: Colors.black,
+// //                   backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+// //                   checkmarkColor: Colors.white,
+// //                   labelStyle: TextStyle(
+// //                     color: isSelected ? Colors.white : Colors.black,
+// //                     fontWeight:
+// //                         isSelected ? FontWeight.bold : FontWeight.normal,
+// //                   ),
+// //                   shape: RoundedRectangleBorder(
+// //                     borderRadius: BorderRadius.circular(10.0),
+// //                     side: const BorderSide(
+// //                       color: Colors.grey,
+// //                       width: 0.8,
+// //                     ),
+// //                   ),
+// //                 ),
+// //               );
+// //             }).toList(),
+// //           ),
+// //         ),
+// //       ],
+// //     );
+// //   }
+// // }
+
 // import 'package:flutter/material.dart';
 // import '../theme/theme.dart'; // Import your custom theme here
 // import '../store/store.dart'; // Import your store.dart file
@@ -164,12 +489,12 @@
 //                   child: buildFilterOption(
 //                     title: 'Capacity',
 //                     options: [
-//                       '0-50',
-//                       '50-100',
-//                       '100-200',
-//                       '200-400',
-//                       '400-600',
-//                       '600-1000',
+//                       '50',
+//                       '100',
+//                       '200',
+//                       '400',
+//                       '600',
+//                       '1000',
 //                       '1000+'
 //                     ],
 //                     selectedOptions: [selectedCapacity],
@@ -220,13 +545,13 @@
 //                 ElevatedButton(
 //                   onPressed: () {
 //                     // Filter the venues based on the selected filters
-//                     AppDataStore.fetchFilteredData(
+//                     AppDataStore.filterVenues(
 //                       selectedRatings,
 //                       selectedTypeOfVenue,
 //                       selectedCity,
 //                       selectedPricePerPerson,
 //                       selectedAccessibilityOptions,
-//                       selectedCapacity,
+//                       int.tryParse(selectedCapacity) ?? 0, // Parse as int or default to 0
 //                       selectedRefundPolicy,
 //                     );
 //                     // Navigator.of(context).pop();
@@ -237,6 +562,7 @@
 //                   },
 //                   child: const Text('Search'),
 //                 ),
+
 //               ],
 //             ),
 //           ],
@@ -253,76 +579,133 @@
 //     );
 //   }
 
-//   Widget buildFilterOption({
+//   // Widget buildFilterOption({
+//   //   required String title,
+//   //   required List<String> options,
+//   //   required List<String> selectedOptions,
+//   //   required Function(List<String>) onSelect,
+//   // }) {
+//   //   return Column(
+//   //     crossAxisAlignment: CrossAxisAlignment.start,
+//   //     children: [
+//   //       Padding(
+//   //         padding: const EdgeInsets.symmetric(horizontal: 20.0),
+//   //         child: Text(
+//   //           title,
+//   //           style: const TextStyle(
+//   //             fontWeight: FontWeight.bold,
+//   //             fontSize: 16.0,
+//   //           ),
+//   //         ),
+//   //       ),
+//   //       const SizedBox(height: 15.0),
+//   //       SingleChildScrollView(
+//   //         scrollDirection: Axis.horizontal,
+//   //         padding: const EdgeInsets.symmetric(horizontal: 20.0),
+//   //         child: Row(
+//   //           children: options.map((option) {
+//   //             final isSelected = selectedOptions.contains(option);
+//   //             return Padding(
+//   //               padding: const EdgeInsets.only(right: 10.0),
+//   //               child: FilterChip(
+//   //                 label: Text(option),
+//   //                 selected: isSelected,
+//   //                 onSelected: (selected) {
+//   //                   List<String> newSelectedOptions =
+//   //                       List.from(selectedOptions);
+//   //                   if (selected) {
+//   //                     newSelectedOptions.add(option);
+//   //                   } else {
+//   //                     newSelectedOptions.remove(option);
+//   //                   }
+//   //                   onSelect(newSelectedOptions);
+//   //                 },
+//   //                 selectedColor: Colors.black,
+//   //                 backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+//   //                 checkmarkColor: Colors.white,
+//   //                 labelStyle: TextStyle(
+//   //                   color: isSelected ? Colors.white : Colors.black,
+//   //                   fontWeight:
+//   //                       isSelected ? FontWeight.bold : FontWeight.normal,
+//   //                 ),
+//   //                 shape: RoundedRectangleBorder(
+//   //                   borderRadius: BorderRadius.circular(10.0),
+//   //                   side: const BorderSide(
+//   //                     color: Colors.grey,
+//   //                     width: 0.8,
+//   //                   ),
+//   //                 ),
+//   //               ),
+//   //             );
+//   //           }).toList(),
+//   //         ),
+//   //       ),
+//   //     ],
+//   //   );
+//   // }
+//     Widget buildFilterOption({
 //     required String title,
 //     required List<String> options,
-//     required List<String> selectedOptions,
-//     required Function(List<String>) onSelect,
+//     required String selectedOption,
+//     required Function(String) onSelect,
 //   }) {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         Padding(
-//           padding: const EdgeInsets.symmetric(horizontal: 20.0),
-//           child: Text(
-//             title,
-//             style: const TextStyle(
-//               fontWeight: FontWeight.bold,
-//               fontSize: 16.0,
-//             ),
+//   return Column(
+//     crossAxisAlignment: CrossAxisAlignment.start,
+//     children: [
+//       Padding(
+//         padding: const EdgeInsets.symmetric(horizontal: 20.0),
+//         child: Text(
+//           title,
+//           style: const TextStyle(
+//             fontWeight: FontWeight.bold,
+//             fontSize: 16.0,
 //           ),
 //         ),
-//         const SizedBox(height: 15.0),
-//         SingleChildScrollView(
-//           scrollDirection: Axis.horizontal,
-//           padding: const EdgeInsets.symmetric(horizontal: 20.0),
-//           child: Row(
-//             children: options.map((option) {
-//               final isSelected = selectedOptions.contains(option);
-//               return Padding(
-//                 padding: const EdgeInsets.only(right: 10.0),
-//                 child: FilterChip(
-//                   label: Text(option),
-//                   selected: isSelected,
-//                   onSelected: (selected) {
-//                     List<String> newSelectedOptions =
-//                         List.from(selectedOptions);
-//                     if (selected) {
-//                       newSelectedOptions.add(option);
-//                     } else {
-//                       newSelectedOptions.remove(option);
-//                     }
-//                     onSelect(newSelectedOptions);
-//                   },
-//                   selectedColor: Colors.black,
-//                   backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-//                   checkmarkColor: Colors.white,
-//                   labelStyle: TextStyle(
-//                     color: isSelected ? Colors.white : Colors.black,
-//                     fontWeight:
-//                         isSelected ? FontWeight.bold : FontWeight.normal,
-//                   ),
-//                   shape: RoundedRectangleBorder(
-//                     borderRadius: BorderRadius.circular(10.0),
-//                     side: const BorderSide(
-//                       color: Colors.grey,
-//                       width: 0.8,
-//                     ),
+//       ),
+//       const SizedBox(height: 15.0),
+//       SingleChildScrollView(
+//         scrollDirection: Axis.horizontal,
+//         padding: const EdgeInsets.symmetric(horizontal: 20.0),
+//         child: Row(
+//           children: options.map((option) {
+//             final isSelected = selectedOption == option;
+//             return Padding(
+//               padding: const EdgeInsets.only(right: 10.0),
+//               child: FilterChip(
+//                 label: Text(option),
+//                 selected: isSelected,
+//                 onSelected: (selected) {
+//                   onSelect(selected ? option : '');
+//                 },
+//                 selectedColor: Colors.black,
+//                 backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+//                 checkmarkColor: Colors.white,
+//                 labelStyle: TextStyle(
+//                   color: isSelected ? Colors.white : Colors.black,
+//                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+//                 ),
+//                 shape: RoundedRectangleBorder(
+//                   borderRadius: BorderRadius.circular(10.0),
+//                   side: const BorderSide(
+//                     color: Colors.grey,
+//                     width: 0.8,
 //                   ),
 //                 ),
-//               );
-//             }).toList(),
-//           ),
+//               ),
+//             );
+//           }).toList(),
 //         ),
-//       ],
-//     );
-//   }
+//       ),
+//     ],
+//   );
+// }
 // }
 
 import 'package:flutter/material.dart';
 import '../theme/theme.dart'; // Import your custom theme here
 import '../store/store.dart'; // Import your store.dart file
 import '../screens/search_results.dart';
+import '../models/venue_model.dart';
 
 class FilterWidget extends StatefulWidget {
   const FilterWidget({Key? key}) : super(key: key);
@@ -332,24 +715,24 @@ class FilterWidget extends StatefulWidget {
 }
 
 class _FilterWidgetState extends State<FilterWidget> {
-  late List<String> selectedRatings;
-  late List<String> selectedTypeOfVenue;
-  late List<String> selectedCity;
-  late List<String> selectedPricePerPerson;
-  late List<String> selectedAccessibilityOptions;
-  late List<String> selectedCapacity;
-  late List<String> selectedRefundPolicy;
+  late String selectedRatings;
+  late String selectedTypeOfVenue;
+  late String selectedCity;
+  late String selectedPricePerPerson;
+  late String selectedAccessibilityOptions;
+  late String selectedCapacity;
+  late String selectedRefundPolicy;
 
   @override
   void initState() {
     super.initState();
-    selectedRatings = [];
-    selectedTypeOfVenue = [];
-    selectedCity = [];
-    selectedPricePerPerson = [];
-    selectedAccessibilityOptions = [];
-    selectedCapacity = [];
-    selectedRefundPolicy = [];
+    selectedRatings = '';
+    selectedTypeOfVenue = '';
+    selectedCity = '';
+    selectedPricePerPerson = '';
+    selectedAccessibilityOptions = '';
+    selectedCapacity = '';
+    selectedRefundPolicy = '';
   }
 
   @override
@@ -396,10 +779,10 @@ class _FilterWidgetState extends State<FilterWidget> {
                   child: buildFilterOption(
                     title: 'Rating',
                     options: ['1', '2', '3', '4', '5'],
-                    selectedOptions: selectedRatings,
-                    onSelect: (values) {
+                    selectedOption: selectedRatings,
+                    onSelect: (value) {
                       setState(() {
-                        selectedRatings = values;
+                        selectedRatings = value;
                       });
                     },
                   ),
@@ -416,10 +799,14 @@ class _FilterWidgetState extends State<FilterWidget> {
                       'Corporate Events',
                       'Birthday'
                     ],
-                    selectedOptions: selectedTypeOfVenue,
-                    onSelect: (values) {
+                    selectedOption: selectedTypeOfVenue,
+                    onSelect: (value) {
                       setState(() {
-                        selectedTypeOfVenue = values;
+                        if (selectedTypeOfVenue == '') {
+                          selectedTypeOfVenue = value;
+                        } else {
+                          selectedTypeOfVenue += ', $value';
+                        } //i just added this to check if it works
                       });
                     },
                   ),
@@ -430,10 +817,10 @@ class _FilterWidgetState extends State<FilterWidget> {
                   child: buildFilterOption(
                     title: 'City',
                     options: ['Islamabad', 'Lahore', 'Peshawar'],
-                    selectedOptions: selectedCity,
-                    onSelect: (values) {
+                    selectedOption: selectedCity,
+                    onSelect: (value) {
                       setState(() {
-                        selectedCity = values;
+                        selectedCity = value;
                       });
                     },
                   ),
@@ -451,12 +838,12 @@ class _FilterWidgetState extends State<FilterWidget> {
                       '4000',
                       '4500',
                       '5000',
-                      '6000'
+                      '5000+'
                     ],
-                    selectedOptions: selectedPricePerPerson,
-                    onSelect: (values) {
+                    selectedOption: selectedPricePerPerson.toString(),
+                    onSelect: (value) {
                       setState(() {
-                        selectedPricePerPerson = values;
+                        selectedPricePerPerson = value;
                       });
                     },
                   ),
@@ -470,10 +857,10 @@ class _FilterWidgetState extends State<FilterWidget> {
                       'Wheelchair Access',
                       'Wheelchair Accessible Parking'
                     ],
-                    selectedOptions: selectedAccessibilityOptions,
-                    onSelect: (values) {
+                    selectedOption: selectedAccessibilityOptions,
+                    onSelect: (value) {
                       setState(() {
-                        selectedAccessibilityOptions = values;
+                        selectedAccessibilityOptions = value;
                       });
                     },
                   ),
@@ -483,19 +870,12 @@ class _FilterWidgetState extends State<FilterWidget> {
                   widthFactor: 1.0,
                   child: buildFilterOption(
                     title: 'Max Capacity',
-                    options: [
-                      '50',
-                      '100',
-                      '200',
-                      '400',
-                      '600',
-                      '1000',
-                      '1500'
-                    ],
-                    selectedOptions: selectedCapacity,
-                    onSelect: (values) {
+                    options: ['50', '100', '200', '400', '600', '1000', '1500'],
+                    selectedOption: selectedCapacity,
+                    onSelect: (value) {
                       setState(() {
-                        selectedCapacity = values;
+                        selectedCapacity = value;
+                        print(selectedCapacity);
                       });
                     },
                   ),
@@ -506,10 +886,10 @@ class _FilterWidgetState extends State<FilterWidget> {
                   child: buildFilterOption(
                     title: 'Refund Policy',
                     options: ['Yes', 'No', 'Partial Refund'],
-                    selectedOptions: selectedRefundPolicy,
-                    onSelect: (values) {
+                    selectedOption: selectedRefundPolicy,
+                    onSelect: (value) {
                       setState(() {
-                        selectedRefundPolicy = values;
+                        selectedRefundPolicy = value;
                       });
                     },
                   ),
@@ -525,14 +905,15 @@ class _FilterWidgetState extends State<FilterWidget> {
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      selectedRatings = [];
-                      selectedTypeOfVenue = [];
-                      selectedCity = [];
-                      selectedPricePerPerson = [];
-                      selectedAccessibilityOptions = [];
-                      selectedCapacity = [];
-                      selectedRefundPolicy = [];
+                      selectedRatings = '';
+                      selectedTypeOfVenue = '';
+                      selectedCity = '';
+                      selectedPricePerPerson = '';
+                      selectedAccessibilityOptions = '';
+                      selectedCapacity = '';
+                      selectedRefundPolicy = '';
                     });
+                    AppDataStore.clearFilteredVenues();
                   },
                   child: const Text('Clear'),
                 ),
@@ -575,8 +956,8 @@ class _FilterWidgetState extends State<FilterWidget> {
   Widget buildFilterOption({
     required String title,
     required List<String> options,
-    required List<String> selectedOptions,
-    required Function(List<String>) onSelect,
+    required String selectedOption,
+    required Function(String) onSelect,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -597,24 +978,19 @@ class _FilterWidgetState extends State<FilterWidget> {
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Row(
             children: options.map((option) {
-              final isSelected = selectedOptions.contains(option);
+              final isSelected = selectedOption == option;
               return Padding(
                 padding: const EdgeInsets.only(right: 10.0),
                 child: FilterChip(
                   label: Text(option),
                   selected: isSelected,
                   onSelected: (selected) {
-                    List<String> newSelectedOptions =
-                        List.from(selectedOptions);
-                    if (selected) {
-                      newSelectedOptions.add(option);
-                    } else {
-                      newSelectedOptions.remove(option);
-                    }
-                    onSelect(newSelectedOptions);
+                    onSelect(selected ? option : '');
                   },
                   selectedColor: Colors.black,
-                  backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                  backgroundColor: isSelected
+                      ? Colors.black.withOpacity(0.1)
+                      : const Color.fromARGB(255, 255, 255, 255),
                   checkmarkColor: Colors.white,
                   labelStyle: TextStyle(
                     color: isSelected ? Colors.white : Colors.black,

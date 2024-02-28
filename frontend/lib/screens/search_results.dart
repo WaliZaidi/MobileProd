@@ -18,16 +18,22 @@ class _SearchResultsState extends State<SearchResults> {
     return Theme(
       data: theme,
       child: Scaffold(
-        appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(70),
-          child: Stack(
-            children: [Positioned(top: 20.0, left: 0, child: BackButton())],
-          )          // child: TopNavBar(),
-        ),
-        // bottomNavigationBar: const AppNavBar(),
         body: CustomScrollView(
           slivers: [
-            // const TopNavBar(),
+            SliverAppBar(
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                color: Colors.black,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              title: const Text('Search Results'),
+              backgroundColor: Colors.white,
+              elevation: 0,
+              pinned: true,
+              floating: true,
+            ),
             if (AppDataStore.filteredVenues.isNotEmpty)
               SliverList(
                 delegate: SliverChildBuilderDelegate(
