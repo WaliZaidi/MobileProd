@@ -920,7 +920,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                 ElevatedButton(
                   onPressed: () {
                     // Filter the venues based on the selected filters
-                    AppDataStore.fetchFilteredData(
+                    AppDataStore.filterVenues(
                       selectedRatings,
                       selectedTypeOfVenue,
                       selectedCity,
@@ -932,7 +932,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                     // Navigator.of(context).pop();
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SearchResults()),
+                      MaterialPageRoute(builder: (context) => const SearchResults(dynamicModifier: 1)),
                     );
                   },
                   child: const Text('Search'),

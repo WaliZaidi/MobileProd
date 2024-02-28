@@ -290,7 +290,7 @@ class TopNavBar extends StatelessWidget {
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-                            context.pushNamed('booking-details');
+                            
                           },
                           child: Container(
                             width: MediaQuery.of(context).size.width *

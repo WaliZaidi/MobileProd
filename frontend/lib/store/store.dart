@@ -92,7 +92,7 @@ class AppDataStore {
     String selectedCapacity,
     String selectedRefundPolicy,
   ) {
-    Future<List<String>> sortedNamedVenues = fetchFilteredData(
+    Future<List<String>> sortedNamedVenues = api.fetchFilteredData(
       selectedRating,
       selectedTypeOfVenue,
       selectedCity,

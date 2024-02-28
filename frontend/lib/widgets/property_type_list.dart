@@ -69,7 +69,7 @@ class _PropertyTypeListState extends State<PropertyTypeList> {
                 // Navigator.of(context).pop();
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SearchResults()),
+                  MaterialPageRoute(builder: (context) => const SearchResults(dynamicModifier: 2)),
                 );
               },
               child: Container(

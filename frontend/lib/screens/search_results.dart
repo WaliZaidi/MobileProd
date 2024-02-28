@@ -6,6 +6,11 @@ import "../widgets/top_app_bar.dart";
 import '../widgets/venue_card_widget.dart';
 
 class SearchResults extends StatefulWidget {
+
+  final int dynamicModifier;
+
+  const SearchResults({Key? key, required this.dynamicModifier}) : super(key: key);
+
   @override
   _SearchResultsState createState() => _SearchResultsState();
 }
@@ -25,7 +30,13 @@ class _SearchResultsState extends State<SearchResults> {
                 icon: const Icon(Icons.arrow_back),
                 color: Colors.black,
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  if (widget.dynamicModifier == 1) {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                  }
+                  else if (widget.dynamicModifier == 2 || widget.dynamicModifier == 3) {
+                    Navigator.of(context).pop();
+                  }
                 },
               ),
               title: const Text('Search Results'),
