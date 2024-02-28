@@ -6,6 +6,11 @@ import "../widgets/top_app_bar.dart";
 import '../widgets/venue_card_widget.dart';
 
 class SearchResults extends StatefulWidget {
+
+  final int dynamicModifier;
+
+  const SearchResults({Key? key, required this.dynamicModifier}) : super(key: key);
+
   @override
   _SearchResultsState createState() => _SearchResultsState();
 }
@@ -18,15 +23,28 @@ class _SearchResultsState extends State<SearchResults> {
     return Theme(
       data: theme,
       child: Scaffold(
-        appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(40),
-          child: Positioned(top: 20.0, left: 0, child: BackButton()),
-          // child: TopNavBar(),
-        ),
-        // bottomNavigationBar: const AppNavBar(),
         body: CustomScrollView(
           slivers: [
-            // const TopNavBar(),
+            SliverAppBar(
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                color: Colors.black,
+                onPressed: () {
+                  if (widget.dynamicModifier == 1) {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                  }
+                  else if (widget.dynamicModifier == 2 || widget.dynamicModifier == 3) {
+                    Navigator.of(context).pop();
+                  }
+                },
+              ),
+              title: const Text('Search Results'),
+              backgroundColor: Colors.white,
+              elevation: 0,
+              pinned: true,
+              floating: true,
+            ),
             if (AppDataStore.filteredVenues.isNotEmpty)
               SliverList(
                 delegate: SliverChildBuilderDelegate(

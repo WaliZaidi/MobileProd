@@ -1,5 +1,5 @@
 import '../models/venue_model.dart'; // Import the models.dart file
-import '../services/mobile_API.dart'; // Import your api.dart file
+import '../services/mobile_API.dart' as api; // Import your api.dart file
 
 class AppDataStore {
   static List<Venue> dataList = [];
@@ -8,7 +8,7 @@ class AppDataStore {
 
   static Future<void> fetchDataAtAppLaunch() async {
     try {
-      final jsonData = await fetchData();
+      final jsonData = await api.fetchData();
 
       dataList = jsonData;
     } catch (e, stackTrace) {
@@ -117,51 +117,28 @@ class AppDataStore {
     String selectedRating,
     String selectedTypeOfVenue,
     String selectedCity,
-    int selectedPricePerPerson,
+    String selectedPricePerPerson,
     String selectedAccessibilityOptions,
-    int selectedCapacity,
+    String selectedCapacity,
     String selectedRefundPolicy,
   ) {
-    // Filter the venues based on the selected filters
-    filteredVenues = dataList.where((venue) {
-      // Check if the venue's rating is equal to the selected rating
-      final ratingCondition =
-          selectedRating == 'All' || venue.rating == selectedRating;
+    Future<List<String>> sortedNamedVenues = api.fetchFilteredData(
+      selectedRating,
+      selectedTypeOfVenue,
+      selectedCity,
+      selectedPricePerPerson,
+      selectedAccessibilityOptions,
+      selectedCapacity,
+      selectedRefundPolicy,
+    );
 
-      // Check if the venue's typeOfVenue contains any of the selected typeOfVenue
-      final typeOfVenueCondition = selectedTypeOfVenue.isEmpty ||
-          selectedTypeOfVenue.any((type) => venue.typeOfVenue.contains(type));
+    sortedNamedVenues.then((value) {
+      filteredVenues =
+          dataList.where((venue) => value.contains(venue.nameOfVenue)).toList();
+    });
+  }
 
-      // Check if the venue's city is equal to the selected city
-      final cityCondition = selectedCity == 'All' || venue.city == selectedCity;
-
-      // Check if the venue's pricePerPerson is less than or equal to the selected pricePerPerson
-      final pricePerPersonCondition = selectedPricePerPerson == 0 ||
-          venue.pricePerPerson <= selectedPricePerPerson;
-
-      // Check if the venue's accessabilityOptions contains any of the selected accessabilityOptions
-      final accessabilityOptionsCondition =
-          selectedAccessibilityOptions.isEmpty ||
-              selectedAccessibilityOptions
-                  .any((option) => venue.accessabilityOptions.contains(option));
-
-      // Check if the venue's totalHallsCapacity is greater than or equal to the selected capacity
-      final capacityCondition = selectedCapacity == 0 ||
-          int.parse(venue.totalHallsCapacity) >= selectedCapacity;
-
-      // Check if the venue's refundPolicy contains any of the selected refundPolicy
-      final refundPolicyCondition = selectedRefundPolicy.isEmpty ||
-          selectedRefundPolicy
-              .any((policy) => venue.refundPolicy.contains(policy));
-
-      // Return true if all the conditions are true
-      return ratingCondition &&
-          typeOfVenueCondition &&
-          cityCondition &&
-          pricePerPersonCondition &&
-          accessabilityOptionsCondition &&
-          capacityCondition &&
-          refundPolicyCondition;
-    }).toList();
+  static void clearFilteredVenues() {
+    filteredVenues = [];
   }
 }

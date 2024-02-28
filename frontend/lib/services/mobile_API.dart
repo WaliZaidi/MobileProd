@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/venue_model.dart'; // Import the models.dart file
 
+const String url = 'http://192.168.18.16:4000';
+
 Future<List<Venue>> fetchData() async {
-  final response =
-      await http.get(Uri.parse('http://192.168.18.16:4000/query/search'));
+  final response = await http.get(Uri.parse('$url/query/search'));
 
   if (response.statusCode == 200) {
     final jsonData = json.decode(response.body);
@@ -146,7 +147,7 @@ Future<List<Venue>> fetchData() async {
                             nameOfVenue: reviewData['nameOfVenue'] ?? '',
                             totalScore:
                                 reviewData['totalScore'].toDouble() ?? 0.0,
-                            rating: reviewData['rating'] ?? '',
+                            rating: reviewData['reviewRating'] ?? '',
                             stars: reviewData['stars'] ?? 0,
                             sentiment: reviewData['sentiment'] ?? '',
                             text: reviewData['text'] ?? '',
@@ -165,42 +166,38 @@ Future<List<Venue>> fetchData() async {
 }
 
 Future<List<String>> fetchFilteredData(
-    String selectedRating,
-    List<String> selectedTypeOfVenue,
-    String selectedCity,
-    int selectedPricePerPerson,
-    List<String> selectedAccessibilityOptions,
-    int selectedCapacity,
-    List<String> selectedRefundPolicy) async {
-  String refundPolicySender = selectedRefundPolicy.join(',');
-  String accessibilityOptionsSender = selectedAccessibilityOptions.join(',');
-  String typeOfVenueSender = selectedTypeOfVenue.join(',');
+  String selectedRating,
+  String selectedTypeOfVenue,
+  String selectedCity,
+  String selectedPricePerPerson,
+  String selectedAccessibilityOptions,
+  String selectedCapacity,
+  String selectedRefundPolicy,
+) async {
+  String urlSend = Uri.http(
+    url.split('//')[1],
+    '/query/search/name',
+    {
+      'rating': selectedRating,
+      'typeOfVenue': selectedTypeOfVenue,
+      'city': selectedCity,
+      'pricePerPerson': selectedPricePerPerson,
+      'totalHallsCapacity': selectedCapacity,
+      'refundPolicy': selectedRefundPolicy,
+      'accessabilityOptions': selectedAccessibilityOptions,
+    },
+  ).toString();
 
-  String url = 'http://192.168.18.16:4000/query/search/name?'
-      'rating=$selectedRating'
-      '&typeOfVenue=$typeOfVenueSender'
-      '&city=$selectedCity'
-      '&pricePerPerson=$selectedPricePerPerson'
-      '&totalHallsCapacity=$selectedCapacity'
-      '&refundPolicy=$refundPolicySender'
-      '&accessabilityOptions=$accessibilityOptionsSender';
-
-  final response = await http.get(Uri.parse(url));
+  final response = await http.get(Uri.parse(urlSend));
+  print(response.body);
 
   if (response.statusCode == 200) {
     final jsonData = json.decode(response.body);
-    final List<dynamic> venuesData = jsonData['venues'];
+    final List<dynamic> venueNamesDynamic = jsonData['venues'];
+    final List<String> venueNames =
+        venueNamesDynamic.map((e) => e.toString()).toList();
 
-    // print(venuesData); this works, so that means its the conversion to Venue object that is the problem
-    //check the structure of the first item
-
-    print(venuesData[0]['nameOfVenue']);
-
-    final List<String> venueNames = venuesData
-        .map((venueData) => venueData['nameOfVenue'] as String ?? '')
-        .toList();
-
-    return venueNames; // Return the list of venue names here
+    return venueNames;
   }
 
   throw Exception('Failed to load data');

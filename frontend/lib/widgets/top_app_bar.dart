@@ -255,6 +255,8 @@ import '../widgets/property_type_list.dart';
 import '../widgets/filter_search.dart';
 import 'package:go_router/go_router.dart';
 import '../theme/theme.dart';
+import '../widgets/search_modal.dart';
+import '../widgets/top_modal.dart'; 
 // import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class TopNavBar extends StatelessWidget {
@@ -290,7 +292,14 @@ class TopNavBar extends StatelessWidget {
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-                            context.pushNamed('booking-details');
+                            Navigator.of(context).push(PageRouteBuilder(
+                              opaque: false,
+                              pageBuilder: (BuildContext context, _, __) {
+                                return const TopModal(
+                                  child: SearchModal(),
+                                );
+                              },
+                            ));
                           },
                           child: Container(
                             width: MediaQuery.of(context).size.width *
