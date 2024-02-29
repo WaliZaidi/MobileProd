@@ -15,7 +15,7 @@ class VenueDetailsScreen extends StatelessWidget {
         children: [
           // Image Carousel
           SizedBox(
-            height: 200, // Adjust the height as needed
+            height: 600, // Adjust the height as needed
             child: CarouselSlider(
               items: venue.images.expand((imageUrl) {
                 return imageUrl.toImageList().map((imageLink) {
@@ -153,32 +153,25 @@ class VenueDetailsScreen extends StatelessWidget {
                     builder: (BuildContext context) {
                       return AlertDialog(
                         title: const Text('Menu Options'),
-                        content: SizedBox(
-                          height:
-                              200, // Set a fixed height or use a ListView with limited items
-                          child: ListView(
-                            shrinkWrap: true,
-                            children:
-                                List.generate(venue.subVenues.length, (index) {
-                              return ListTile(
-                                title: Text(
-                                  venue.subVenues[index].menuOptions
-                                      .map((menuOption) =>
-                                          '${menuOption.packageName} - ${menuOption.packagePrice}')
-                                      .join('\n'),
-                                ),
-                                subtitle: Text(
-                                  'Description: ${venue.subVenues[index].menuOptions.map((menuOption) => menuOption.packageDescription).join('\n')}',
-                                ),
-                              );
-                            }),
-                          ),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: venue.subVenues.map((subVenue) {
+                            return ListTile(
+                              title: Text(subVenue.menuOptions
+                                  .map((menuOption) =>
+                                      '${menuOption.packageName} - ${menuOption.packagePrice}')
+                                  .join('\n')),
+                              subtitle: Text(
+                                  'Description: ${subVenue.menuOptions.map((menuOption) => menuOption.packageDescription).join('\n')}'),
+                            );
+                          }).toList(),
                         ),
                       );
                     },
                   );
                 },
               ),
+
               const Divider(),
               // Decor Options
               ListTile(
