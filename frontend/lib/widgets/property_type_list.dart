@@ -25,7 +25,7 @@ class _PropertyTypeListState extends State<PropertyTypeList> {
       SnackBar(
         content: Text(message),
         duration: const Duration(seconds: 1), // Adjust the duration as needed
-        backgroundColor: Color.fromARGB(255, 217, 48, 45),
+        backgroundColor: const Color.fromARGB(255, 217, 48, 45),
       ),
     );
   }
@@ -69,7 +69,9 @@ class _PropertyTypeListState extends State<PropertyTypeList> {
                 // Navigator.of(context).pop();
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const SearchResults(dynamicModifier: 2)),
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          const SearchResults(dynamicModifier: 2)),
                 );
               },
               child: Container(

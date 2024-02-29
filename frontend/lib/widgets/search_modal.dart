@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../store/store.dart';
+import '../screens/search_results.dart';
 
 class SearchModal extends StatefulWidget {
   const SearchModal({Key? key}) : super(key: key);
@@ -7,9 +9,12 @@ class SearchModal extends StatefulWidget {
   _SearchModalState createState() => _SearchModalState();
 }
 
-class _SearchModalState extends State<SearchModal> with SingleTickerProviderStateMixin {
+class _SearchModalState extends State<SearchModal>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
+  late String searchQuery;
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -32,7 +37,9 @@ class _SearchModalState extends State<SearchModal> with SingleTickerProviderStat
 
   @override
   void dispose() {
+    //dispose the controller after the work is done
     _controller.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -42,7 +49,8 @@ class _SearchModalState extends State<SearchModal> with SingleTickerProviderStat
       animation: _animation,
       builder: (context, child) {
         return Transform.translate(
-          offset: Offset(0.0, MediaQuery.of(context).size.height * _animation.value),
+          offset: Offset(
+              0.0, MediaQuery.of(context).size.height * _animation.value),
           child: GestureDetector(
             onTap: () {
               _controller.reverse().then((value) {
@@ -62,10 +70,11 @@ class _SearchModalState extends State<SearchModal> with SingleTickerProviderStat
                   ),
                 ],
               ),
-              child: Material( // Wrap TextField with Material widget
+              child: Material(
+                // Wrap TextField with Material widget
                 child: Column(
                   children: [
-                    Stack(
+                    Row(
                       children: [
                         ElevatedButton(
                           onPressed: () {
@@ -73,18 +82,45 @@ class _SearchModalState extends State<SearchModal> with SingleTickerProviderStat
                               Navigator.pop(context);
                             });
                           },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            shadowColor: Colors.transparent,
+                          ),
                           child: const Icon(Icons.arrow_back),
                         ),
-                      ],
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: 'Search',
-                          border: OutlineInputBorder(),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextField(
+                              controller:
+                                  _searchController, // Assign the controller to the TextField
+                              onChanged: (value) {
+                                // Save the value in the searchQuery variable
+                                setState(() {
+                                  searchQuery = value;
+                                });
+                              },
+                              decoration: const InputDecoration(
+                                hintText: 'Search',
+                                border: OutlineInputBorder(),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
+                        IconButton(
+                          icon: const Icon(Icons.search),
+                          onPressed: () {
+                            // Add your search logic here, using the searchQuery variable
+                            AppDataStore.resolveSearchQuery(searchQuery);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const SearchResults(dynamicModifier: 2)),
+                            );
+                          },
+                        ),
+                      ],
                     ),
                     // Add more search widgets or content here
                   ],

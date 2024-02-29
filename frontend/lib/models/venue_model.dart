@@ -14,6 +14,8 @@ class SubVenue {
     required this.decorOptions,
     required this.bookingCharges,
   });
+
+  get pricePerPerson => null;
 }
 
 class AvailableDate {
@@ -183,6 +185,10 @@ class Venue {
     required this.subVenues,
     required this.reviews,
   });
+
+  get decorOptions => null;
+
+  get bookingCharges => null;
 }
 
 class VenueModel {

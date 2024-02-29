@@ -141,4 +141,17 @@ class AppDataStore {
   static void clearFilteredVenues() {
     filteredVenues = [];
   }
+
+  static void resolveSearchQuery(String query) {
+    if (query.isEmpty) {
+      filteredVenues = [];
+      return;
+    }
+
+    final searchResults = dataList.where((venue) {
+      return venue.nameOfVenue.toLowerCase().contains(query.toLowerCase());
+    }).toList();
+
+    filteredVenues = searchResults;
+  }
 }

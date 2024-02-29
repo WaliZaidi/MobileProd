@@ -223,7 +223,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                       selectedCity,
                       selectedPricePerPerson,
                       selectedAccessibilityOptions,
-                      selectedCapacity as int,
+                      selectedCapacity,
                       selectedRefundPolicy,
                     );
                     // Navigator.of(context).pop();
