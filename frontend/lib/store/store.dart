@@ -5,6 +5,7 @@ class AppDataStore {
   static List<Venue> dataList = [];
   static Venue? currentVenue;
   static List<Venue> filteredVenues = [];
+  static UserInfo? currentUser;
 
   static Future<void> fetchDataAtAppLaunch() async {
     try {

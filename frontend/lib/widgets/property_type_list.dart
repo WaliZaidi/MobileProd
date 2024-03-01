@@ -24,7 +24,7 @@ class _PropertyTypeListState extends State<PropertyTypeList> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        duration: const Duration(seconds: 1), // Adjust the duration as needed
+        duration: const Duration(seconds: 3), // Adjust the duration as needed
         backgroundColor: const Color.fromARGB(255, 230, 111, 109),
       ),
     );
