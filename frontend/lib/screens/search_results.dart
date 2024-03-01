@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import '../widgets/app_nav_bar.dart';
 import '../store/store.dart';
 import '../theme/theme.dart';
-import "../widgets/top_app_bar.dart";
 import '../widgets/venue_card_widget.dart';
 
 class SearchResults extends StatefulWidget {
-
   final int dynamicModifier;
 
-  const SearchResults({Key? key, required this.dynamicModifier}) : super(key: key);
+  const SearchResults({Key? key, required this.dynamicModifier})
+      : super(key: key);
 
   @override
   _SearchResultsState createState() => _SearchResultsState();
@@ -33,8 +31,8 @@ class _SearchResultsState extends State<SearchResults> {
                   if (widget.dynamicModifier == 1) {
                     Navigator.of(context).pop();
                     Navigator.of(context).pop();
-                  }
-                  else if (widget.dynamicModifier == 2 || widget.dynamicModifier == 3) {
+                  } else if (widget.dynamicModifier == 2 ||
+                      widget.dynamicModifier == 3) {
                     Navigator.of(context).pop();
                   }
                 },

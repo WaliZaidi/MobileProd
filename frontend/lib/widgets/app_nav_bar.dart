@@ -211,8 +211,8 @@ class AppNavBar extends StatelessWidget {
                     builder: (context) => const WishListScreen()));
                 break;
               case 2:
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const BookingScreen()));
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => BookingScreen()));
                 break;
               // case 3:
               //   Navigator.of(context).push(

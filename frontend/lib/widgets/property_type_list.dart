@@ -25,7 +25,23 @@ class _PropertyTypeListState extends State<PropertyTypeList> {
       SnackBar(
         content: Text(message),
         duration: const Duration(seconds: 1), // Adjust the duration as needed
-        backgroundColor: const Color.fromARGB(255, 217, 48, 45),
+        backgroundColor: const Color.fromARGB(255, 230, 111, 109),
+      ),
+    );
+  }
+
+  void showLoading(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            const CircularProgressIndicator(),
+            const SizedBox(width: 16),
+            Text(message),
+          ],
+        ),
+        duration: const Duration(seconds: 1), // Adjust the duration as needed
+        backgroundColor: const Color.fromARGB(255, 230, 111, 109),
       ),
     );
   }
@@ -56,7 +72,9 @@ class _PropertyTypeListState extends State<PropertyTypeList> {
                 setState(() {
                   selectedIndex = index;
                 });
-                showMessage('Selected: ${propertyTypes[index]['type']}');
+
+                showLoading('Loading...');
+
                 AppDataStore.filterVenues(
                   selectedRatings = '',
                   selectedTypeOfVenue = propertyTypes[index]['type'].toString(),
@@ -66,13 +84,18 @@ class _PropertyTypeListState extends State<PropertyTypeList> {
                   selectedCapacity = '',
                   selectedRefundPolicy = '',
                 );
-                // Navigator.of(context).pop();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
+
+                // Wait for 2 seconds before navigating
+                Future.delayed(const Duration(seconds: 2), () {
+                  showMessage('Selected: ${propertyTypes[index]['type']}');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
                       builder: (context) =>
-                          const SearchResults(dynamicModifier: 2)),
-                );
+                          const SearchResults(dynamicModifier: 2),
+                    ),
+                  );
+                });
               },
               child: Container(
                 width: itemWidth,

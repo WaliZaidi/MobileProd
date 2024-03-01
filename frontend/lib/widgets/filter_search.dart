@@ -218,14 +218,13 @@ class _FilterWidgetState extends State<FilterWidget> {
                   onPressed: () {
                     // Filter the venues based on the selected filters
                     AppDataStore.filterVenues(
-                      selectedRatings,
-                      selectedTypeOfVenue,
-                      selectedCity,
-                      selectedPricePerPerson,
-                      selectedAccessibilityOptions,
-                      selectedCapacity,
-                      selectedRefundPolicy,
-                    );
+                        selectedRatings,
+                        selectedTypeOfVenue,
+                        selectedCity,
+                        selectedPricePerPerson,
+                        selectedAccessibilityOptions,
+                        selectedCapacity,
+                        selectedRefundPolicy);
                     // Navigator.of(context).pop();
                     Navigator.push(
                       context,
