@@ -180,7 +180,10 @@ class VenueDetailsScreen extends StatelessWidget {
                                                 children: venue.subVenues[index]
                                                     .availableDates
                                                     .map((date) => Text(
-                                                          'Date: ${date.date}, Start Time: ${date.startTime}, End Time: ${date.endTime}',
+                                                          'Date: ${date.date} \nStart Time: ${date.startTime} \nEnd Time: ${date.endTime}',
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontSize: 12),
                                                         ))
                                                     .toList(),
                                               ),
@@ -199,7 +202,9 @@ class VenueDetailsScreen extends StatelessWidget {
                                     },
                                     child: const Text(
                                       'Click to view available dates',
-                                      style: TextStyle(fontSize: 12),
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontStyle: FontStyle.italic),
                                     ),
                                   ),
                                   if (index != venue.subVenues.length - 1)
