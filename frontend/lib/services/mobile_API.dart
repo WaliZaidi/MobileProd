@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/venue_model.dart'; // Import the models.dart file
 
-const String url = 'http://192.168.56.1:4000';
+const String url = 'http://192.168.56.1:5000';
 
 Future<List<Venue>> fetchData() async {
   final response = await http.get(Uri.parse('$url/query/search'));

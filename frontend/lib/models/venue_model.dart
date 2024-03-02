@@ -127,6 +127,22 @@ class ImageUrl {
   });
 }
 
+class BookingInfo {
+  final SubVenue subVenueID;
+  final MenuOption menuOptionID;
+  final DecorOption decorOptionID;
+  final BookingCharge bookingChargeID;
+  final AvailableDate availableDateID;
+
+  BookingInfo({
+    required this.subVenueID,
+    required this.menuOptionID,
+    required this.decorOptionID,
+    required this.bookingChargeID,
+    required this.availableDateID,
+  });
+}
+
 class Venue {
   final String timestamp;
   final String ranking;
@@ -155,6 +171,7 @@ class Venue {
   final int wifiCost;
   final List<SubVenue> subVenues;
   final List<Review> reviews;
+  final BookingInfo? bookingInfo;
 
   Venue({
     required this.timestamp,
@@ -184,6 +201,7 @@ class Venue {
     required this.wifiCost,
     required this.subVenues,
     required this.reviews,
+    this.bookingInfo,
   });
 
   get decorOptions => null;

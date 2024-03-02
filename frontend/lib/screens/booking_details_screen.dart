@@ -15,10 +15,12 @@ import '../store/store.dart';
 // class _BookingScreenState extends State<BookingScreen> {
 //   Map<String, bool> selectedOptions = {};
 //   List<AvailableDate> selectedDates = [];
-//   List<SubVenue> selectedSubhalls = [];
+//   SubVenue? selectedSubhall;
 
 //   @override
 //   Widget build(BuildContext context) {
+//     List<AvailableDate> availableDates = selectedSubhall?.availableDates ?? [];
+
 //     return Scaffold(
 //       appBar: AppBar(
 //         title: const Text('Booking'),
@@ -31,72 +33,103 @@ import '../store/store.dart';
 //       ),
 //       body: ListView(
 //         children: [
-//           ExpansionTile(
-//             title: const Text('Menu Options'),
-//             children: widget.venue.subVenues.expand((subVenue) {
-//               return subVenue.menuOptions.map((menuOption) {
+//           DropdownButton<SubVenue>(
+//             value: selectedSubhall,
+//             hint: const Text('Select a subhall'),
+//             items: widget.venue.subVenues.map((subVenue) {
+//               return DropdownMenuItem<SubVenue>(
+//                 value: subVenue,
+//                 child: Text(subVenue.nameOfSubVenue),
+//               );
+//             }).toList(),
+//             onChanged: (SubVenue? value) {
+//               setState(() {
+//                 selectedSubhall = value;
+//                 selectedDates.clear(); // Clear selected dates when subhall changes
+//               });
+//             },
+//           ),
+//           if (selectedSubhall != null) ...[
+//             ExpansionTile(
+//               title: const Row(
+//                 children: [
+//                   Icon(Icons.menu), // Add icon here
+//                   SizedBox(width: 8.0),
+//                   Text('Menu Options'),
+//                 ],
+//               ),
+//               children: selectedSubhall!.menuOptions.map((menuOption) {
 //                 return CheckboxListTile(
 //                   title: Text(
-//                       '${menuOption.packageName} - ${menuOption.packagePrice}'),
-//                   value: selectedOptions['menu_${menuOption.packageName}'] ??
-//                       false,
+//                     '${menuOption.packageName} - ${menuOption.packagePrice}',
+//                   ),
+//                   subtitle: Text(menuOption.packageDescription),
+//                   value: selectedOptions['menu_${menuOption.packageName}'] ?? false,
 //                   onChanged: (bool? value) {
 //                     setState(() {
-//                       selectedOptions['menu_${menuOption.packageName}'] =
-//                           value ?? false;
+//                       selectedOptions['menu_${menuOption.packageName}'] = value ?? false;
 //                     });
 //                   },
 //                 );
-//               }).toList();
-//             }).toList(),
-//           ),
-//           ExpansionTile(
-//             title: const Text('Decor Options'),
-//             children: widget.venue.subVenues.expand((subVenue) {
-//               return subVenue.decorOptions.map((decorOption) {
+//               }).toList(),
+//             ),
+//             ExpansionTile(
+//               title: const Row(
+//                 children: [
+//                   Icon(Icons.palette), // Add icon here
+//                   SizedBox(width: 8.0),
+//                   Text('Decor Options'),
+//                 ],
+//               ),
+//               children: selectedSubhall!.decorOptions.map((decorOption) {
 //                 return CheckboxListTile(
 //                   title: Text(
-//                       '${decorOption.decorName} - ${decorOption.decorPrice}'),
-//                   value: selectedOptions['decor_${decorOption.decorName}'] ??
-//                       false,
+//                     '${decorOption.decorName} - ${decorOption.decorPrice}',
+//                   ),
+//                   value: selectedOptions['decor_${decorOption.decorName}'] ?? false,
 //                   onChanged: (bool? value) {
 //                     setState(() {
-//                       selectedOptions['decor_${decorOption.decorName}'] =
-//                           value ?? false;
+//                       selectedOptions['decor_${decorOption.decorName}'] = value ?? false;
 //                     });
 //                   },
 //                 );
-//               }).toList();
-//             }).toList(),
-//           ),
-//           ExpansionTile(
-//             title: const Text('Booking Charges'),
-//             children: widget.venue.subVenues.expand((subVenue) {
-//               return subVenue.bookingCharges.map((bookingCharge) {
+//               }).toList(),
+//             ),
+//             ExpansionTile(
+//               title: const Row(
+//                 children: [
+//                   Icon(Icons.payment), // Add icon here
+//                   SizedBox(width: 8.0),
+//                   Text('Booking Charges'),
+//                 ],
+//               ),
+//               children: selectedSubhall!.bookingCharges.map((bookingCharge) {
 //                 return CheckboxListTile(
 //                   title: Text(
-//                       '${bookingCharge.bookingChargeName} - ${bookingCharge.bookingChargePrice}'),
-//                   value: selectedOptions[
-//                           'booking_${bookingCharge.bookingChargeName}'] ??
-//                       false,
+//                     '${bookingCharge.bookingChargeName} - ${bookingCharge.bookingChargePrice}',
+//                   ),
+//                   value: selectedOptions['booking_${bookingCharge.bookingChargeName}'] ?? false,
 //                   onChanged: (bool? value) {
 //                     setState(() {
-//                       selectedOptions[
-//                               'booking_${bookingCharge.bookingChargeName}'] =
-//                           value ?? false;
+//                       selectedOptions['booking_${bookingCharge.bookingChargeName}'] = value ?? false;
 //                     });
 //                   },
 //                 );
-//               }).toList();
-//             }).toList(),
-//           ),
-//           ExpansionTile(
-//             title: const Text('Available Dates'),
-//             children: widget.venue.subVenues.expand((subVenue) {
-//               return (subVenue.availableDates ?? []).map((availableDate) {
+//               }).toList(),
+//             ),
+//             ExpansionTile(
+//               title: const Row(
+//                 children: [
+//                   Icon(Icons.date_range), // Add icon here
+//                   SizedBox(width: 8.0),
+//                   Text('Available Dates'),
+//                 ],
+//               ),
+//               children: availableDates.map((availableDate) {
 //                 return CheckboxListTile(
 //                   title: Text(
-//                       '${availableDate.date} - ${availableDate.startTime} to ${availableDate.endTime}'),
+//                     '${availableDate.date.day} - ${availableDate.startTime} to ${availableDate.endTime}',
+//                   ),
 //                   value: selectedDates.contains(availableDate),
 //                   onChanged: (bool? value) {
 //                     setState(() {
@@ -110,31 +143,9 @@ import '../store/store.dart';
 //                     });
 //                   },
 //                 );
-//               }).toList();
-//             }).toList(),
-//           ),
-//           ExpansionTile(
-//             title: const Text('Subhalls'),
-//             children: (widget.venue.subVenues ?? []).map((subVenue) {
-//               return CheckboxListTile(
-//                 title: Text(subVenue.nameOfSubVenue),
-//                 subtitle:
-//                     Text('Capacity: ${subVenue.capacityOfSubVenue.toString()}'),
-//                 value: selectedSubhalls.contains(subVenue),
-//                 onChanged: (bool? value) {
-//                   setState(() {
-//                     if (value != null) {
-//                       if (value) {
-//                         selectedSubhalls.add(subVenue);
-//                       } else {
-//                         selectedSubhalls.remove(subVenue);
-//                       }
-//                     }
-//                   });
-//                 },
-//               );
-//             }).toList(),
-//           ),
+//               }).toList(),
+//             ),
+//           ],
 //         ],
 //       ),
 //       bottomNavigationBar: BottomAppBar(
@@ -143,12 +154,12 @@ import '../store/store.dart';
 //           child: Row(
 //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
 //             children: [
-//               Text('Total Cost: ${calculateTotalCost()}'),
+//               Text('Total Cost: Rs. ${calculateTotalCost()} /-'),
 //               ElevatedButton(
 //                 onPressed: () {
 //                   // Handle booking logic
 //                 },
-//                 child: const Text('Book Now'),
+//                 child: const Text('Complete Booking'),
 //               ),
 //             ],
 //           ),
@@ -159,7 +170,8 @@ import '../store/store.dart';
 
 //   double calculateTotalCost() {
 //     // Calculate the total cost based on selected options
-//     double totalCost = 0.0;
+//     double totalCost = (AppDataStore.currentVenue?.pricePerPerson ?? 0.0).toDouble();
+
 //     selectedOptions.forEach((key, value) {
 //       if (value) {
 //         // Extract the price from the key
@@ -167,28 +179,22 @@ import '../store/store.dart';
 //         String optionName = key.split('_')[1];
 //         switch (optionType) {
 //           case 'menu':
-//             MenuOption? selectedOption = widget.venue.subVenues
-//                 .expand((subVenue) => subVenue.menuOptions)
-//                 .firstWhereOrNull(
-//                     (menuOption) => menuOption.packageName == optionName);
+//             MenuOption? selectedOption = selectedSubhall!.menuOptions
+//                 .firstWhereOrNull((menuOption) => menuOption.packageName == optionName);
 //             if (selectedOption != null) {
 //               totalCost += selectedOption.packagePrice;
 //             }
 //             break;
 //           case 'decor':
-//             DecorOption? selectedOption = widget.venue.subVenues
-//                 .expand((subVenue) => subVenue.decorOptions)
-//                 .firstWhereOrNull(
-//                     (decorOption) => decorOption.decorName == optionName);
+//             DecorOption? selectedOption = selectedSubhall!.decorOptions
+//                 .firstWhereOrNull((decorOption) => decorOption.decorName == optionName);
 //             if (selectedOption != null) {
 //               totalCost += selectedOption.decorPrice;
 //             }
 //             break;
 //           case 'booking':
-//             BookingCharge? selectedOption = widget.venue.subVenues
-//                 .expand((subVenue) => subVenue.bookingCharges)
-//                 .firstWhereOrNull((bookingCharge) =>
-//                     bookingCharge.bookingChargeName == optionName);
+//             BookingCharge? selectedOption = selectedSubhall!.bookingCharges
+//                 .firstWhereOrNull((bookingCharge) => bookingCharge.bookingChargeName == optionName);
 //             if (selectedOption != null) {
 //               totalCost += selectedOption.bookingChargePrice;
 //             }
@@ -199,6 +205,8 @@ import '../store/store.dart';
 //     return totalCost;
 //   }
 // }
+
+import '../screens/user_bookings.dart';
 
 class BookingScreen extends StatefulWidget {
   final Venue venue = AppDataStore.currentVenue!;
@@ -213,6 +221,7 @@ class _BookingScreenState extends State<BookingScreen> {
   Map<String, bool> selectedOptions = {};
   List<AvailableDate> selectedDates = [];
   SubVenue? selectedSubhall;
+  int guestCount = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -230,103 +239,69 @@ class _BookingScreenState extends State<BookingScreen> {
       ),
       body: ListView(
         children: [
-          DropdownButton<SubVenue>(
-            value: selectedSubhall,
-            hint: const Text('Select a subhall'),
-            items: widget.venue.subVenues.map((subVenue) {
-              return DropdownMenuItem<SubVenue>(
-                value: subVenue,
-                child: Text(subVenue.nameOfSubVenue),
-              );
-            }).toList(),
-            onChanged: (SubVenue? value) {
-              setState(() {
-                selectedSubhall = value;
-                selectedDates
-                    .clear(); // Clear selected dates when subhall changes
-              });
-            },
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Enter Number of Guests:', style: TextStyle(fontSize: 16, fontWeight:FontWeight.w600),),
+                TextField(
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) {
+                    setState(() {
+                      guestCount = int.tryParse(value) ?? 0;
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: DropdownButton<SubVenue>(
+              value: selectedSubhall,
+              hint: const Text('Select a subhall'),
+              items: widget.venue.subVenues
+                  .where((subVenue) => subVenue.capacityOfSubVenue >= guestCount)
+                  .map((subVenue) {
+                return DropdownMenuItem<SubVenue>(
+                  value: subVenue,
+                  child: Text(subVenue.nameOfSubVenue),
+                );
+              }).toList(),
+              onChanged: (SubVenue? value) {
+                setState(() {
+                  selectedSubhall = value;
+                  selectedDates.clear(); // Clear selected dates when subhall changes
+                });
+              },
+            ),
           ),
           if (selectedSubhall != null) ...[
             ExpansionTile(
-              title: const Text('Menu Options'),
+              title: const Row(
+                children: [
+                  Icon(Icons.menu), // Add icon here
+                  SizedBox(width: 8.0),
+                  Text('Menu Options'),
+                ],
+              ),
               children: selectedSubhall!.menuOptions.map((menuOption) {
                 return CheckboxListTile(
                   title: Text(
                     '${menuOption.packageName} - ${menuOption.packagePrice}',
                   ),
                   subtitle: Text(menuOption.packageDescription),
-                  value: selectedOptions['menu_${menuOption.packageName}'] ??
-                      false,
+                  value: selectedOptions['menu_${menuOption.packageName}'] ?? false,
                   onChanged: (bool? value) {
                     setState(() {
-                      selectedOptions['menu_${menuOption.packageName}'] =
-                          value ?? false;
+                      selectedOptions['menu_${menuOption.packageName}'] = value ?? false;
                     });
                   },
                 );
               }).toList(),
             ),
-            ExpansionTile(
-              title: const Text('Decor Options'),
-              children: selectedSubhall!.decorOptions.map((decorOption) {
-                return CheckboxListTile(
-                  title: Text(
-                    '${decorOption.decorName} - ${decorOption.decorPrice}',
-                  ),
-                  value: selectedOptions['decor_${decorOption.decorName}'] ??
-                      false,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      selectedOptions['decor_${decorOption.decorName}'] =
-                          value ?? false;
-                    });
-                  },
-                );
-              }).toList(),
-            ),
-            ExpansionTile(
-              title: const Text('Booking Charges'),
-              children: selectedSubhall!.bookingCharges.map((bookingCharge) {
-                return CheckboxListTile(
-                  title: Text(
-                    '${bookingCharge.bookingChargeName} - ${bookingCharge.bookingChargePrice}',
-                  ),
-                  value: selectedOptions[
-                          'booking_${bookingCharge.bookingChargeName}'] ??
-                      false,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      selectedOptions[
-                              'booking_${bookingCharge.bookingChargeName}'] =
-                          value ?? false;
-                    });
-                  },
-                );
-              }).toList(),
-            ),
-            ExpansionTile(
-              title: const Text('Available Dates'),
-              children: availableDates.map((availableDate) {
-                return CheckboxListTile(
-                  title: Text(
-                    '${availableDate.date.day} - ${availableDate.startTime} to ${availableDate.endTime}',
-                  ),
-                  value: selectedDates.contains(availableDate),
-                  onChanged: (bool? value) {
-                    setState(() {
-                      if (value != null) {
-                        if (value) {
-                          selectedDates.add(availableDate);
-                        } else {
-                          selectedDates.remove(availableDate);
-                        }
-                      }
-                    });
-                  },
-                );
-              }).toList(),
-            ),
+            // Rest of the ExpansionTiles remain the same
           ],
         ],
       ),
@@ -336,12 +311,17 @@ class _BookingScreenState extends State<BookingScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Total Cost: ${calculateTotalCost()}'),
+              Text('Total Cost: Rs. ${calculateTotalCost()} /-'),
               ElevatedButton(
                 onPressed: () {
-                  // Handle booking logic
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     // builder: (context) => UserBookingsScreen(),
+                  //   ),
+                  // );
                 },
-                child: const Text('Book Now'),
+                child: const Text('Complete Booking'),
               ),
             ],
           ),
@@ -352,8 +332,10 @@ class _BookingScreenState extends State<BookingScreen> {
 
   double calculateTotalCost() {
     // Calculate the total cost based on selected options
-    double totalCost =
-        (AppDataStore.currentVenue?.pricePerPerson ?? 0.0).toDouble();
+    double totalCost = (AppDataStore.currentVenue?.pricePerPerson ?? 0.0).toDouble();
+    if (guestCount > 0) {
+      totalCost = (AppDataStore.currentVenue?.pricePerPerson ?? 0.0).toDouble() * guestCount;
+    }
 
     selectedOptions.forEach((key, value) {
       if (value) {
@@ -363,24 +345,21 @@ class _BookingScreenState extends State<BookingScreen> {
         switch (optionType) {
           case 'menu':
             MenuOption? selectedOption = selectedSubhall!.menuOptions
-                .firstWhereOrNull(
-                    (menuOption) => menuOption.packageName == optionName);
+                .firstWhereOrNull((menuOption) => menuOption.packageName == optionName);
             if (selectedOption != null) {
               totalCost += selectedOption.packagePrice;
             }
             break;
           case 'decor':
             DecorOption? selectedOption = selectedSubhall!.decorOptions
-                .firstWhereOrNull(
-                    (decorOption) => decorOption.decorName == optionName);
+                .firstWhereOrNull((decorOption) => decorOption.decorName == optionName);
             if (selectedOption != null) {
               totalCost += selectedOption.decorPrice;
             }
             break;
           case 'booking':
             BookingCharge? selectedOption = selectedSubhall!.bookingCharges
-                .firstWhereOrNull((bookingCharge) =>
-                    bookingCharge.bookingChargeName == optionName);
+                .firstWhereOrNull((bookingCharge) => bookingCharge.bookingChargeName == optionName);
             if (selectedOption != null) {
               totalCost += selectedOption.bookingChargePrice;
             }

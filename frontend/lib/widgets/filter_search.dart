@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/widgets/loader_bars.dart';
 import '../theme/theme.dart'; // Import your custom theme here
 import '../store/store.dart'; // Import your store.dart file
 import '../screens/search_results.dart';
@@ -225,13 +226,20 @@ class _FilterWidgetState extends State<FilterWidget> {
                         selectedAccessibilityOptions,
                         selectedCapacity,
                         selectedRefundPolicy);
+
                     // Navigator.of(context).pop();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              const SearchResults(dynamicModifier: 1)),
-                    );
+
+                    LoaderBar.showLoading(context, 'Loading...');
+                    Future.delayed(const Duration(seconds: 3), () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SearchResults(dynamicModifier: 1),
+                        ),
+                      );
+                    });
+
+                    LoaderBar.showMessage(context, "Showing Filter Results...");
                   },
                   child: const Text('Search'),
                 ),
