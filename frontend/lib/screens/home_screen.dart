@@ -25,6 +25,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+    // ignore: unused_label
+    debugShowMaterialGrid: true;
     AppDataStore.fetchDataAtAppLaunch().then((_) {
       _timer = Timer(const Duration(seconds: 5), () {
         setState(() {
