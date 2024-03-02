@@ -314,12 +314,12 @@ class _BookingScreenState extends State<BookingScreen> {
               Text('Total Cost: Rs. ${calculateTotalCost()} /-'),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => UserBookingsScreen(),
-                    ),
-                  );
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     // builder: (context) => UserBookingsScreen(),
+                  //   ),
+                  // );
                 },
                 child: const Text('Complete Booking'),
               ),
@@ -333,6 +333,9 @@ class _BookingScreenState extends State<BookingScreen> {
   double calculateTotalCost() {
     // Calculate the total cost based on selected options
     double totalCost = (AppDataStore.currentVenue?.pricePerPerson ?? 0.0).toDouble();
+    if (guestCount > 0) {
+      totalCost = (AppDataStore.currentVenue?.pricePerPerson ?? 0.0).toDouble() * guestCount;
+    }
 
     selectedOptions.forEach((key, value) {
       if (value) {
