@@ -155,8 +155,8 @@ class VenueCardWidget extends StatelessWidget {
                       boxShadow: [
                         BoxShadow(
                           color: Colors.white,
-                          spreadRadius: -1,
-                          blurRadius: 0.5,
+                          spreadRadius: -2,
+                          blurRadius: 0,
                           offset: Offset(0, 0),
                         ),
                       ],
@@ -165,6 +165,8 @@ class VenueCardWidget extends StatelessWidget {
                       icon: const Icon(Icons.favorite_border),
                       onPressed: () {
                         // Implement your logic to add the venue to favorites
+                        //send the name to favorites list and other shit
+                        
                       },
                     ),
                   ),
