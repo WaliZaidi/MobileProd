@@ -27,17 +27,17 @@ class UserInfo {
     required this.status,
   });
 
-  factory UserInfo.fromJson(Map<String, dynamic> json) {
+  factory UserInfo.empty() {
     return UserInfo(
-      id: json['id'],
-      name: json['name'],
-      email: json['email'],
-      phone: json['phone'],
-      address: json['address'],
-      date: json['date'],
-      time: json['time'],
-      service: json['service'],
-      status: json['status'],
+      id: '',
+      name: '',
+      email: '',
+      phone: '',
+      address: '',
+      date: '',
+      time: '',
+      service: '',
+      status: '',
     );
   }
 }

@@ -15,6 +15,17 @@ class SubVenue {
     required this.bookingCharges,
   });
 
+  factory SubVenue.empty() {
+    return SubVenue(
+      nameOfSubVenue: '',
+      capacityOfSubVenue: 0,
+      availableDates: [],
+      menuOptions: [],
+      decorOptions: [],
+      bookingCharges: [],
+    );
+  }
+
   get pricePerPerson => null;
 }
 
@@ -141,6 +152,10 @@ class BookingInfo {
     required this.bookingChargeID,
     required this.availableDateID,
   });
+
+  get totalAmount => null;
+
+  get status => null;
 }
 
 class Venue {
@@ -203,6 +218,39 @@ class Venue {
     required this.reviews,
     this.bookingInfo,
   });
+
+  factory Venue.empty() {
+    return Venue(
+      timestamp: '',
+      ranking: '',
+      nameOfVenue: '',
+      locationOfVenue: '',
+      plusCode: '',
+      typeOfVenue: [],
+      numberOfReviews: '',
+      serviceOptions: [],
+      accessabilityOptions: [],
+      rating: '',
+      parkingSpace: '',
+      numberOfSubhalls: '',
+      city: '',
+      totalHallsCapacity: '',
+      refundPolicy: [],
+      contactNumber: '',
+      websiteLink: '',
+      pricePerPerson: 0,
+      description: '',
+      arEnabled: false,
+      paranomaEnabled: false,
+      verifiedStatus: false,
+      images: [],
+      wifi: false,
+      wifiCost: 0,
+      subVenues: [],
+      reviews: [],
+      bookingInfo: null,
+    );
+  }
 
   get decorOptions => null;
 

@@ -1,5 +1,5 @@
-import 'package:frontend/models/user_modal.dart';
-import 'package:frontend/models/venue_model.dart';
+import '../models/user_modal.dart';
+import '../models/venue_model.dart';
 
 class Booking {
   final UserInfo user;
@@ -25,4 +25,20 @@ class Booking {
     required this.totalAmount,
     required this.status,
   });
+
+  // Factory constructor to create an empty Booking object
+  factory Booking.empty() {
+    return Booking(
+      user: UserInfo.empty(), // Use default constructor of UserInfo
+      date: '',
+      time: '',
+      venue: Venue.empty(), // Use default constructor of Venue
+      subVenue: SubVenue.empty(), // Use default constructor of SubVenue
+      guestCount: 0,
+      selectedOptions: [],
+      selectedDates: [],
+      totalAmount: 0.0,
+      status: '',
+    );
+  }
 }

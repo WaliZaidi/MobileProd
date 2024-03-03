@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/booking_model.dart';
+import 'package:frontend/widgets/app_nav_bar.dart';
 
 class BookingConfirmationScreen extends StatelessWidget {
   final Booking bookingDetails;
@@ -51,9 +52,7 @@ class ReviewBookingModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Review Booking'),
-      ),
+      appBar: AppBar(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -72,6 +71,7 @@ class ReviewBookingModal extends StatelessWidget {
           }).toList(),
         ),
       ),
+      bottomNavigationBar: const AppNavBar(),
     );
   }
 }
