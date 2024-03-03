@@ -3,10 +3,11 @@ import 'package:collection/collection.dart';
 import 'package:frontend/models/booking_model.dart';
 import 'package:frontend/models/user_modal.dart';
 import 'package:frontend/theme/theme.dart';
-import '../models/venue_model.dart';
-import '../store/store.dart';
+import 'package:frontend/widgets/app_nav_bar.dart';
+import 'package:frontend/models/venue_model.dart';
+import 'package:frontend/store/store.dart';
 
-import '../screens/booking_confirmation_screen.dart';
+import 'booking_confirmation_screen.dart';
 
 // class BookingScreen extends StatefulWidget {
 //   final Venue venue = AppDataStore.currentVenue!;
@@ -474,46 +475,101 @@ class _BookingScreenState extends State<BookingScreen> {
             ],
           ],
         ),
-        bottomNavigationBar: BottomAppBar(
-          child: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Total Cost: Rs. ${calculateTotalCost()} /-'),
-                ElevatedButton(
-                  onPressed: selectedSubhall != null && guestCount > 0
-                      ? () {
-                          // Handle booking logic
-                          bookingForVenue = Booking(
-                            venue: widget.venue,
-                            subVenue: selectedSubhall!,
-                            guestCount: guestCount,
-                            selectedOptions: selectedOptions.keys.toList(),
-                            selectedDates: selectedDates,
-                            totalAmount: calculateTotalCost(),
-                            status: 'Pending',
-                            date: DateTime.now().day.toString(),
-                            time: DateTime.now().isUtc.toString(),
-                            user: AppDataStore.currentUser = UserInfo.empty(),
-                          );
-                          AppDataStore.addBooking(bookingForVenue);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => BookingConfirmationScreen(
-                                  bookingDetails: bookingForVenue),
-                            ),
-                          );
-                        }
-                      : null,
-                  child: const Text('Complete'),
+        //
+        bottomNavigationBar: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              height: 60.0, // Set the desired height
+              child: BottomAppBar(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Total Cost: Rs. ${calculateTotalCost()} /-'),
+                      ElevatedButton(
+                        onPressed: selectedSubhall != null && guestCount > 0
+                            ? () {
+                                // Handle booking logic
+                                bookingForVenue = Booking(
+                                  venue: widget.venue,
+                                  subVenue: selectedSubhall!,
+                                  guestCount: guestCount,
+                                  selectedOptions:
+                                      selectedOptions.keys.toList(),
+                                  selectedDates: selectedDates,
+                                  totalAmount: calculateTotalCost(),
+                                  status: 'Pending',
+                                  date: DateTime.now().day.toString(),
+                                  time: DateTime.now().isUtc.toString(),
+                                  user: AppDataStore.currentUser =
+                                      UserInfo.empty(),
+                                );
+                                AppDataStore.addBooking(bookingForVenue);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        BookingConfirmationScreen(
+                                            bookingDetails: bookingForVenue),
+                                  ),
+                                );
+                              }
+                            : null,
+                        child: const Text('Complete'),
+                      ),
+                    ],
+                  ),
                 ),
-              ],
+              ),
             ),
-          ),
+            // Second BottomAppBar component
+            const AppNavBar(),
+          ],
         ),
+
+        // bottomNavigationBar: BottomAppBar(
+        //   child: Padding(
+        //     padding:
+        //         const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        //     child: Row(
+        //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //       children: [
+        //         Text('Total Cost: Rs. ${calculateTotalCost()} /-'),
+        //         ElevatedButton(
+        //           onPressed: selectedSubhall != null && guestCount > 0
+        //               ? () {
+        //                   // Handle booking logic
+        //                   bookingForVenue = Booking(
+        //                     venue: widget.venue,
+        //                     subVenue: selectedSubhall!,
+        //                     guestCount: guestCount,
+        //                     selectedOptions: selectedOptions.keys.toList(),
+        //                     selectedDates: selectedDates,
+        //                     totalAmount: calculateTotalCost(),
+        //                     status: 'Pending',
+        //                     date: DateTime.now().day.toString(),
+        //                     time: DateTime.now().isUtc.toString(),
+        //                     user: AppDataStore.currentUser = UserInfo.empty(),
+        //                   );
+        //                   AppDataStore.addBooking(bookingForVenue);
+        //                   Navigator.push(
+        //                     context,
+        //                     MaterialPageRoute(
+        //                       builder: (context) => BookingConfirmationScreen(
+        //                           bookingDetails: bookingForVenue),
+        //                     ),
+        //                   );
+        //                 }
+        //               : null,
+        //           child: const Text('Complete'),
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+        // ),
       ),
     );
   }

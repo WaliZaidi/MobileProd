@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/widgets/app_nav_bar.dart';
 import '../models/venue_model.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import '../screens/booking_details_screen.dart';
 import '../theme/theme.dart';
+import 'booking/booking_confirmation_screen.dart';
+import 'booking/booking_details_screen.dart';
 
 class VenueDetailsScreen extends StatelessWidget {
   final Venue venue;
@@ -504,29 +506,38 @@ class VenueDetailsScreen extends StatelessWidget {
             ),
           ],
         ),
-        bottomNavigationBar: BottomAppBar(
-          color: Colors.white,
-          child: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Cost / Person: ${venue.pricePerPerson}'),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BookingScreen(),
+        bottomNavigationBar: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              height: 60.0,
+              child: BottomAppBar(
+                color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Cost / Person: ${venue.pricePerPerson}'),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => BookingScreen(),
+                            ),
+                          );
+                        },
+                        child: const Text('Book Now'),
                       ),
-                    );
-                  },
-                  child: const Text('Book Now'),
+                    ],
+                  ),
                 ),
-              ],
+              ),
             ),
-          ),
+            const AppNavBar(),
+          ],
         ),
       ),
     );
