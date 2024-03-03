@@ -471,7 +471,7 @@ class VenueDetailsScreen extends StatelessWidget {
                     ),
                     subtitle: Text(
                       venue.description ?? 'No description available',
-                      style: const TextStyle(fontSize: 12),
+                      style: const TextStyle(fontSize: 13),
                     ),
                   ),
                   const Divider(

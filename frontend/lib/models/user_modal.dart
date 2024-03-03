@@ -1,4 +1,6 @@
 import '../models/venue_model.dart';
+// ignore: library_prefixes
+import '../models/booking_model.dart';
 
 class UserInfo {
   final String id;
@@ -41,10 +43,9 @@ class UserInfo {
 }
 
 class BookedVenues {
-  final List<Venue> bookedVenues = [];
+  final List<Booking> listOfBookedVenues = [];
 }
 
 class FavoriteVenues {
   final List<Venue> favoriteVenues = [];
 }
-

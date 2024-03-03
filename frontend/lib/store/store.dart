@@ -1,9 +1,13 @@
+import 'package:frontend/models/booking_model.dart';
+
 import '../models/venue_model.dart'; // Import the models.dart file
 import '../services/mobile_API.dart' as api; // Import your api.dart file
+import '../models/user_modal.dart'; // Import the user_modal.dart file
 
 class AppDataStore {
   static List<Venue> dataList = [];
   static Venue? currentVenue;
+  static UserInfo? currentUser;
   static List<Venue> filteredVenues = [];
   // static UserInfo? currentUser;
 
@@ -154,5 +158,10 @@ class AppDataStore {
     }).toList();
 
     filteredVenues = searchResults;
+  }
+
+  static void addBooking(Booking booking) {
+    // Add the booking to the user's bookings
+    currentUser?.bookedVenues.listOfBookedVenues.add(booking);
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
+import 'package:frontend/models/booking_model.dart';
 import 'package:frontend/theme/theme.dart';
 import '../models/venue_model.dart';
 import '../store/store.dart';
@@ -390,6 +391,8 @@ import '../screens/user_bookings.dart';
 //   }
 // }
 
+import '../screens/booking_confirmation_screen.dart';
+
 class BookingScreen extends StatefulWidget {
   final Venue venue = AppDataStore.currentVenue!;
 
@@ -404,6 +407,7 @@ class _BookingScreenState extends State<BookingScreen> {
   List<AvailableDate> selectedDates = [];
   SubVenue? selectedSubhall;
   int guestCount = 0;
+  late Booking bookingForVenue; //will get initialized on booking completion
 
   @override
   Widget build(BuildContext context) {
@@ -586,12 +590,27 @@ class _BookingScreenState extends State<BookingScreen> {
                 Text('Total Cost: Rs. ${calculateTotalCost()} /-'),
                 ElevatedButton(
                   onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     // builder: (context) => UserBookingsScreen(),
-                    //   ),
-                    // );
+                    // Handle booking logic
+                    bookingForVenue = Booking(
+                      venue: widget.venue,
+                      subVenue: selectedSubhall!,
+                      guestCount: guestCount,
+                      selectedOptions: selectedOptions.keys.toList(),
+                      selectedDates: selectedDates,
+                      totalAmount: calculateTotalCost(),
+                      status: 'Pending',
+                      date: DateTime.now().day.toString(),
+                      time: DateTime.now().isUtc.toString(),
+                      user: AppDataStore.currentUser!,
+                    );
+                    AppDataStore.addBooking(bookingForVenue);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BookingConfirmationScreen(
+                            bookingDetails: bookingForVenue),
+                      ),
+                    );
                   },
                   child: const Text('Complete'),
                 ),
