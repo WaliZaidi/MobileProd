@@ -26,7 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
     // ignore: unused_label
-    debugShowMaterialGrid: true;
+    debugShowMaterialGrid:
+    true;
     AppDataStore.fetchDataAtAppLaunch().then((_) {
       _timer = Timer(const Duration(seconds: 5), () {
         setState(() {
@@ -44,9 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Theme(
-      data: theme,
+      data: CustomTheme.theme,
       child: Scaffold(
         appBar: const PreferredSize(
           preferredSize: Size.fromHeight(140),

@@ -154,7 +154,7 @@ class VenueCardWidget extends StatelessWidget {
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.white,
+                          color: Color.fromARGB(107, 255, 255, 255),
                           spreadRadius: -2,
                           blurRadius: 0,
                           offset: Offset(0, 0),
@@ -166,7 +166,6 @@ class VenueCardWidget extends StatelessWidget {
                       onPressed: () {
                         // Implement your logic to add the venue to favorites
                         //send the name to favorites list and other shit
-                        
                       },
                     ),
                   ),
@@ -179,7 +178,8 @@ class VenueCardWidget extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => VenueDetailsScreen(venue: AppDataStore.currentVenue!),
+                      builder: (context) =>
+                          VenueDetailsScreen(venue: AppDataStore.currentVenue!),
                     ),
                   );
                 },
@@ -195,7 +195,9 @@ class VenueCardWidget extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        Text(' ⭐ ${venue.rating}', style: const TextStyle(fontWeight: FontWeight.bold)),
+                        Text(' ⭐ ${venue.rating}',
+                            style:
+                                const TextStyle(fontWeight: FontWeight.bold)),
                         Text(' (${venue.numberOfReviews})'),
                       ],
                     ),
@@ -205,6 +207,15 @@ class VenueCardWidget extends StatelessWidget {
               const SizedBox(height: 8),
               Text('Location: ${venue.locationOfVenue}'),
               const SizedBox(height: 8),
+              Text('Type: ${venue.typeOfVenue.join(', ')}'),
+              const SizedBox(height: 8),
+              Text(
+                'Rs.${venue.pricePerPerson}/person',
+                style: const TextStyle(
+                    decoration: TextDecoration.underline,
+                    fontWeight: FontWeight.w500),
+              ),
+              const SizedBox(height: 15),
             ],
           ),
         ],
@@ -212,4 +223,3 @@ class VenueCardWidget extends StatelessWidget {
     );
   }
 }
-

@@ -19,7 +19,7 @@ class _SearchResultsState extends State<SearchResults> {
     final textTheme = Theme.of(context).textTheme;
 
     return Theme(
-      data: theme,
+      data: CustomTheme.theme,
       child: Scaffold(
         body: CustomScrollView(
           slivers: [
