@@ -29,6 +29,7 @@ class _SearchResultsState extends State<SearchResults> {
                 icon: const Icon(Icons.arrow_back),
                 color: Colors.black,
                 onPressed: () {
+                  AppDataStore.filteredVenues.clear();
                   if (widget.dynamicModifier == 1) {
                     Navigator.of(context).pop();
                     Navigator.of(context).pop();
