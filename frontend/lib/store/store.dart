@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:frontend/models/booking_model.dart';
 
 import '../models/venue_model.dart'; // Import the models.dart file
@@ -7,6 +9,7 @@ import '../models/user_modal.dart'; // Import the user_modal.dart file
 class AppDataStore {
   static List<Venue> dataList = [];
   static Venue? currentVenue;
+  static String loggedInUser = 'false';
   static UserInfo? currentUser;
   static List<Venue> filteredVenues = [];
   // static UserInfo? currentUser;
@@ -163,5 +166,50 @@ class AppDataStore {
   static void addBooking(Booking booking) {
     // Add the booking to the user's bookings
     currentUser?.bookedVenues.listOfBookedVenues.add(booking);
+  }
+
+  static void removeBooking(Booking booking) {
+    // Remove the booking from the user's bookings
+    currentUser?.bookedVenues.listOfBookedVenues.remove(booking);
+  }
+
+  static Future<void> signInUser(
+    String name,
+    String email,
+    String phoneNumber,
+    String password,
+    String confirmPassword,
+    String cnic,
+  ) async {
+    if (await api.registerUser(
+        name, email, phoneNumber, password, confirmPassword, cnic)) {
+      currentUser = UserInfo(
+          id: Random(1000).toString(),
+          name: name,
+          email: email,
+          phone: phoneNumber,
+          date: DateTime.now().day.toString(),
+          time: DateTime.now().isUtc.toString(),
+          status: "active",
+          password: password,
+          confirmPassword: confirmPassword,
+          cnic: cnic);
+    } else {
+      throw Exception('Failed to register user');
+    }
+  }
+
+  static Future<bool> loginUser(String email, String password) async {
+    if (await api.loginUser(email, password)) {
+      print('User logged in successfully');
+      loggedInUser = 'true';
+      return true;
+    } else {
+      throw Exception('Failed to login user');
+    }
+  }
+
+  static void googleSignIn() {
+    // Perform Google Sign-In
   }
 }

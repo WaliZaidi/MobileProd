@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/property_type_list.dart';
 import '../widgets/filter_search.dart';
 import '../widgets/search_modal.dart';
-import '../widgets/top_modal.dart'; 
-// import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import '../widgets/top_modal.dart';
 
 class TopNavBar extends StatelessWidget {
   const TopNavBar({Key? key}) : super(key: key);
@@ -87,14 +86,16 @@ class TopNavBar extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(4.0), // Adjust the padding as needed
+                        padding: const EdgeInsets.all(
+                            4.0), // Adjust the padding as needed
                         child: Container(
                           decoration: BoxDecoration(
                             border: Border.all(
                               color: const Color.fromARGB(255, 120, 120, 120),
                               width: 0.3, // Adjust the width as needed
                             ),
-                            borderRadius: BorderRadius.circular(20.0), // Adjust the radius as needed
+                            borderRadius: BorderRadius.circular(
+                                20.0), // Adjust the radius as needed
                           ),
                           child: IconButton(
                             onPressed: () {
@@ -105,7 +106,7 @@ class TopNavBar extends StatelessWidget {
                                 builder: (context) => SizedBox(
                                   height: MediaQuery.of(context).size.height *
                                       0.8, // Adjust the fraction as needed
-                                      width: double.infinity,
+                                  width: double.infinity,
                                   child: const FilterWidget(),
                                 ),
                               );

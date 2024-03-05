@@ -1,4 +1,7 @@
 import 'dart:convert';
+import 'dart:math';
+import 'package:frontend/models/user_modal.dart';
+import 'package:frontend/store/store.dart';
 import 'package:http/http.dart' as http;
 import '../models/venue_model.dart'; // Import the models.dart file
 
@@ -201,4 +204,53 @@ Future<List<String>> fetchFilteredData(
   }
 
   throw Exception('Failed to load data');
+}
+
+Future<bool> registerUser(
+  String name,
+  String email,
+  String phoneNumber,
+  String password,
+  String confirmPassword,
+  String cnic,
+) async {
+  final response = await http.post(
+    Uri.parse('$url/auth/register'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'name': name,
+      'email': email,
+      'phone': phoneNumber,
+      'password': password,
+      'confirmPassword': confirmPassword,
+      'cnic': cnic,
+    }),
+  );
+
+  if (response.statusCode == 201) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+Future<bool> loginUser(String email, String password) async {
+  final response = await http.post(
+    Uri.parse('$url/auth/login'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'email': email,
+      'password': password,
+    }),
+  );
+
+  if (response.statusCode == 201) {
+    return true;
+  } else {
+    return false;
+  }
 }

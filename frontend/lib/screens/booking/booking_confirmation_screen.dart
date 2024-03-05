@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/booking_model.dart';
+import 'package:frontend/screens/booking/booking_list.dart';
 import 'package:frontend/widgets/app_nav_bar.dart';
 
 // class BookingConfirmationScreen extends StatelessWidget {
@@ -96,9 +97,7 @@ class BookingConfirmationScreen extends StatelessWidget {
                       BorderRadius.circular(24), // button border radius
                 ),
               ),
-              onPressed: () {
-                // Navigate to payment screen
-              },
+              onPressed: () {},
               child: const Row(
                 mainAxisSize: MainAxisSize.min, // use minimum size for the row
                 children: [
@@ -121,7 +120,13 @@ class BookingConfirmationScreen extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                // Navigate to view bookings screen
+                // Navigate to view bookings list screen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const BookingList(),
+                  ),
+                );
               },
               child: const Row(
                 mainAxisSize: MainAxisSize.min, // use minimum size for the row

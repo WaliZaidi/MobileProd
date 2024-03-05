@@ -504,8 +504,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                   status: 'Pending',
                                   date: DateTime.now().day.toString(),
                                   time: DateTime.now().isUtc.toString(),
-                                  user: AppDataStore.currentUser =
-                                      UserInfo.empty(),
+                                  user: AppDataStore.currentUser!,
                                 );
                                 AppDataStore.addBooking(bookingForVenue);
                                 Navigator.push(

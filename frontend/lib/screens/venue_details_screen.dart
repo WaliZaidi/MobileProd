@@ -3,7 +3,6 @@ import 'package:frontend/widgets/app_nav_bar.dart';
 import '../models/venue_model.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import '../theme/theme.dart';
-import 'booking/booking_confirmation_screen.dart';
 import 'booking/booking_details_screen.dart';
 
 class VenueDetailsScreen extends StatelessWidget {

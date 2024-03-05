@@ -169,7 +169,7 @@ class CustomTheme {
         color: Colors.white,
         elevation: 0,
         iconTheme: IconThemeData(
-          color: Colors.black,
+          color: Color.fromARGB(255, 0, 0, 0),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
