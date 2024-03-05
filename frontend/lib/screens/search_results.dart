@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/home_screen.dart';
 import '../store/store.dart';
 import '../theme/theme.dart';
 import '../widgets/venue_card_widget.dart';
@@ -19,7 +20,7 @@ class _SearchResultsState extends State<SearchResults> {
     final textTheme = Theme.of(context).textTheme;
 
     return Theme(
-      data: theme,
+      data: CustomTheme.theme,
       child: Scaffold(
         body: CustomScrollView(
           slivers: [
@@ -28,6 +29,7 @@ class _SearchResultsState extends State<SearchResults> {
                 icon: const Icon(Icons.arrow_back),
                 color: Colors.black,
                 onPressed: () {
+                  AppDataStore.filteredVenues.clear();
                   if (widget.dynamicModifier == 1) {
                     Navigator.of(context).pop();
                     Navigator.of(context).pop();
@@ -54,14 +56,31 @@ class _SearchResultsState extends State<SearchResults> {
                 ),
               )
             else if (AppDataStore.filteredVenues.isEmpty)
-              const SliverFillRemaining(
+              SliverFillRemaining(
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // CircularProgressIndicator(),
-                      SizedBox(height: 16),
-                      Text('No results found. Please try again.'),
+                      const Icon(Icons.error_outline,
+                          size: 48, color: Colors.red), // Error icon
+                      const SizedBox(height: 16),
+                      const Text(
+                        'No venues found!',
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomeScreen()),
+                          );
+                        },
+                        child: const Text(
+                            'Back to Home?'), // Button to navigate back
+                      ),
                     ],
                   ),
                 ),

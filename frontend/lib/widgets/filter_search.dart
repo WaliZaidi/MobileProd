@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/widgets/loader_bars.dart';
-import '../theme/theme.dart'; // Import your custom theme here
 import '../store/store.dart'; // Import your store.dart file
 import '../screens/search_results.dart';
 import '../models/venue_model.dart';
+import '../theme/theme.dart'; // Import your theme.dart file
 
 class FilterWidget extends StatefulWidget {
   const FilterWidget({Key? key}) : super(key: key);
@@ -39,7 +39,7 @@ class _FilterWidgetState extends State<FilterWidget> {
     double bottomHalfHeight = screenHeight;
 
     return Theme(
-      data: theme, // Apply your custom theme here
+      data: CustomTheme.theme, // Apply your custom theme here
       child: Container(
         height: bottomHalfHeight,
         alignment: Alignment.bottomCenter,
@@ -234,7 +234,8 @@ class _FilterWidgetState extends State<FilterWidget> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const SearchResults(dynamicModifier: 1),
+                          builder: (context) =>
+                              const SearchResults(dynamicModifier: 1),
                         ),
                       );
                     });

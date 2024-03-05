@@ -1,10 +1,8 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../widgets/app_nav_bar.dart';
 import '../store/store.dart';
-
 import '../theme/theme.dart';
 import "../widgets/top_app_bar.dart";
 import '../widgets/venue_card_widget.dart';
@@ -13,7 +11,6 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _HomeScreenState createState() => _HomeScreenState();
 }
 
@@ -25,11 +22,16 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-    AppDataStore.fetchDataAtAppLaunch().then((_) {
-      _timer = Timer(const Duration(seconds: 5), () {
-        setState(() {
-          _isLoading = false;
-        });
+    debugShowMaterialGrid:
+    true;
+    fetchDataAndUpdateState();
+  }
+
+  Future<void> fetchDataAndUpdateState() async {
+    await AppDataStore.fetchDataAtAppLaunch();
+    _timer = Timer(const Duration(seconds: 5), () {
+      setState(() {
+        _isLoading = false;
       });
     });
   }
@@ -42,9 +44,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Theme(
-      data: theme,
+      data: CustomTheme.theme,
       child: Scaffold(
         appBar: const PreferredSize(
           preferredSize: Size.fromHeight(140),
@@ -53,7 +54,6 @@ class _HomeScreenState extends State<HomeScreen> {
         bottomNavigationBar: const AppNavBar(),
         body: CustomScrollView(
           slivers: [
-            // const TopNavBar(),
             if (AppDataStore.dataList.isNotEmpty)
               SliverList(
                 delegate: SliverChildBuilderDelegate(
@@ -65,14 +65,22 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               )
             else if (AppDataStore.dataList.isEmpty)
-              const SliverFillRemaining(
+              SliverFillRemaining(
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CircularProgressIndicator(),
-                      SizedBox(height: 16),
-                      Text('Establishing Connection...'),
+                      const CircularProgressIndicator(),
+                      const SizedBox(height: 16),
+                      const Text('Establishing Connection...'),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: () {
+                          print('Retry button pressed');
+                          fetchDataAndUpdateState();
+                        },
+                        child: const Text('Retry'),
+                      ),
                     ],
                   ),
                 ),

@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'dart:math';
+import 'package:frontend/store/store.dart';
 import 'package:http/http.dart' as http;
 import '../models/venue_model.dart'; // Import the models.dart file
 
-const String url = 'http://192.168.18.16:4000';
+String url = AppDataStore.url;
 
 Future<List<Venue>> fetchData() async {
+  String url = AppDataStore.url;
   final response = await http.get(Uri.parse('$url/query/search'));
 
   if (response.statusCode == 200) {
@@ -174,6 +177,8 @@ Future<List<String>> fetchFilteredData(
   String selectedCapacity,
   String selectedRefundPolicy,
 ) async {
+  String url = AppDataStore.url;
+
   String urlSend = Uri.http(
     url.split('//')[1],
     '/query/search/name',
@@ -201,4 +206,57 @@ Future<List<String>> fetchFilteredData(
   }
 
   throw Exception('Failed to load data');
+}
+
+Future<bool> registerUser(
+  String name,
+  String email,
+  String phoneNumber,
+  String password,
+  String confirmPassword,
+  String cnic,
+) async {
+  String url = AppDataStore.url;
+
+  final response = await http.post(
+    Uri.parse('$url/auth/register'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'name': name,
+      'email': email,
+      'phone': phoneNumber,
+      'password': password,
+      'confirmPassword': confirmPassword,
+      'cnic': cnic,
+    }),
+  );
+
+  if (response.statusCode == 201) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+Future<bool> loginUser(String email, String password) async {
+  String url = AppDataStore.url;
+
+  final response = await http.post(
+    Uri.parse('$url/auth/login'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'email': email,
+      'password': password,
+    }),
+  );
+
+  if (response.statusCode == 201) {
+    return true;
+  } else {
+    return false;
+  }
 }
