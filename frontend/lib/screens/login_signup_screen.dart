@@ -1,116 +1,18 @@
-// import 'package:flutter/material.dart';
-// import 'package:google_sign_in/google_sign_in.dart';
-
-// class LoginSignupPage extends StatefulWidget {
-//   const LoginSignupPage({Key? key}) : super(key: key);
-
-//   @override
-//   _LoginSignupPageState createState() => _LoginSignupPageState();
-// }
-
-// class _LoginSignupPageState extends State<LoginSignupPage> {
-//   bool _isLoginForm = true;
-
-//   // Text editing controllers for email and password fields
-//   final TextEditingController _emailController = TextEditingController();
-//   final TextEditingController _passwordController = TextEditingController();
-
-//   Future<void> _signInWithGoogle() async {
-//     try {
-//       final GoogleSignInAccount? googleSignInAccount =
-//           await GoogleSignIn().signIn();
-//       if (googleSignInAccount != null) {
-//         // Successfully signed in
-//         // You can now use googleSignInAccount to get user information
-//       }
-//     } catch (error) {
-//       print('Google Sign-In error: $error');
-//     }
-//   }
-
-//   void _toggleFormMode() {
-//     setState(() {
-//       _isLoginForm = !_isLoginForm;
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(),
-//       body: Padding(
-//         padding: const EdgeInsets.all(16.0),
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             if (_isLoginForm)
-//               Column(
-//                 children: [
-//                   TextFormField(
-//                     controller: _emailController,
-//                     decoration: const InputDecoration(labelText: 'Email'),
-//                   ),
-//                   const SizedBox(height: 16.0),
-//                   TextFormField(
-//                     controller: _passwordController,
-//                     decoration: const InputDecoration(labelText: 'Password'),
-//                     obscureText: true,
-//                   ),
-//                   const SizedBox(height: 16.0),
-//                   ElevatedButton(
-//                     onPressed: () {
-//                       // Implement login functionality
-//                     },
-//                     child: const Text('Login'),
-//                   ),
-//                 ],
-//               )
-//             else
-//               Column(
-//                 children: [
-//                   TextFormField(
-//                     decoration: const InputDecoration(labelText: 'Email'),
-//                   ),
-//                   const SizedBox(height: 16.0),
-//                   TextFormField(
-//                     decoration: const InputDecoration(labelText: 'Password'),
-//                     obscureText: true,
-//                   ),
-//                   const SizedBox(height: 16.0),
-//                   ElevatedButton(
-//                     onPressed: () {},
-//                     child: const Text('Sign up'),
-//                   ),
-//                 ],
-//               ),
-//             const SizedBox(height: 16.0),
-//             ElevatedButton(
-//               onPressed: _toggleFormMode,
-//               child:
-//                   Text(_isLoginForm ? 'Switch to Sign up' : 'Switch to Login'),
-//             ),
-//             const SizedBox(height: 16.0),
-//             ElevatedButton(
-//               onPressed: _signInWithGoogle,
-//               child: const Text('Sign in with Google'),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
 import 'package:frontend/models/user_modal.dart';
 import 'package:frontend/screens/home_screen.dart';
+import 'package:frontend/screens/settings_screen.dart';
 import 'package:frontend/store/store.dart';
 import 'package:frontend/theme/theme.dart';
 import 'package:frontend/widgets/loader_bars.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginSignupPage extends StatefulWidget {
-  const LoginSignupPage({Key? key}) : super(key: key);
+  final int dynamicModifierLoginSignupPage;
+
+  const LoginSignupPage(
+      {Key? key, required this.dynamicModifierLoginSignupPage})
+      : super(key: key);
 
   @override
   _LoginSignupPageState createState() => _LoginSignupPageState();
@@ -141,6 +43,8 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           cnic: '',
         );
         AppDataStore.loggedInUser = 'true';
+
+        setState(() {});
       }
     } catch (error) {
       print('Google Sign-In error: $error');
@@ -188,12 +92,22 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
               const SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: () async {
-                  LoaderBar.showLoading(context, "Logging in...");
-                  if (await AppDataStore.loginUser(
-                      _emailController.text, _passwordController.text)) {
-                    MaterialPageRoute(
-                      builder: (context) => const HomeScreen(),
-                    );
+                  if (widget.dynamicModifierLoginSignupPage == 1) {
+                    LoaderBar.showLoading(context, "Logging in...");
+                    if (await AppDataStore.loginUser(
+                        _emailController.text, _passwordController.text)) {
+                      setState(() {});
+                      // ignore: use_build_context_synchronously
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const HomeScreen(),
+                        ),
+                      );
+                    }
+                  } else {
+                    LoaderBar.showLoading(context, "Checking progress...");
+                    Navigator.of(context).pop();
                   }
                 },
                 style: ElevatedButton.styleFrom(
@@ -239,6 +153,23 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                       'Sign in with Google',
                       style: TextStyle(fontSize: 16),
                     ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SettingsScreen(),
+                    ),
+                  );
+                },
+                child: const Row(
+                  children: [
+                    Icon(Icons.settings), // Changed icon to settings
+                    Text('Settings'),
                   ],
                 ),
               ),

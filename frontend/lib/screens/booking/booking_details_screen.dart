@@ -490,7 +490,9 @@ class _BookingScreenState extends State<BookingScreen> {
                     children: [
                       Text('Total Cost: Rs. ${calculateTotalCost()} /-'),
                       ElevatedButton(
-                        onPressed: selectedSubhall != null && guestCount > 0
+                        onPressed: selectedSubhall != null &&
+                                guestCount > 0 &&
+                                AppDataStore.currentUser != null
                             ? () {
                                 // Handle booking logic
                                 bookingForVenue = Booking(
@@ -595,6 +597,22 @@ class _BookingScreenState extends State<BookingScreen> {
                     (menuOption) => menuOption.packageName == optionName);
             if (selectedOption != null) {
               totalCost += selectedOption.packagePrice;
+            }
+            break;
+          case 'decor':
+            DecorOption? selectedOption = selectedSubhall!.decorOptions
+                .firstWhereOrNull(
+                    (decorOption) => decorOption.decorName == optionName);
+            if (selectedOption != null) {
+              totalCost += selectedOption.decorPrice;
+            }
+            break;
+          case 'booking': // Add similar cases for decor and booking options
+            BookingCharge? selectedOption = selectedSubhall!.bookingCharges
+                .firstWhereOrNull((bookingCharge) =>
+                    bookingCharge.bookingChargeName == optionName);
+            if (selectedOption != null) {
+              totalCost += selectedOption.bookingChargePrice;
             }
             break;
           // Add similar cases for decor and booking options

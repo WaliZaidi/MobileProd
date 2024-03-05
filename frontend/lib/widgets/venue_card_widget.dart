@@ -190,7 +190,7 @@ class VenueCardWidget extends StatelessWidget {
                       venue.nameOfVenue,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 14,
+                        fontSize: 16,
                       ),
                     ),
                     Row(

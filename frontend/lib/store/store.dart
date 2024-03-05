@@ -12,6 +12,7 @@ class AppDataStore {
   static String loggedInUser = 'false';
   static UserInfo? currentUser;
   static List<Venue> filteredVenues = [];
+  static String url = 'http://192.168.18.84:4000';
   // static UserInfo? currentUser;
 
   static Future<void> fetchDataAtAppLaunch() async {
@@ -202,6 +203,18 @@ class AppDataStore {
   static Future<bool> loginUser(String email, String password) async {
     if (await api.loginUser(email, password)) {
       print('User logged in successfully');
+      AppDataStore.currentUser = UserInfo(
+        id: Random(1000).toString(),
+        name: '',
+        email: email,
+        phone: '1234567890',
+        date: DateTime.now().day.toString(),
+        time: DateTime.now().isUtc.toString(),
+        status: 'active',
+        password: password,
+        confirmPassword: password,
+        cnic: '12345-6789012-3',
+      );
       loggedInUser = 'true';
       return true;
     } else {
@@ -211,5 +224,11 @@ class AppDataStore {
 
   static void googleSignIn() {
     // Perform Google Sign-In
+  }
+
+  static getCurrentUser() {}
+
+  static void updateServerUrl(String newUrl) {
+    url = newUrl;
   }
 }

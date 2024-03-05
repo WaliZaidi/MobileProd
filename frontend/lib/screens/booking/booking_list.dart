@@ -144,6 +144,7 @@ import 'package:frontend/screens/login_signup_screen.dart';
 import 'package:frontend/store/store.dart';
 import 'package:frontend/theme/theme.dart';
 import 'package:frontend/widgets/app_nav_bar.dart';
+import 'package:frontend/widgets/venue_card_widget.dart';
 
 class BookingList extends StatelessWidget {
   const BookingList({Key? key}) : super(key: key);
@@ -157,7 +158,7 @@ class BookingList extends StatelessWidget {
         body: Center(
           child: Stack(
             children: [
-              if (AppDataStore.currentUser?.name.isEmpty ?? true)
+              if (AppDataStore.loggedInUser == "false")
                 Positioned(
                   left: 16, // Adjust this value to position content to the left
                   child: Column(
@@ -189,8 +190,13 @@ class BookingList extends StatelessWidget {
                       const SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: () {
-                          MaterialPageRoute(
-                            builder: (context) => const LoginSignupPage(),
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginSignupPage(
+                                dynamicModifierLoginSignupPage: 2,
+                              ),
+                            ),
                           );
                         },
                         child: const Text('Log in'),
@@ -200,31 +206,37 @@ class BookingList extends StatelessWidget {
                 )
               else
                 Positioned(
-                  left: 16, // Adjust this value to position content to the left
+                  left: 16,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(
-                        height: 40,
-                      ), // Add a space at the top of the page (140 pixels high
-                      const Text('Bookings',
-                          style: TextStyle(
-                            fontSize: 26,
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.bold,
-                          )),
+                      const SizedBox(height: 40),
+                      const Text(
+                        'Bookings',
+                        style: TextStyle(
+                          fontSize: 26,
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       const Divider(
                         color: Color.fromARGB(255, 0, 0, 0),
                         thickness: 1,
                         indent: 10,
                         endIndent: 10,
                       ),
-                      const Text('Bookings'),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/booking');
-                        },
-                        child: const Text('Book a trip'),
+                      const SizedBox(height: 20),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: AppDataStore.currentUser!.bookedVenues
+                              .listOfBookedVenues.length,
+                          itemBuilder: (context, index) {
+                            return VenueCardWidget(
+                              venue: AppDataStore.currentUser!.bookedVenues
+                                  .listOfBookedVenues[index].venue,
+                            );
+                          },
+                        ),
                       ),
                     ],
                   ),

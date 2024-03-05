@@ -35,20 +35,22 @@ class AppNavBar extends StatelessWidget {
             // Handle the tab taps
             switch (index) {
               case 0:
-                Navigator.of(context).push(MaterialPageRoute(
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
                     builder: (context) => const HomeScreen()));
                 break;
               case 1:
-                Navigator.of(context).push(MaterialPageRoute(
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
                     builder: (context) => const WishListScreen()));
                 break;
               case 2:
-                Navigator.of(context).push(MaterialPageRoute(
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
                     builder: (context) => const BookingList()));
                 break;
               case 3:
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const LoginSignupPage()));
+                    builder: (context) => const LoginSignupPage(
+                          dynamicModifierLoginSignupPage: 1,
+                        )));
                 break;
               default:
                 break;

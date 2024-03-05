@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'dart:math';
-import 'package:frontend/models/user_modal.dart';
 import 'package:frontend/store/store.dart';
 import 'package:http/http.dart' as http;
 import '../models/venue_model.dart'; // Import the models.dart file
 
-const String url = 'http://192.168.18.16:4000';
+String url = AppDataStore.url;
 
 Future<List<Venue>> fetchData() async {
+  String url = AppDataStore.url;
   final response = await http.get(Uri.parse('$url/query/search'));
 
   if (response.statusCode == 200) {
@@ -177,6 +177,8 @@ Future<List<String>> fetchFilteredData(
   String selectedCapacity,
   String selectedRefundPolicy,
 ) async {
+  String url = AppDataStore.url;
+
   String urlSend = Uri.http(
     url.split('//')[1],
     '/query/search/name',
@@ -214,6 +216,8 @@ Future<bool> registerUser(
   String confirmPassword,
   String cnic,
 ) async {
+  String url = AppDataStore.url;
+
   final response = await http.post(
     Uri.parse('$url/auth/register'),
     headers: <String, String>{
@@ -237,6 +241,8 @@ Future<bool> registerUser(
 }
 
 Future<bool> loginUser(String email, String password) async {
+  String url = AppDataStore.url;
+
   final response = await http.post(
     Uri.parse('$url/auth/login'),
     headers: <String, String>{
