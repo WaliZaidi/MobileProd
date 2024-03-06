@@ -191,18 +191,10 @@ class BookingConfirmationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<UserInfo>(
-      future: AppDataStore.getCurrentUser(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (snapshot.hasError) {
-          return Center(
-            child: Text('Error: ${snapshot.error}'),
-          );
-        } else if (snapshot.data == null) {
+    return ValueListenableBuilder<bool>(
+      valueListenable: AppDataStore.loggedInNotifier,
+      builder: (context, isLoggedIn, _) {
+        if (!isLoggedIn) {
           return const LoginSignupPage(
             dynamicModifierLoginSignupPage: 2,
           );
@@ -250,8 +242,8 @@ class BookingConfirmationContent extends StatelessWidget {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: Colors.green, // background color
-                onPrimary: Colors.white, // text color
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.green, // text color
                 padding: const EdgeInsets.symmetric(
                     horizontal: 32, vertical: 16), // button padding
                 shape: RoundedRectangleBorder(
@@ -272,8 +264,8 @@ class BookingConfirmationContent extends StatelessWidget {
             const SizedBox(height: 16),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: Colors.blue, // background color
-                onPrimary: Colors.white, // text color
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.blue, // text color
                 padding: const EdgeInsets.symmetric(
                     horizontal: 32, vertical: 16), // button padding
                 shape: RoundedRectangleBorder(

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:frontend/models/booking_model.dart';
 
 import '../models/venue_model.dart'; // Import the models.dart file
@@ -9,10 +10,15 @@ import '../models/user_modal.dart'; // Import the user_modal.dart file
 class AppDataStore {
   static List<Venue> dataList = [];
   static Venue? currentVenue;
-  static String loggedInUser = 'false';
   static UserInfo? currentUser;
   static List<Venue> filteredVenues = [];
-  static String url = 'http://192.168.18.84:4000';
+  static String url = 'http://192.168.18.16:4000';
+
+  static ValueNotifier<bool> loggedInNotifier = ValueNotifier<bool>(false);
+
+  static void setLoggedIn(bool loggedIn) {
+    loggedInNotifier.value = loggedIn;
+  }
   // static UserInfo? currentUser;
 
   static Future<void> fetchDataAtAppLaunch() async {
@@ -91,35 +97,6 @@ class AppDataStore {
       print('Venue not found');
     }
   }
-
-  // static void filterVenues(
-  //   String selectedRating,
-  //   List<String> selectedTypeOfVenue,
-  //   String selectedCity,
-  //   int selectedPricePerPerson,
-  //   List<String> selectedAccessibilityOptions,
-  //   int selectedCapacity,
-  //   List<String> selectedRefundPolicy,
-  // ) {
-  //   fetchFilteredData(
-  //     selectedRating,
-  //     selectedTypeOfVenue,
-  //     selectedCity,
-  //     selectedPricePerPerson,
-  //     selectedAccessibilityOptions,
-  //     selectedCapacity,
-  //     selectedRefundPolicy,
-  //   ).then((venueNames) {
-  //     // Filter the venues based on the selected venue names
-  //     filteredVenues = dataList.where((venue) {
-  //       // Check if the venue's name is in the venueNames list
-  //       return venueNames.contains(venue.nameOfVenue);
-  //     }).toList();
-  //   }).catchError((error) {
-  //     print('Failed to fetch filtered data: $error');
-  //     // Handle error
-  //   });
-  // }
 
   static void filterVenues(
     //we want to apply frontend filtering to the datalist
@@ -215,7 +192,8 @@ class AppDataStore {
         confirmPassword: password,
         cnic: '12345-6789012-3',
       );
-      loggedInUser = 'true';
+
+      AppDataStore.loggedInNotifier.value = true; // Update loggedInNotifier
       return true;
     } else {
       throw Exception('Failed to login user');

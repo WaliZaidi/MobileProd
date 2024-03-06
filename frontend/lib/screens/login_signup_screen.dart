@@ -4,8 +4,10 @@ import 'package:frontend/screens/home_screen.dart';
 import 'package:frontend/screens/settings_screen.dart';
 import 'package:frontend/store/store.dart';
 import 'package:frontend/theme/theme.dart';
+import 'package:frontend/widgets/app_nav_bar.dart';
 import 'package:frontend/widgets/loader_bars.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:go_router/go_router.dart';
+// import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginSignupPage extends StatefulWidget {
   final int dynamicModifierLoginSignupPage;
@@ -24,32 +26,6 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   // Text editing controllers for email and password fields
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
-  Future<void> _signInWithGoogle() async {
-    try {
-      final GoogleSignInAccount? googleSignInAccount =
-          await GoogleSignIn().signIn();
-      if (googleSignInAccount != null) {
-        AppDataStore.currentUser = UserInfo(
-          id: googleSignInAccount.id,
-          name: googleSignInAccount.displayName!,
-          email: googleSignInAccount.email,
-          phone: '',
-          date: '',
-          time: '',
-          status: '',
-          password: '',
-          confirmPassword: '',
-          cnic: '',
-        );
-        AppDataStore.loggedInUser = 'true';
-
-        setState(() {});
-      }
-    } catch (error) {
-      print('Google Sign-In error: $error');
-    }
-  }
 
   void _toggleFormMode() {
     setState(() {
@@ -98,12 +74,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                         _emailController.text, _passwordController.text)) {
                       setState(() {});
                       // ignore: use_build_context_synchronously
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const HomeScreen(),
-                        ),
-                      );
+                      GoRouter.of(context).go('/');
                     }
                   } else {
                     LoaderBar.showLoading(context, "Checking progress...");
@@ -131,7 +102,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                 thickness: 1,
               ),
               ElevatedButton(
-                onPressed: _signInWithGoogle,
+                onPressed: () {},
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.black,
                   backgroundColor: const Color.fromARGB(255, 255, 255, 255),
@@ -176,6 +147,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
             ],
           ),
         ),
+        bottomNavigationBar: const AppNavBar(),
       ),
     );
   }
