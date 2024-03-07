@@ -357,6 +357,7 @@
 // }
 
 // ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:frontend/models/user_modal.dart';
 import 'package:frontend/screens/home_screen.dart';
@@ -366,6 +367,7 @@ import 'package:frontend/theme/theme.dart';
 import 'package:frontend/widgets/app_nav_bar.dart';
 import 'package:frontend/widgets/loader_bars.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginSignupPage extends StatefulWidget {
   final int dynamicModifierLoginSignupPage;
@@ -383,13 +385,49 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
+  final _loginformKey = GlobalKey<FormState>();
+  final _signupformKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailControllerSignUp = TextEditingController();
   final _phoneNumberController = TextEditingController();
   final _passwordControllerSignUp = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   final _cnicController = TextEditingController();
+
+  Future<void> _signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleSignInAccount =
+          await GoogleSignIn().signIn();
+      if (googleSignInAccount != null) {
+        AppDataStore.currentUser = UserInfo(
+          id: googleSignInAccount.id,
+          name: googleSignInAccount.displayName!,
+          email: googleSignInAccount.email,
+          phone: '',
+          date: '',
+          time: '',
+          status: '',
+          password: '',
+          confirmPassword: '',
+          cnic: '',
+        );
+
+        print('User logged in successfully');
+
+        LoaderBar.showMessage(context, "User logged in successfully");
+
+        AppDataStore.loggedInNotifier.value = true;
+
+        setState(() {});
+      }
+    } catch (error) {
+      LoaderBar.showMessage(context, "Failed to login user");
+      LoaderBar.showMessage(
+          context, "Google Sign-In error! Try logging in normally.");
+
+      print('Google Sign-In error: $error');
+    }
+  }
 
   void _toggleFormMode() {
     setState(() {
@@ -414,7 +452,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
               ),
               const SizedBox(height: 16.0),
               Form(
-                key: _formKey,
+                key: _loginformKey,
                 child: Column(
                   children: [
                     TextFormField(
@@ -448,7 +486,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                     const SizedBox(height: 16.0),
                     ElevatedButton(
                       onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
+                        if (_loginformKey.currentState!.validate()) {
                           LoaderBar.showLoading(context, "Logging in...");
                           if (await AppDataStore.loginUser(
                               _emailController.text,
@@ -487,7 +525,9 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                     width: 8,
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      _signInWithGoogle();
+                    },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.black,
                       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
@@ -535,7 +575,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                               bottom: MediaQuery.of(context).viewInsets.bottom,
                             ),
                             child: Form(
-                              key: _formKey,
+                              key: _signupformKey,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
@@ -546,12 +586,24 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                                         bottom: BorderSide(color: Colors.grey),
                                       ),
                                     ),
-                                    child: const Text(
-                                      'Sign Up',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const Text(
+                                          'Sign Up',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.close),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   Padding(
@@ -663,7 +715,8 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                                   ),
                                   ElevatedButton(
                                     onPressed: () async {
-                                      if (_formKey.currentState!.validate()) {
+                                      if (_signupformKey.currentState!
+                                          .validate()) {
                                         final name = _nameController.text;
                                         final email =
                                             _emailControllerSignUp.text;
@@ -742,7 +795,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                       foregroundColor: Colors.black,
                       backgroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(
-                        vertical: 16.0,
+                        vertical: 10.0,
                         horizontal: 32.0,
                       ),
                       shape: RoundedRectangleBorder(
@@ -757,7 +810,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                   ),
                 ],
               ),
-              const SizedBox(height: 10.0),
+              const SizedBox(height: 8.0),
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(

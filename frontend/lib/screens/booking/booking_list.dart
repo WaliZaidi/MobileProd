@@ -120,6 +120,7 @@ import 'package:frontend/screens/login_signup_screen.dart';
 import 'package:frontend/store/store.dart';
 import 'package:frontend/theme/theme.dart';
 import 'package:frontend/widgets/app_nav_bar.dart';
+import 'package:frontend/widgets/booking_card_widget.dart';
 import 'package:frontend/widgets/venue_card_widget.dart';
 import 'package:go_router/go_router.dart';
 
@@ -177,7 +178,7 @@ class BookingList extends StatelessWidget {
                 itemCount: AppDataStore
                     .currentUser!.bookedVenues.listOfBookedVenues.length,
                 itemBuilder: (context, index) {
-                  return VenueCardWidget(
+                  return BookingListCardWidget(
                     venue: AppDataStore.currentUser!.bookedVenues
                         .listOfBookedVenues[index].venue,
                   );

@@ -275,14 +275,7 @@ class BookingConfirmationContent extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                // Navigate to view bookings list screen
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => const BookingList(),
-                //   ),
-                // );
-                GoRouter.of(context).go('/bookings');
+                GoRouter.of(context).go('/bookingsList');
               },
               child: const Row(
                 mainAxisSize: MainAxisSize.min, // use minimum size for the row

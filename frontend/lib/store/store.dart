@@ -191,13 +191,88 @@ class AppDataStore {
     }
   }
 
-  static void googleSignIn() {
-    // Perform Google Sign-In
+  static getCurrentUser() {
+    return currentUser;
   }
-
-  static getCurrentUser() {}
 
   static void updateServerUrl(String newUrl) {
     url = newUrl;
+  }
+
+  static void addFavouriteVenue(Venue venue) {
+    currentUser?.favoriteVenues.favoriteVenues.add(venue);
+  }
+
+  static void removeFavouriteVenue(Venue venue) {
+    currentUser?.favoriteVenues.favoriteVenues.remove(venue);
+  }
+
+  static bool isVenueFavorite(Venue venue) {
+    return currentUser?.favoriteVenues.favoriteVenues.contains(venue) ?? false;
+  }
+
+  static Booking? getBookingById(String nameVenue) {
+    if (currentUser?.bookedVenues != null) {
+      return currentUser!.bookedVenues!.listOfBookedVenues.firstWhere(
+        (booking) => booking.venue.nameOfVenue == nameVenue,
+        orElse: () => Booking(
+            user: UserInfo(
+              id: '',
+              name: '',
+              email: '',
+              phone: '',
+              date: '',
+              time: '',
+              status: '',
+              password: '',
+              confirmPassword: '',
+              cnic: '',
+            ),
+            date: '',
+            time: '',
+            venue: Venue(
+              timestamp: '',
+              ranking: '',
+              nameOfVenue: '',
+              locationOfVenue: '',
+              plusCode: '',
+              typeOfVenue: [],
+              numberOfReviews: '',
+              serviceOptions: [],
+              accessabilityOptions: [],
+              rating: '',
+              parkingSpace: '',
+              numberOfSubhalls: '',
+              city: '',
+              totalHallsCapacity: '',
+              refundPolicy: [],
+              contactNumber: '',
+              websiteLink: '',
+              pricePerPerson: 0,
+              description: '',
+              arEnabled: false,
+              paranomaEnabled: false,
+              verifiedStatus: false,
+              images: [],
+              wifi: false,
+              wifiCost: 0,
+              subVenues: [],
+              reviews: [],
+            ),
+            subVenue: SubVenue(
+                nameOfSubVenue: '',
+                capacityOfSubVenue: 0,
+                availableDates: [],
+                bookingCharges: [],
+                menuOptions: [],
+                decorOptions: []),
+            guestCount: 0,
+            selectedOptions: [],
+            selectedDates: [],
+            totalAmount: 0,
+            status: ''),
+      );
+    }
+    return null;
   }
 }
