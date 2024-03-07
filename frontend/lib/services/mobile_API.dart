@@ -219,19 +219,23 @@ Future<bool> registerUser(
   String url = AppDataStore.url;
 
   final response = await http.post(
-    Uri.parse('$url/auth/register'),
+    Uri.parse('$url/auth/signup'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(<String, String>{
       'name': name,
       'email': email,
-      'phone': phoneNumber,
+      'phoneNumber': phoneNumber,
       'password': password,
       'confirmPassword': confirmPassword,
       'cnic': cnic,
     }),
   );
+
+  print("HEY THERE BBG${response.body}");
+  print(response);
+  print(response.statusCode);
 
   if (response.statusCode == 201) {
     return true;

@@ -147,83 +147,90 @@ class BookingList extends StatelessWidget {
 
   Widget buildBookingList(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 40),
-          const Text(
-            'Bookings',
-            style: TextStyle(
-              fontSize: 26,
-              fontFamily: 'Montserrat',
-              fontWeight: FontWeight.bold,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 40),
+            const Text(
+              'Bookings',
+              style: TextStyle(
+                fontSize: 26,
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-          const Divider(
-            color: Color.fromARGB(255, 0, 0, 0),
-            thickness: 1,
-            indent: 10,
-            endIndent: 10,
-          ),
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.only(left: 16.0),
-            child: ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: AppDataStore
-                  .currentUser!.bookedVenues.listOfBookedVenues.length,
-              itemBuilder: (context, index) {
-                return VenueCardWidget(
-                  venue: AppDataStore.currentUser!.bookedVenues
-                      .listOfBookedVenues[index].venue,
-                );
-              },
+            const SizedBox(height: 10),
+            const Divider(
+              color: Color.fromARGB(255, 0, 0, 0),
+              thickness: 1,
+              indent: 10,
+              endIndent: 10,
             ),
-          ),
-        ],
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.only(left: 16.0),
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: AppDataStore
+                    .currentUser!.bookedVenues.listOfBookedVenues.length,
+                itemBuilder: (context, index) {
+                  return VenueCardWidget(
+                    venue: AppDataStore.currentUser!.bookedVenues
+                        .listOfBookedVenues[index].venue,
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget buildLoginPrompt(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 40),
-          const Text('Bookings',
+      child: Padding(
+        padding: const EdgeInsets.only(left: 16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 40),
+            const Text('Bookings',
+                style: TextStyle(
+                  fontSize: 26,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.bold,
+                )),
+            const SizedBox(height: 20),
+            const Text(
+              'Log in to view your bookings.',
               style: TextStyle(
-                fontSize: 26,
-                fontFamily: 'Montserrat',
-                fontWeight: FontWeight.bold,
-              )),
-          const SizedBox(height: 20),
-          const Text(
-            'Log in to view your bookings.',
-            style: TextStyle(
-                fontSize: 16,
-                fontFamily: 'Montserrat',
-                fontWeight: FontWeight.w400),
-          ),
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.only(left: 16.0),
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const LoginSignupPage(
-                      dynamicModifierLoginSignupPage: 2,
-                    ),
-                  ),
-                );
-              },
-              child: const Text('Log in'),
+                  fontSize: 16,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w400),
             ),
-          ),
-        ],
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.only(left: 0),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginSignupPage(
+                        dynamicModifierLoginSignupPage: 2,
+                      ),
+                    ),
+                  );
+                },
+                child: const Text('Log in'),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

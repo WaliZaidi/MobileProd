@@ -151,7 +151,7 @@ class AppDataStore {
     currentUser?.bookedVenues.listOfBookedVenues.remove(booking);
   }
 
-  static Future<void> signInUser(
+  static Future<bool> signInUser(
     String name,
     String email,
     String phoneNumber,
@@ -161,17 +161,8 @@ class AppDataStore {
   ) async {
     if (await api.registerUser(
         name, email, phoneNumber, password, confirmPassword, cnic)) {
-      currentUser = UserInfo(
-          id: Random(1000).toString(),
-          name: name,
-          email: email,
-          phone: phoneNumber,
-          date: DateTime.now().day.toString(),
-          time: DateTime.now().isUtc.toString(),
-          status: "active",
-          password: password,
-          confirmPassword: confirmPassword,
-          cnic: cnic);
+      print('User registered successfully');
+      return true;
     } else {
       throw Exception('Failed to register user');
     }

@@ -249,6 +249,8 @@ class _SearchModalState extends State<SearchModal>
                           IconButton(
                             icon: const Icon(Icons.search),
                             onPressed: () {
+                              AppDataStore.filteredVenues.clear();
+                              AppDataStore.resolveSearchQuery(searchQuery);
                               // Add your search logic here, using the searchQuery variable
                               Navigator.push(
                                 context,

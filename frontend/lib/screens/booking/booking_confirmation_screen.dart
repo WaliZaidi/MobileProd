@@ -5,6 +5,7 @@ import 'package:frontend/widgets/app_nav_bar.dart';
 import 'package:frontend/screens/login_signup_screen.dart';
 import 'package:frontend/store/store.dart';
 import 'package:frontend/models/user_modal.dart';
+import 'package:go_router/go_router.dart';
 
 // class BookingConfirmationScreen extends StatelessWidget {
 //   final Booking bookingDetails;
@@ -275,12 +276,13 @@ class BookingConfirmationContent extends StatelessWidget {
               ),
               onPressed: () {
                 // Navigate to view bookings list screen
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const BookingList(),
-                  ),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => const BookingList(),
+                //   ),
+                // );
+                GoRouter.of(context).go('/bookings');
               },
               child: const Row(
                 mainAxisSize: MainAxisSize.min, // use minimum size for the row

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/home_screen.dart';
+import 'package:go_router/go_router.dart';
 import '../store/store.dart';
 import '../theme/theme.dart';
 import '../widgets/venue_card_widget.dart';
@@ -72,11 +73,7 @@ class _SearchResultsState extends State<SearchResults> {
                       const SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const HomeScreen()),
-                          );
+                          GoRouter.of(context).go('/');
                         },
                         child: const Text(
                             'Back to Home?'), // Button to navigate back
