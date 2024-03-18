@@ -50,7 +50,7 @@ class LoaderBar {
             Text(message),
           ],
         ),
-        duration: const Duration(seconds: 1),
+        duration: const Duration(seconds: 5),
         backgroundColor: const Color.fromARGB(255, 230, 111, 109),
       ),
     );

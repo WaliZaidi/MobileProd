@@ -181,6 +181,7 @@ class CustomTheme {
           borderRadius: BorderRadius.circular(8.0),
         ),
       ),
+      scaffoldBackgroundColor: Colors.white,
     );
   }
 }

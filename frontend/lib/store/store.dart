@@ -34,6 +34,7 @@ class AppDataStore {
       //show me where this exception is coming from
       print('Exception: $stackTrace');
       print('Exception: ${stackTrace.toString()}');
+      throw Exception('Failed to fetch data');
     }
   }
 
@@ -187,7 +188,7 @@ class AppDataStore {
       AppDataStore.loggedInNotifier.value = true; // Update loggedInNotifier
       return true;
     } else {
-      throw Exception('Failed to login user');
+      return false;
     }
   }
 
@@ -209,6 +210,14 @@ class AppDataStore {
 
   static bool isVenueFavorite(Venue venue) {
     return currentUser?.favoriteVenues.favoriteVenues.contains(venue) ?? false;
+  }
+
+  static void updateVenueFavouriteStatus(Venue venue) {
+    if (isVenueFavorite(venue)) {
+      removeFavouriteVenue(venue);
+    } else {
+      addFavouriteVenue(venue);
+    }
   }
 
   static Booking? getBookingById(String nameVenue) {

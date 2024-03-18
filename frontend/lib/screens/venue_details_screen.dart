@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/wishlist_screen.dart';
+import 'package:frontend/store/store.dart';
 import 'package:frontend/widgets/app_nav_bar.dart';
 import '../models/venue_model.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import '../theme/theme.dart';
 import 'booking/booking_details_screen.dart';
+import '../widgets/loader_bars.dart';
 
 class VenueDetailsScreen extends StatelessWidget {
   final Venue venue;
@@ -29,7 +32,28 @@ class VenueDetailsScreen extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.favorite_border),
               onPressed: () {
-                // Handle favorite button tap
+                if (AppDataStore.loggedInNotifier.value == false) {
+                  LoaderBar.showMessage(
+                      context, "Please login to add to favourites!");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const WishListScreen(),
+                    ),
+                  );
+                  return;
+                } else {
+                  if (AppDataStore.isVenueFavorite(venue)) {
+                    LoaderBar.showMessage(
+                        context, "Venue removed from favourites!");
+                    AppDataStore.removeFavouriteVenue(venue);
+                  } else {
+                    LoaderBar.showMessage(
+                        context, "Venue added to favourites!");
+                    AppDataStore.addFavouriteVenue(venue);
+                  }
+                  AppDataStore.updateVenueFavouriteStatus(venue);
+                }
               },
             ),
           ],
@@ -148,6 +172,10 @@ class VenueDetailsScreen extends StatelessWidget {
                   ListTile(
                     leading: const Icon(Icons.calendar_today),
                     title: const Text('Available Dates'),
+                    subtitle: const Text(
+                      'Click to view available dates',
+                      style: TextStyle(fontSize: 10),
+                    ),
                     onTap: () {
                       showModalBottomSheet(
                         context: context,
@@ -211,7 +239,9 @@ class VenueDetailsScreen extends StatelessWidget {
                                         'Click to view available dates',
                                         style: TextStyle(
                                             fontSize: 12,
-                                            fontStyle: FontStyle.italic),
+                                            fontStyle: FontStyle.italic,
+                                            color: Color.fromARGB(
+                                                255, 36, 117, 183)),
                                       ),
                                     ),
                                     if (index != venue.subVenues.length - 1)

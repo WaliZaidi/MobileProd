@@ -488,12 +488,19 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                       onPressed: () async {
                         if (_loginformKey.currentState!.validate()) {
                           LoaderBar.showLoading(context, "Logging in...");
-                          if (await AppDataStore.loginUser(
-                              _emailController.text,
-                              _passwordController.text)) {
+                          bool loggedIn = await AppDataStore.loginUser(
+                              _emailController.text, _passwordController.text);
+                          if (loggedIn) {
+                            LoaderBar.showMessage(context, "Logged in!");
                             setState(() {});
                             GoRouter.of(context).go('/');
+                          } else {
+                            LoaderBar.showMessage(
+                                context, "Login failed! Try again.");
                           }
+                        } else {
+                          LoaderBar.showMessage(
+                              context, "Login failed! Try again.");
                         }
                       },
                       style: ElevatedButton.styleFrom(
