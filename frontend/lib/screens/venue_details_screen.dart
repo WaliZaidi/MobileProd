@@ -13,6 +13,41 @@ class VenueDetailsScreen extends StatelessWidget {
 
   const VenueDetailsScreen({Key? key, required this.venue}) : super(key: key);
 
+  Widget buildCarouselSlider(Venue venue) {
+    return CarouselSlider(
+      items: venue.images.expand((imageUrl) {
+        return imageUrl.toImageList().map((imageLink) {
+          try {
+            return Container(
+              width: double.infinity,
+              margin: const EdgeInsets.symmetric(horizontal: 4.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: Image.network(
+                imageLink,
+                fit: BoxFit.cover,
+              ),
+            );
+          } on Exception catch (e) {
+            print('Error loading image: $e');
+            return const Center(
+              child: Text('Error loading image'),
+            );
+          }
+        });
+      }).toList(),
+      options: CarouselOptions(
+        autoPlay: true,
+        aspectRatio: 16 / 9, // Set the aspect ratio as needed
+        enlargeCenterPage: true,
+        viewportFraction: 1,
+        enableInfiniteScroll: true,
+        pauseAutoPlayOnManualNavigate: true,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -63,31 +98,7 @@ class VenueDetailsScreen extends StatelessWidget {
             // Image Carousel
             Container(
               height: 200, // Set a fixed height for the carousel
-              child: CarouselSlider(
-                items: venue.images.expand((imageUrl) {
-                  return imageUrl.toImageList().map((imageLink) {
-                    return Container(
-                      width: double.infinity,
-                      margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.0),
-                        image: DecorationImage(
-                          image: NetworkImage(imageLink),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    );
-                  });
-                }).toList(),
-                options: CarouselOptions(
-                  autoPlay: true,
-                  aspectRatio: 16 / 9, // Set the aspect ratio as needed
-                  enlargeCenterPage: true,
-                  viewportFraction: 1,
-                  enableInfiniteScroll: true,
-                  pauseAutoPlayOnManualNavigate: true,
-                ),
-              ),
+              child: buildCarouselSlider(venue),
             ),
             // Rest of the content
             Expanded(
