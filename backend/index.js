@@ -1,45 +1,28 @@
 const express = require('express');
-const { createServer } = require('http'); // Import http module
-const { Server } = require('ws');
-const dotenv = require('dotenv');
+const mongoose = require('mongoose');
 const cors = require('cors');
+const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
-const appConnector = require('./connections/routerConnection');
-const {dbConnector} = require('./connections/databaseConnection');
+const appConnector = require('./connections/routerconnecter.js');
+const dbConnector = require('./connections/dbconnecter.js');
+const ws = require('ws');   
 
-const PORT = process.env.PORT || 3000;
+const app = express()
+app.use(express.json())
+app.use(cors())
 
-// Create an HTTP server and listen on the same port as your Express app
-const server = createServer(express().use((req, res) => res.send('Hello World')));
-const wss = new Server({ server });
+app.use(bodyParser.json({limit: "30mb", extended: true})) //extended: true allows us to send complex objects in our request
+app.use(bodyParser.urlencoded({limit: "30mb", extended: true})) //urlencoded is a way of sending data to the server
 
-// The existing Express app
-const app = express();
-app.use(express.json());
-app.use(cors());
-app.use(bodyParser.json({ limit: '30mb', extended: true }));
-app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
+const PORT = process.env.PORT || 4000
 
-// WebSocket connection handling
-wss.on('connection', (ws) => {
-  console.log('Client connected');
-  ws.on('close', () => console.log('Client disconnected'));
-});
-
-wss.on('message', (message) => {
-  console.log('Received message => ', message);
-});
-
-// Include your existing routes
 appConnector(app);
 
-dotenv.config();
-
-// Start both HTTP and WebSocket servers on the same port
-server.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-});
+dotenv.config()
 
 dbConnector();
+
+app.listen(PORT, '0.0.0.0', () => console.log(`Server running on port: ${PORT}`))
+
 
 module.exports = app;

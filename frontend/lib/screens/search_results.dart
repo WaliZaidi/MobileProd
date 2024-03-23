@@ -73,10 +73,11 @@ class _SearchResultsState extends State<SearchResults> {
                       const SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: () {
-                          GoRouter.of(context).go('/');
+                          Navigator.of(context).pop();
+                          print("Going home");
                         },
                         child: const Text(
-                            'Back to Home?'), // Button to navigate back
+                            'Back to Search?'), // Button to navigate back
                       ),
                     ],
                   ),

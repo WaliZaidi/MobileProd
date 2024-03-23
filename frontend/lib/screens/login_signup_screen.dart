@@ -133,9 +133,15 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                           bool loggedIn = await AppDataStore.loginUser(
                               _emailController.text, _passwordController.text);
                           if (loggedIn) {
-                            LoaderBar.showMessage(context, "Logged in!");
-                            setState(() {});
-                            GoRouter.of(context).go('/');
+                            if (widget.dynamicModifierLoginSignupPage == 1) {
+                              LoaderBar.showMessage(context, "Logged in!");
+                              setState(() {});
+                              GoRouter.of(context).go('/');
+                            } else {
+                              LoaderBar.showMessage(context, "Logged in!");
+                              setState(() {});
+                              Navigator.of(context).pop();
+                            }
                           } else {
                             LoaderBar.showMessage(
                                 context, "Login failed! Try again.");
@@ -188,13 +194,6 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                     child: const Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Image(
-                          image: AssetImage(
-                            'assets/images/google_logo.png',
-                          ),
-                          height: 5,
-                          width: 5,
-                        ),
                         SizedBox(width: 8),
                         Text(
                           'Sign in with Google',

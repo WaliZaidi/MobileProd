@@ -99,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const Image(
-                              image: AssetImage('lib/assets/disruption.png'),
+                              image: AssetImage('lib/images/disruption.png'),
                               width: 60, // Set the desired width
                               height: 60, // Set the desired height
                             ),
