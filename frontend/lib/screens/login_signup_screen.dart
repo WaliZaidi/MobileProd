@@ -77,8 +77,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildLoggedOutPage() {
     return Theme(
       data: CustomTheme.theme,
       child: Scaffold(
@@ -135,8 +134,9 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                           if (loggedIn) {
                             if (widget.dynamicModifierLoginSignupPage == 1) {
                               LoaderBar.showMessage(context, "Logged in!");
-                              setState(() {});
                               GoRouter.of(context).go('/');
+                              setState(() {});
+                              AppDataStore.loggedInNotifier.value = true;
                             } else {
                               LoaderBar.showMessage(context, "Logged in!");
                               setState(() {});
@@ -484,6 +484,81 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildLoggedInPage() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(vertical: 100, horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          const Text(
+            'Logged In',
+            style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 16.0),
+          const Divider(
+            color: Colors.black,
+            thickness: 1,
+          ),
+          const SizedBox(height: 16.0),
+          ElevatedButton(
+            onPressed: () {
+              LoaderBar.showLoading(context, "Logging out...");
+              AppDataStore.loggedInNotifier.value = false;
+              setState(() {});
+            },
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 16, vertical: 12), // Adjust padding as needed
+              minimumSize: const Size(
+                  double.infinity, 28), // Adjust minimumSize as needed
+              foregroundColor: Colors.white,
+              backgroundColor: const Color.fromARGB(255, 255, 0, 0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(24),
+              ),
+            ),
+            child: const Text(
+              'Sign Out',
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
+          const SizedBox(height: 16.0),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SettingsScreen(),
+                ),
+              );
+            },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.black),
+            ),
+            child: const Row(
+              children: [
+                Icon(Icons.settings),
+                Text('Settings'),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isLoggedIn = AppDataStore.loggedInNotifier.value;
+
+    return Theme(
+      data: CustomTheme.theme,
+      child: Scaffold(
+        body: isLoggedIn ? _buildLoggedInPage() : _buildLoggedOutPage(),
         bottomNavigationBar: const AppNavBar(),
       ),
     );

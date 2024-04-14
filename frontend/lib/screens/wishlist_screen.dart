@@ -250,33 +250,54 @@ class _WishListScreenState extends State<WishListScreen> {
                 endIndent: 10,
               ),
               const SizedBox(height: 20),
-              CustomScrollView(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                slivers: <Widget>[
-                  SliverGrid(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 1,
-                      childAspectRatio: 0.7,
+              AppDataStore.currentUser!.favoriteVenues.favoriteVenues.isEmpty
+                  ? const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 16),
+                        Text(
+                          'Your wishlist is empty!',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        Text(
+                          'Add your favorite venues to your wishlist.',
+                          style: TextStyle(
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    )
+                  : CustomScrollView(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      slivers: <Widget>[
+                        SliverGrid(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 1,
+                            childAspectRatio: 0.7,
+                          ),
+                          delegate: SliverChildBuilderDelegate(
+                            (BuildContext context, int index) {
+                              final venue = AppDataStore.currentUser!
+                                  .favoriteVenues.favoriteVenues[index];
+                              return SizedBox(
+                                  height: 300, // Set a specific height here
+                                  child: WishListCardWidget(
+                                    venue: venue,
+                                    onUpdateWishlist:
+                                        updateWishlist, // Pass the updateWishlist function
+                                  ));
+                            },
+                            childCount: favoriteVenuesLength,
+                          ),
+                        ),
+                      ],
                     ),
-                    delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                        final venue = AppDataStore
-                            .currentUser!.favoriteVenues.favoriteVenues[index];
-                        return SizedBox(
-                            height: 300, // Set a specific height here
-                            child: WishListCardWidget(
-                              venue: venue,
-                              onUpdateWishlist:
-                                  updateWishlist, // Pass the updateWishlist function
-                            ));
-                      },
-                      childCount: favoriteVenuesLength,
-                    ),
-                  ),
-                ],
-              ),
             ],
           );
         },

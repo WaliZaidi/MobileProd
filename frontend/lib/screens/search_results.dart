@@ -76,8 +76,8 @@ class _SearchResultsState extends State<SearchResults> {
                           Navigator.of(context).pop();
                           print("Going home");
                         },
-                        child: const Text(
-                            'Back to Search?'), // Button to navigate back
+                        child:
+                            const Text('Go Back?'), // Button to navigate back
                       ),
                     ],
                   ),

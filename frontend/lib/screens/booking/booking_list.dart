@@ -170,21 +170,29 @@ class BookingList extends StatelessWidget {
               endIndent: 10,
             ),
             const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.only(left: 16.0),
-              child: ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: AppDataStore
-                    .currentUser!.bookedVenues.listOfBookedVenues.length,
-                itemBuilder: (context, index) {
-                  return BookingListCardWidget(
-                    venue: AppDataStore.currentUser!.bookedVenues
-                        .listOfBookedVenues[index].venue,
-                  );
-                },
-              ),
-            ),
+            AppDataStore.currentUser!.bookedVenues.listOfBookedVenues.isEmpty
+                ? const Text(
+                    'You have not booked any venues yet.',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.w400),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.only(left: 16.0),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: AppDataStore
+                          .currentUser!.bookedVenues.listOfBookedVenues.length,
+                      itemBuilder: (context, index) {
+                        return BookingListCardWidget(
+                          venue: AppDataStore.currentUser!.bookedVenues
+                              .listOfBookedVenues[index].venue,
+                        );
+                      },
+                    ),
+                  ),
           ],
         ),
       ),

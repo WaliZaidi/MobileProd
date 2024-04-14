@@ -7,6 +7,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import '../theme/theme.dart';
 import 'booking/booking_details_screen.dart';
 import '../widgets/loader_bars.dart';
+// import '../screens/ar_view_screen.dart';
 
 class VenueDetailsScreen extends StatelessWidget {
   final Venue venue;
@@ -65,7 +66,12 @@ class VenueDetailsScreen extends StatelessWidget {
           ),
           actions: [
             IconButton(
-              icon: const Icon(Icons.favorite_border),
+              icon: Icon(
+                AppDataStore.isVenueFavorite(venue)
+                    ? Icons.favorite
+                    : Icons.favorite_border,
+                color: AppDataStore.isVenueFavorite(venue) ? Colors.red : null,
+              ),
               onPressed: () {
                 if (AppDataStore.loggedInNotifier.value == false) {
                   LoaderBar.showMessage(
@@ -127,7 +133,7 @@ class VenueDetailsScreen extends StatelessWidget {
                   ListTile(
                     leading: const Icon(Icons.star),
                     title: Text(
-                      'Rating: ${venue.rating}   |   ${venue.numberOfReviews} Reviews',
+                      'Rating: ${venue.rating}   |   ${venue.reviews.isEmpty ? venue.reviews.length : venue.numberOfReviews} Reviews',
                     ),
                     onTap: () {
                       showDialog(
@@ -138,25 +144,30 @@ class VenueDetailsScreen extends StatelessWidget {
                             content: SingleChildScrollView(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: venue.reviews.map((review) {
-                                  return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Divider(),
-                                      Text(
-                                        '${review.stars} ⭐',
-                                        style: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        'Review: ${review.text}',
-                                        style: const TextStyle(fontSize: 12),
-                                      ),
-                                    ],
-                                  );
-                                }).toList(),
+                                children: venue.reviews.isEmpty
+                                    ? [
+                                        const Text('No reviews available!'),
+                                      ]
+                                    : venue.reviews.map((review) {
+                                        return Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Divider(),
+                                            Text(
+                                              '${review.stars} ⭐',
+                                              style: const TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Text(
+                                              'Review: ${review.text == 'null' ? '-' : review.text}',
+                                              style:
+                                                  const TextStyle(fontSize: 12),
+                                            ),
+                                          ],
+                                        );
+                                      }).toList(),
                               ),
                             ),
                             actions: <Widget>[
@@ -225,7 +236,7 @@ class VenueDetailsScreen extends StatelessWidget {
                                                       .subVenues[index]
                                                       .availableDates
                                                       .map((date) => Text(
-                                                            'Date: ${date.date} \nStart Time: ${date.startTime} \nEnd Time: ${date.endTime}',
+                                                            'Date: ${date.date.day}/${date.date.month}/${date.date.year} \nStart Time: ${date.startTime} \nEnd Time: ${date.endTime}',
                                                             style:
                                                                 const TextStyle(
                                                                     fontSize:
@@ -293,33 +304,37 @@ class VenueDetailsScreen extends StatelessWidget {
                             child: ListView.builder(
                               itemCount: venue.subVenues.length,
                               itemBuilder: (BuildContext context, int index) {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      venue.subVenues[index].menuOptions
-                                          .map(
-                                            (menuOption) =>
-                                                '${menuOption.packageName} - ${menuOption.packagePrice}',
-                                          )
-                                          .join('\n'),
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                return Card(
+                                  elevation: 2,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          venue.subVenues[index].menuOptions
+                                              .map(
+                                                (menuOption) =>
+                                                    '${menuOption.packageName} - ${menuOption.packagePrice}',
+                                              )
+                                              .join('\n'),
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Text(
+                                          'Description: ${venue.subVenues[index].menuOptions.map((menuOption) => menuOption.packageDescription).join('\n')}',
+                                          style: const TextStyle(fontSize: 14),
+                                        ),
+                                      ],
                                     ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      'Description: ${venue.subVenues[index].menuOptions.map((menuOption) => menuOption.packageDescription).join('\n')}',
-                                      style: const TextStyle(fontSize: 14),
-                                    ),
-                                    if (index != venue.subVenues.length - 1)
-                                      const Divider(
-                                        indent: 16,
-                                        endIndent: 16,
-                                        thickness: 1,
-                                      ),
-                                  ],
+                                  ),
                                 );
                               },
                             ),
@@ -345,33 +360,37 @@ class VenueDetailsScreen extends StatelessWidget {
                             child: ListView.builder(
                               itemCount: venue.subVenues.length,
                               itemBuilder: (BuildContext context, int index) {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      venue.subVenues[index].decorOptions
-                                          .map(
-                                            (decorOption) =>
-                                                '${decorOption.decorName} - ${decorOption.decorPrice}',
-                                          )
-                                          .join('\n'),
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                return Card(
+                                  elevation: 2,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          venue.subVenues[index].decorOptions
+                                              .map(
+                                                (decorOption) =>
+                                                    '${decorOption.decorName} - ${decorOption.decorPrice}',
+                                              )
+                                              .join('\n'),
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Text(
+                                          'For Event Type: ${venue.subVenues[index].decorOptions.map((decorOption) => decorOption.forEventType).join('\n')}',
+                                          style: const TextStyle(fontSize: 14),
+                                        ),
+                                      ],
                                     ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      'For Event Type: ${venue.subVenues[index].decorOptions.map((decorOption) => decorOption.forEventType).join('\n')}',
-                                      style: const TextStyle(fontSize: 14),
-                                    ),
-                                    if (index != venue.subVenues.length - 1)
-                                      const Divider(
-                                        indent: 16,
-                                        endIndent: 16,
-                                        thickness: 1,
-                                      ),
-                                  ],
+                                  ),
                                 );
                               },
                             ),
@@ -397,28 +416,32 @@ class VenueDetailsScreen extends StatelessWidget {
                             child: ListView.builder(
                               itemCount: venue.subVenues.length,
                               itemBuilder: (BuildContext context, int index) {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      venue.subVenues[index].nameOfSubVenue,
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                return Card(
+                                  elevation: 2,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          venue.subVenues[index].nameOfSubVenue,
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Text(
+                                          'Booking Charges:\n${venue.subVenues[index].bookingCharges.map((bookingCharge) => '${bookingCharge.bookingChargeName} - ${bookingCharge.bookingChargePrice}').join('\n')}',
+                                          style: const TextStyle(fontSize: 12),
+                                        ),
+                                      ],
                                     ),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                      'Booking Charges:\n${venue.subVenues[index].bookingCharges.map((bookingCharge) => '${bookingCharge.bookingChargeName} - ${bookingCharge.bookingChargePrice}').join('\n')}',
-                                      style: const TextStyle(fontSize: 12),
-                                    ),
-                                    if (index != venue.subVenues.length - 1)
-                                      const Divider(
-                                        indent: 16,
-                                        endIndent: 16,
-                                        thickness: 1,
-                                      ),
-                                  ],
+                                  ),
                                 );
                               },
                             ),
@@ -523,8 +546,14 @@ class VenueDetailsScreen extends StatelessWidget {
                   ),
                   ListTile(
                     leading: const Icon(Icons.timer),
-                    title:
-                        Text('AR Enabled: ${venue.arEnabled ? 'Yes' : 'No'}'),
+                    title: Column(children: [
+                      Text('AR Enabled: ${venue.arEnabled ? 'Yes' : 'No'}'),
+                      if (venue.arEnabled)
+                        ElevatedButton(
+                          onPressed: () {},
+                          child: const Text('View in AR'),
+                        ),
+                    ]),
                   ),
                   ListTile(
                     leading: const Icon(Icons.panorama),

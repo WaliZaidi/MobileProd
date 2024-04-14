@@ -23,6 +23,10 @@ class _SearchModalState extends State<SearchModal>
   late String selectedAccessibilityOptions;
   late String selectedCapacity;
   late String selectedRefundPolicy;
+  bool filteringCompletedBanquet = false;
+  bool filteringCompletedBirthday = false;
+  bool filteringCompletedWedding = false;
+  bool filteringCompletedCorporate = false;
 
   @override
   void initState() {
@@ -149,6 +153,10 @@ class _SearchModalState extends State<SearchModal>
                             children: [
                               GestureDetector(
                                 onTap: () {
+                                  setState(() {
+                                    filteringCompletedBanquet = true;
+                                  });
+
                                   AppDataStore.filterVenues(
                                     selectedRatings = '',
                                     selectedTypeOfVenue = 'Banquet',
@@ -159,13 +167,14 @@ class _SearchModalState extends State<SearchModal>
                                     selectedRefundPolicy = '',
                                   );
 
-                                  // Wait for 2 seconds before navigating
                                   Future.delayed(const Duration(seconds: 2),
                                       () {
-                                    LoaderBar.showLoading(
-                                        context, 'Loading...');
+                                    setState(() {
+                                      filteringCompletedBanquet = false;
+                                    });
+
                                     LoaderBar.showMessage(
-                                        context, 'Selected: Banquet Halls');
+                                        context, 'Selected: Banquet Venues');
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -193,20 +202,39 @@ class _SearchModalState extends State<SearchModal>
                                     borderRadius: BorderRadius.circular(10.0),
                                     border: Border.all(color: Colors.black),
                                   ),
-                                  child: const Center(
-                                    child: Text(
-                                      'Banquet Halls',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
+                                  child: Stack(
+                                    children: [
+                                      const Center(
+                                        child: Text(
+                                          'Banquet Halls',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      if (filteringCompletedBanquet)
+                                        Positioned.fill(
+                                          child: Container(
+                                            color:
+                                                Colors.black.withOpacity(0.3),
+                                            child: const Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            ),
+                                          ),
+                                        ),
+                                    ],
                                   ),
                                 ),
                               ),
                               GestureDetector(
                                 onTap: () {
+                                  setState(() {
+                                    filteringCompletedBirthday = true;
+                                  });
+
                                   AppDataStore.filterVenues(
                                     selectedRatings = '',
                                     selectedTypeOfVenue = 'Birthday',
@@ -217,13 +245,14 @@ class _SearchModalState extends State<SearchModal>
                                     selectedRefundPolicy = '',
                                   );
 
-                                  // Wait for 2 seconds before navigating
-                                  Future.delayed(const Duration(seconds: 0),
+                                  Future.delayed(const Duration(seconds: 2),
                                       () {
-                                    LoaderBar.showLoading(
-                                        context, 'Loading...');
+                                    setState(() {
+                                      filteringCompletedBirthday = false;
+                                    });
+
                                     LoaderBar.showMessage(
-                                        context, 'Selected: Birthday Parties');
+                                        context, 'Selected: Birthday Venues');
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -250,15 +279,30 @@ class _SearchModalState extends State<SearchModal>
                                     borderRadius: BorderRadius.circular(10.0),
                                     border: Border.all(color: Colors.black),
                                   ),
-                                  child: const Center(
-                                    child: Text(
-                                      'Birthday Parties',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
+                                  child: Stack(
+                                    children: [
+                                      const Center(
+                                        child: Text(
+                                          'Birthday Parties',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      if (filteringCompletedBirthday)
+                                        Positioned.fill(
+                                          child: Container(
+                                            color:
+                                                Colors.black.withOpacity(0.3),
+                                            child: const Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            ),
+                                          ),
+                                        ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -270,6 +314,10 @@ class _SearchModalState extends State<SearchModal>
                             children: [
                               GestureDetector(
                                 onTap: () {
+                                  setState(() {
+                                    filteringCompletedWedding = true;
+                                  });
+
                                   AppDataStore.filterVenues(
                                     selectedRatings = '',
                                     selectedTypeOfVenue = 'Wedding',
@@ -280,11 +328,12 @@ class _SearchModalState extends State<SearchModal>
                                     selectedRefundPolicy = '',
                                   );
 
-                                  // Wait for 2 seconds before navigating
                                   Future.delayed(const Duration(seconds: 2),
                                       () {
-                                    LoaderBar.showLoading(
-                                        context, 'Loading...');
+                                    setState(() {
+                                      filteringCompletedWedding = false;
+                                    });
+
                                     LoaderBar.showMessage(
                                         context, 'Selected: Wedding Venues');
                                     Navigator.push(
@@ -313,9 +362,9 @@ class _SearchModalState extends State<SearchModal>
                                     borderRadius: BorderRadius.circular(10.0),
                                     border: Border.all(color: Colors.black),
                                   ),
-                                  child: const Stack(
+                                  child: Stack(
                                     children: [
-                                      Center(
+                                      const Center(
                                         child: Text(
                                           'Wedding Venues',
                                           style: TextStyle(
@@ -325,17 +374,27 @@ class _SearchModalState extends State<SearchModal>
                                           ),
                                         ),
                                       ),
-                                      Positioned.fill(
-                                        child: Material(
-                                          color: Colors.transparent,
+                                      if (filteringCompletedWedding)
+                                        Positioned.fill(
+                                          child: Container(
+                                            color:
+                                                Colors.black.withOpacity(0.3),
+                                            child: const Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            ),
+                                          ),
                                         ),
-                                      ),
                                     ],
                                   ),
                                 ),
                               ),
                               GestureDetector(
                                 onTap: () {
+                                  setState(() {
+                                    filteringCompletedCorporate = true;
+                                  });
+
                                   AppDataStore.filterVenues(
                                     selectedRatings = '',
                                     selectedTypeOfVenue = 'Corporate',
@@ -346,13 +405,14 @@ class _SearchModalState extends State<SearchModal>
                                     selectedRefundPolicy = '',
                                   );
 
-                                  // Wait for 2 seconds before navigating
                                   Future.delayed(const Duration(seconds: 2),
                                       () {
-                                    LoaderBar.showLoading(
-                                        context, 'Loading...');
+                                    setState(() {
+                                      filteringCompletedCorporate = false;
+                                    });
+
                                     LoaderBar.showMessage(
-                                        context, 'Selected: Corporate Events');
+                                        context, 'Selected: Corporate Venues');
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -379,15 +439,30 @@ class _SearchModalState extends State<SearchModal>
                                     borderRadius: BorderRadius.circular(10.0),
                                     border: Border.all(color: Colors.black),
                                   ),
-                                  child: const Center(
-                                    child: Text(
-                                      'Corporate Events',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
+                                  child: Stack(
+                                    children: [
+                                      const Center(
+                                        child: Text(
+                                          'Corporate Halls',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      if (filteringCompletedCorporate)
+                                        Positioned.fill(
+                                          child: Container(
+                                            color:
+                                                Colors.black.withOpacity(0.3),
+                                            child: const Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            ),
+                                          ),
+                                        ),
+                                    ],
                                   ),
                                 ),
                               ),
