@@ -75,7 +75,4 @@ flutter {
     source '../..'
 }
 
-dependencies {
-    implementation project(':unityLibrary')
-    implementation fileTree(dir: project(':unityLibrary').getProjectDir().toString() + ('\\libs'), include: ['*.jar'])
-}
+dependencies {}
