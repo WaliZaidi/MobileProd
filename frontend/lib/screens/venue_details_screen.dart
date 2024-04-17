@@ -26,17 +26,17 @@ class VenueDetailsScreen extends StatelessWidget {
   //   intent.launch();
   // }
 
-  void _launchApp() {
-    try {
-      AndroidIntent intent = const AndroidIntent(
-        action: 'android.intent.action.MAIN',
-        package:
-            "com.Festivo.Festivo_unity_AR", // Replace with the package name of the installed app
-      );
-      intent.launch();
-    } catch (e) {
-      print("Error launching the app: $e");
-    }
+  void launchUnityApp() {
+    AndroidIntent intent = const AndroidIntent(
+      action: 'android.intent.action.MAIN',
+      category: 'android.intent.category.LAUNCHER',
+      package: 'com.Festivo.Festivo_unity_AR',
+    );
+    // intent.launch();
+    intent.launch().catchError((e) {
+      // handle error or open Play Store link
+      print('Error launching app: $e');
+    });
   }
 
   // void _launchApp() {
@@ -595,7 +595,7 @@ class VenueDetailsScreen extends StatelessWidget {
                       if (venue.arEnabled)
                         ElevatedButton(
                           onPressed: () {
-                            _launchApp();
+                            launchUnityApp();
                           },
                           child: const Text('View in AR'),
                         ),

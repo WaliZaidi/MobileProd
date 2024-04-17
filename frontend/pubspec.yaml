@@ -45,7 +45,7 @@ dependencies:
   flutter_native_splash: ^2.3.7
   android_intent: ^2.0.1
   url_launcher: ^6.0.13
-  android_intent_plus: ^5.0.2
+  android_intent_plus: ^3.0.0
 
 flutter_native_splash:
   background_image: 'lib/images/logo1.jpg'
