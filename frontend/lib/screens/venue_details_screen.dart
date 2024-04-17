@@ -7,12 +7,56 @@ import 'package:carousel_slider/carousel_slider.dart';
 import '../theme/theme.dart';
 import 'booking/booking_details_screen.dart';
 import '../widgets/loader_bars.dart';
+// import 'package:android_intent/android_intent.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:android_intent_plus/android_intent.dart';
 // import '../screens/ar_view_screen.dart';
 
 class VenueDetailsScreen extends StatelessWidget {
   final Venue venue;
 
   const VenueDetailsScreen({Key? key, required this.venue}) : super(key: key);
+
+  // void _launchApp() {
+  //   AndroidIntent intent = const AndroidIntent(
+  //     action: 'android.intent.action.MAIN',
+  //     package:
+  //         "com.Festivo.Festivo_unity_AR", // Replace with the package name of the installed app
+  //   );
+  //   intent.launch();
+  // }
+
+  void _launchApp() {
+    try {
+      AndroidIntent intent = const AndroidIntent(
+        action: 'android.intent.action.MAIN',
+        package:
+            "com.Festivo.Festivo_unity_AR", // Replace with the package name of the installed app
+      );
+      intent.launch();
+    } catch (e) {
+      print("Error launching the app: $e");
+    }
+  }
+
+  // void _launchApp() {
+  //   AndroidIntent intent = const AndroidIntent(
+  //     action: 'android.intent.action.MAIN',
+  //     package:
+  //         "com.Festivo.Festivo_unity_AR", // Replace with the package name of the installed app
+  //   );
+  //   intent.launch();
+  // }
+
+  // void _launchApp() async {
+  //   const String urlScheme =
+  //       'com.Festivo.Festivo_unity_AR'; // Replace with the URL scheme of the app you want to launch
+  //   if (await canLaunch(urlScheme)) {
+  //     await launch(urlScheme);
+  //   } else {
+  //     throw 'Could not launch $urlScheme';
+  //   }
+  // }
 
   Widget buildCarouselSlider(Venue venue) {
     return CarouselSlider(
@@ -550,7 +594,9 @@ class VenueDetailsScreen extends StatelessWidget {
                       Text('AR Enabled: ${venue.arEnabled ? 'Yes' : 'No'}'),
                       if (venue.arEnabled)
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            _launchApp();
+                          },
                           child: const Text('View in AR'),
                         ),
                     ]),
